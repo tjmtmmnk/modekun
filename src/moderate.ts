@@ -12,6 +12,7 @@ const hideRepeatThrow = (chats: Chat[]) => {
     }
     duplicateCount[chat.key]++;
   }
+  console.log(duplicateCount);
   for (const chat of chats) {
     if (duplicateCount[chat.key] >= REPEAT_THRESHOLD) {
       hide(chat);

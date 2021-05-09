@@ -1,11 +1,13 @@
 import { Chat } from "./chat";
-import {moderate} from "./moderate";
+import { moderate } from "./moderate";
+import { kanaToHiragana, removeSymbols } from "./util";
 
 window.addEventListener("load", () => {
   const modekun = () => {
-    console.log("hello modekun");
     const chatSection = document.querySelector<HTMLIFrameElement>("iframe");
     if (!chatSection || !chatSection.contentWindow) return;
+    console.log("hello modekun");
+
     const chatBlocks = chatSection.contentWindow.document.querySelectorAll<HTMLElement>(
       ".yt-live-chat-text-message-renderer"
     );
@@ -18,8 +20,9 @@ window.addEventListener("load", () => {
       );
       const author = authorElement?.innerText;
       const message = messageElement.innerText;
+      const key = removeSymbols(kanaToHiragana(author + message));
       chats.push({
-        key: author + message,
+        key: key,
         author: author,
         message: message,
         element: chatBlock,
