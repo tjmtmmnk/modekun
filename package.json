@@ -17,6 +17,8 @@
     "url": "https://github.com/chibat/chrome-extension-typescript-starter.git"
   },
   "dependencies": {
+    "@tensorflow-models/toxicity": "^1.2.2",
+    "kuromoji": "^0.1.2",
     "react": "^17.0.1",
     "react-dom": "^17.0.1"
   },
@@ -24,8 +26,11 @@
     "@types/chrome": "0.0.100",
     "@types/jest": "^25.1.4",
     "@types/jquery": "^3.3.33",
+    "@types/kuromoji": "^0.1.0",
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
+    "clean-webpack-plugin": "^4.0.0-alpha.0",
+    "comlink": "^4.3.1",
     "copy-webpack-plugin": "^6.1.0",
     "glob": "^7.1.6",
     "jest": "^26.6.3",
@@ -36,6 +41,7 @@
     "typescript": "~3.8.3 ",
     "webpack": "^4.44.1",
     "webpack-cli": "~3.3.11",
-    "webpack-merge": "~4.2.2"
+    "webpack-merge": "~4.2.2",
+    "worker-plugin": "^5.0.0"
   }
 }

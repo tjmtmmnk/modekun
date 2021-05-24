@@ -10,23 +10,25 @@
     "chrome_style": true
   },
 
+  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
+
   "browser_action": {
     "default_icon": "icon.png",
     "default_popup": "popup.html"
   },
 
   "content_scripts": [
-      {
-          "matches": ["https://www.youtube.com/*"],
-          "js": ["js/vendor.js", "js/content_script.js"]
-      }
+    {
+      "matches": ["https://www.youtube.com/*", "https://www.google.com/*"],
+      "js": ["js/vendor.js", "js/content_script.js"]
+    }
   ],
 
   "background": {
     "scripts": ["js/vendor.js", "js/background.js"]
   },
 
-  "permissions": [
-    "activeTab"
-  ]
+  "permissions": ["activeTab"],
+
+  "web_accessible_resources": ["kuromoji/dict/*", "js/worker.js"]
 }
