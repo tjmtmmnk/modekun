@@ -2,25 +2,26 @@ import { Chat } from "./chat";
 import { moderate } from "./moderate";
 import { kanaToHiragana, removeSymbols } from "./util";
 import * as comlink from "comlink";
-import { A } from "./kuromoji.worker";
+import { KuromojiWorker } from "./kuromoji.worker";
 
-async function createInstance(): Promise<A> {
+async function createInstance(): Promise<KuromojiWorker> {
   console.time("load");
   const worker = await fetch(chrome.extension.getURL("js/worker.js"));
   const js = await worker.text();
   const blob = new Blob([js], { type: "text/javascript" });
   const url = URL.createObjectURL(blob);
-  const workerClass: any = comlink.wrap<A>(new Worker(url));
-  const instance = await new workerClass();
+  const workerClass: any = comlink.wrap<KuromojiWorker>(new Worker(url));
+  const instance = await new workerClass(chrome.extension.getURL("kuromoji/dict/"));
   console.timeEnd("load");
   return instance;
 }
 
 window.addEventListener("load", async () => {
-  console.log("do something");
+  console.time("do something");
   const instance = await createInstance();
-  await instance.B();
-  console.log("do another thing");
+  const hoge = await instance.bulkTokenize(["吾輩は猫である", "名前はまだない", "こんにちは", "やば"]);
+  console.log(hoge);
+  console.timeEnd("do something");
   // const modekun = () => {
   //   const chatSection = document.querySelector<HTMLIFrameElement>("iframe");
   //   if (!chatSection || !chatSection.contentWindow) return;
