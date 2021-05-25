@@ -17,9 +17,6 @@ module.exports = {
     path: path.join(__dirname, "../dist/js"),
     filename: "[name].js",
   },
-  devServer: {
-    contentBase: path.join(__dirname, "dist"),
-  },
   module: {
     rules: [
       {

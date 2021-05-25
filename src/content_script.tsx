@@ -2,15 +2,16 @@ import { Chat } from "./chat";
 import { moderate } from "./moderate";
 import { kanaToHiragana, removeSymbols } from "./util";
 import * as comlink from "comlink";
+import { A } from "./kuromoji.worker";
 
-async function createInstance() {
+async function createInstance(): Promise<A> {
   console.time("load");
   const worker = await fetch(chrome.extension.getURL("js/worker.js"));
   const js = await worker.text();
   const blob = new Blob([js], { type: "text/javascript" });
   const url = URL.createObjectURL(blob);
-  const workerClass: any = comlink.wrap(new Worker(url));
-  const instance: any = await new workerClass();
+  const workerClass: any = comlink.wrap<A>(new Worker(url));
+  const instance = await new workerClass();
   console.timeEnd("load");
   return instance;
 }
@@ -18,7 +19,7 @@ async function createInstance() {
 window.addEventListener("load", async () => {
   console.log("do something");
   const instance = await createInstance();
-  instance.B();
+  await instance.B();
   console.log("do another thing");
   // const modekun = () => {
   //   const chatSection = document.querySelector<HTMLIFrameElement>("iframe");
