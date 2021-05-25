@@ -1,20 +1,24 @@
 import { Chat } from "./chat";
 import { moderate } from "./moderate";
 import { kanaToHiragana, removeSymbols } from "./util";
-import { wrap } from "comlink";
+import * as comlink from "comlink";
 
-async function takeALongTimeToDoSomething() {
+async function createInstance() {
+  console.time("load");
   const worker = await fetch(chrome.extension.getURL("js/worker.js"));
   const js = await worker.text();
   const blob = new Blob([js], { type: "text/javascript" });
   const url = URL.createObjectURL(blob);
-  const workerClass = new Worker(url);
-  workerClass.postMessage("uooooooooooooooooooooooOO!!!!!!!!!!!!!!!!!!!!!!!");
+  const workerClass: any = comlink.wrap(new Worker(url));
+  const instance: any = await new workerClass();
+  console.timeEnd("load");
+  return instance;
 }
 
 window.addEventListener("load", async () => {
   console.log("do something");
-  await takeALongTimeToDoSomething();
+  const instance = await createInstance();
+  instance.B();
   console.log("do another thing");
   // const modekun = () => {
   //   const chatSection = document.querySelector<HTMLIFrameElement>("iframe");

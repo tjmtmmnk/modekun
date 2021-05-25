@@ -41,7 +41,6 @@
     "typescript": "~3.8.3 ",
     "webpack": "^4.44.1",
     "webpack-cli": "~3.3.11",
-    "webpack-merge": "~4.2.2",
-    "worker-plugin": "^5.0.0"
+    "webpack-merge": "~4.2.2"
   }
 }

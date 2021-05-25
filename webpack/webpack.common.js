@@ -11,17 +11,14 @@ module.exports = {
     options: path.join(srcDir, "options.tsx"),
     background: path.join(srcDir, "background.ts"),
     content_script: path.join(srcDir, "content_script.tsx"),
-    worker: path.join(srcDir, "my-first-worker"),
+    worker: path.join(srcDir, "kuromoji.worker.ts"),
   },
   output: {
     path: path.join(__dirname, "../dist/js"),
     filename: "[name].js",
   },
-  optimization: {
-    splitChunks: {
-      name: "vendor",
-      chunks: "initial",
-    },
+  devServer: {
+    contentBase: path.join(__dirname, "dist"),
   },
   module: {
     rules: [
