@@ -2,7 +2,7 @@ import { Chat } from "./chat";
 import { moderate } from "./moderate";
 import { kanaToHiragana, removeSymbols } from "./util";
 
-window.addEventListener("load", () => {
+window.addEventListener("load", async () => {
   const modekun = () => {
     const chatSection = document.querySelector<HTMLIFrameElement>("iframe");
     if (!chatSection || !chatSection.contentWindow) return;
