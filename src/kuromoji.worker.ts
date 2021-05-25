@@ -9,29 +9,29 @@ export class KuromojiWorker {
     });
   }
   async tokenize(text: string): Promise<IpadicFeatures[]> {
-    let tokens: IpadicFeatures[] = [];
-    await (() => {
-      return new Promise<void>((done) => {
-        this.kuromoji.build((err, tokenizer) => {
-          if (err) return;
-          tokens = tokenizer.tokenize(text);
-          done();
-        });
+    return new Promise((resolve) => {
+      this.kuromoji.build((err, tokenizer) => {
+        if (err) return;
+        const tokens = tokenizer.tokenize(text);
+        resolve(tokens);
       });
-    })();
-    return tokens;
+    });
   }
 
-  async bulkTokenize(texts: string[]): Promise<IpadicFeatures[][]> {
-    const tokensList: IpadicFeatures[][] = [];
-    await Promise.all(
-      texts.map(async (text) => {
-        const tokens = await this.tokenize(text);
-        console.log(tokens);
-        tokensList.push(tokens);
-      })
-    );
-    return tokensList;
+  async bulkTokenize(texts: string[]) {
+    return new Promise((resolve) => {
+      // kuromoji.build read dictionary every time, it took about 2s
+      this.kuromoji.build((err, tokenizer) => {
+        if (err) return;
+
+        const tokensList = [];
+        for (const text of texts) {
+          const tokens = tokenizer.tokenize(text);
+          tokensList.push(tokens);
+        }
+        resolve(tokensList);
+      });
+    });
   }
 }
 
