@@ -19,8 +19,8 @@ async function createInstance(): Promise<KuromojiWorker> {
 window.addEventListener("load", async () => {
   console.time("do something");
   const instance = await createInstance();
-  const hoge = await instance.bulkTokenize(["吾輩は猫である", "名前はまだない", "こんにちは", "やば"]);
-  console.log(hoge);
+  const counts = await instance.getMaxRepeatWordCounts(["吾輩は猫である", "名前はまだない", "こんにちは", "最強最強"]);
+  console.log(counts);
   console.timeEnd("do something");
   // const modekun = () => {
   //   const chatSection = document.querySelector<HTMLIFrameElement>("iframe");
