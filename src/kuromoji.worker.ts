@@ -1,7 +1,13 @@
-import * as comlink from "comlink";
+import { expose } from "comlink";
 import { TokenizerBuilder, IpadicFeatures, builder, Tokenizer } from "kuromoji";
 
-export class KuromojiWorker {
+export interface IKuromojiWorker {
+  tokenize: (text: string) => Promise<IpadicFeatures[]>;
+  bulkTokenize: (texts: string[]) => Promise<IpadicFeatures[][]>;
+  getMaxRepeatWordCounts: (texts: string[]) => Promise<number[]>;
+}
+
+export class KuromojiWorker implements IKuromojiWorker {
   kuromoji: TokenizerBuilder<IpadicFeatures>;
   constructor(dicPath: string) {
     this.kuromoji = builder({
@@ -60,4 +66,4 @@ export class KuromojiWorker {
   }
 }
 
-comlink.expose(KuromojiWorker);
+expose(KuromojiWorker);

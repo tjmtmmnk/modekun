@@ -1,15 +1,27 @@
 import { Chat } from "./chat";
-import * as kuromoji from "kuromoji";
+import {IKuromojiWorker, KuromojiWorker} from "./kuromoji.worker";
+import { wrap } from "comlink";
 
-const REPEAT_THRESHOLD = 2;
+const REPEAT_THROW_THRESHOLD = 2;
+const REPEAT_WORD_THRESHOLD = 2;
 const LOOK_CHATS = 50;
 const NG_WORDS = ["なう", "偽物"];
 
-const builder = kuromoji.builder({
-  dicPath: chrome.extension.getURL("kuromoji/dict/"),
-});
+const createKuromojiWorker = async (): Promise<KuromojiWorker> => {
+  console.time("load");
+  const worker = await fetch(chrome.extension.getURL("js/worker.js"));
+  const js = await worker.text();
+  const blob = new Blob([js], { type: "text/javascript" });
+  const url = URL.createObjectURL(blob);
+  const workerClass: any = wrap<KuromojiWorker>(new Worker(url));
+  const instance = await new workerClass(
+    chrome.extension.getURL("kuromoji/dict/")
+  );
+  console.timeEnd("load");
+  return instance;
+};
 
-const hideRepeatThrow = (chats: Chat[]) => {
+export const hideRepeatThrow = (chats: Chat[]) => {
   const duplicateCount: { [key: string]: number } = {};
   for (const chat of chats) {
     if (!duplicateCount[chat.key]) {
@@ -18,13 +30,13 @@ const hideRepeatThrow = (chats: Chat[]) => {
     duplicateCount[chat.key]++;
   }
   for (const chat of chats) {
-    if (duplicateCount[chat.key] >= REPEAT_THRESHOLD) {
+    if (duplicateCount[chat.key] >= REPEAT_THROW_THRESHOLD) {
       hide(chat);
     }
   }
 };
 
-const hideNgWords = (chats: Chat[]) => {
+export const hideNgWords = (chats: Chat[]) => {
   for (const chat of chats) {
     for (const ngWord of NG_WORDS) {
       if (chat.message.includes(ngWord)) {
@@ -34,21 +46,19 @@ const hideNgWords = (chats: Chat[]) => {
   }
 };
 
-const hideRepeatWords = (chats: Chat[]) => {
-  for (const chat of chats.slice(-10)) {
-    console.log(chat.message);
-    builder.build((err, tokenizer) => {
-      if (err) return;
-      const tokens = tokenizer.tokenize(chat.message);
-      const tokenArr = tokens.map((token: any) => {
-        return token;
-      });
-      console.dir(tokenArr);
-    });
-  }
+export const hideRepeatWords = async (api: IKuromojiWorker, chats: Chat[]) => {
+  const counts = await api.getMaxRepeatWordCounts(
+    chats.map((c) => c.message)
+  );
+  chats.forEach((chat, i) => {
+    if (counts[i] > REPEAT_WORD_THRESHOLD) {
+      hide(chat);
+    }
+  });
 };
 
-export const moderate = (chats: Chat[]) => {
+export const moderate = async (chats: Chat[]) => {
+  const kuromojiWorkerApi = await createKuromojiWorker();
   const publicChats = chats
     .filter(
       (chat) =>
@@ -60,9 +70,10 @@ export const moderate = (chats: Chat[]) => {
   for (const chat of publicChats) {
     chat.element.dataset.hasSeenByModekun = "1";
   }
-  hideRepeatThrow(publicChats);
-  hideNgWords(publicChats);
-  hideRepeatWords(publicChats);
+  hideRepeatWords(kuromojiWorkerApi, chats).then(() => console.log("a"));
+  // hideRepeatThrow(publicChats);
+  // hideNgWords(publicChats);
+  // hideRepeatWords(publicChats);
 };
 
 const hide = (chat: Chat) => {
