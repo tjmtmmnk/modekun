@@ -68,8 +68,8 @@ export const moderate = async (chats: Chat[]) => {
   for (const chat of publicChats) {
     chat.element.dataset.hasSeenByModekun = "1";
   }
-  // hideRepeatThrow(publicChats);
-  // hideNgWords(publicChats);
+  hideRepeatThrow(publicChats);
+  hideNgWords(publicChats);
   hideRepeatWords(kuromojiWorkerApi, publicChats);
 };
 
