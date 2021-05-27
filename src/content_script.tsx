@@ -2,9 +2,7 @@ import { isParameter, moderate } from "./moderate";
 import { Youtube } from "./youtube";
 import { TestSource } from "./testSource";
 import { getItems } from "./storage";
-import { allKeys } from "./key";
-
-export const DEFAULT_EXECUTION_INTERVAL_MS = 5000;
+import { allKeys, DEFAULT_EXECUTION_INTERVAL_MS } from "./config";
 
 window.addEventListener("load", async () => {
   const modekun = async () => {

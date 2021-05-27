@@ -1,24 +1,21 @@
-import React from "react";
+import * as React from "react";
 import ReactDOM from "react-dom";
 import styled from "styled-components";
-import {
-  DEFAULT_LOOK_CHATS,
-  DEFAULT_REPEAT_THROW_THRESHOLD,
-  DEFAULT_REPEAT_WORD_THRESHOLD,
-} from "./moderate";
+import { IParameter, isParameter } from "./moderate";
 
 import {
+  allKeys,
+  defaultParams,
   KEY_EXECUTION_INTERVAL,
   KEY_LOOK_CHATS,
   KEY_NG_WORDS,
   KEY_REPEAT_THROW,
   KEY_REPEAT_WORD,
-} from "./key";
-
-import { DEFAULT_EXECUTION_INTERVAL_MS } from "./content_script";
+} from "./config";
 
 import { RangeSlider } from "./components/RangeSlider";
 import { NgWord } from "./components/NgWord";
+import { getItems } from "./storage";
 
 const StyledContainer = styled.div`
   width: 500px;
@@ -28,6 +25,25 @@ const StyledContainer = styled.div`
 `;
 
 const Popup = () => {
+  const [params, setParams] = React.useState<IParameter>();
+  React.useEffect(() => {
+    getItems(allKeys())
+      .then((p) => {
+        if (isParameter(p)) {
+          setParams(p);
+        } else {
+          setParams(defaultParams);
+        }
+      })
+      .catch((e) => console.log(e));
+  }, []);
+
+  return <>{params && <PopupChild params={params} />}</>;
+};
+
+const PopupChild = (props: { params: IParameter }) => {
+  const { params } = props;
+
   return (
     <StyledContainer>
       <RangeSlider
@@ -35,7 +51,7 @@ const Popup = () => {
         min={1}
         max={10}
         step={1}
-        defaultValue={DEFAULT_REPEAT_THROW_THRESHOLD}
+        defaultValue={params.repeat_throw_threshold}
         storageKey={KEY_REPEAT_THROW}
       />
       <RangeSlider
@@ -43,7 +59,7 @@ const Popup = () => {
         min={1}
         max={20}
         step={1}
-        defaultValue={DEFAULT_REPEAT_WORD_THRESHOLD}
+        defaultValue={params.repeat_word_threshold}
         storageKey={KEY_REPEAT_WORD}
       />
       <RangeSlider
@@ -51,7 +67,7 @@ const Popup = () => {
         min={1}
         max={250}
         step={1}
-        defaultValue={DEFAULT_LOOK_CHATS}
+        defaultValue={params.look_chats}
         storageKey={KEY_LOOK_CHATS}
       />
       <RangeSlider
@@ -59,10 +75,10 @@ const Popup = () => {
         min={500}
         max={10000}
         step={100}
-        defaultValue={DEFAULT_EXECUTION_INTERVAL_MS}
+        defaultValue={params.execution_interval}
         storageKey={KEY_EXECUTION_INTERVAL}
       />
-      <NgWord storageKey={KEY_NG_WORDS} />
+      <NgWord storageKey={KEY_NG_WORDS} defaultValue={params.ng_words} />
     </StyledContainer>
   );
 };

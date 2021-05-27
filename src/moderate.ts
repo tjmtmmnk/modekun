@@ -2,16 +2,12 @@ import { Chat } from "./chat";
 import { IKuromojiWorker, KuromojiWorker } from "./kuromoji.worker";
 import { wrap } from "comlink";
 
-export const DEFAULT_REPEAT_THROW_THRESHOLD = 2;
-export const DEFAULT_REPEAT_WORD_THRESHOLD = 2;
-export const DEFAULT_LOOK_CHATS = 50;
-
 export interface IParameter {
   repeat_throw_threshold: number;
   repeat_word_threshold: number;
   look_chats: number;
   execution_interval: number;
-  ng_words: string[];
+  ng_words: string;
 }
 
 export const isParameter = (arg: any): arg is IParameter => {
@@ -53,7 +49,7 @@ export const hideRepeatThrow = (param: IParameter, chats: Chat[]) => {
 
 export const hideNgWords = (param: IParameter, chats: Chat[]) => {
   for (const chat of chats) {
-    for (const ngWord of param.ng_words) {
+    for (const ngWord of param.ng_words.split(",")) {
       if (chat.message.includes(ngWord)) {
         hide(chat);
       }
@@ -74,7 +70,10 @@ export const hideRepeatWords = async (
   });
 };
 
-export const moderate = async (param: IParameter, chats: Chat[]): Promise<void> => {
+export const moderate = async (
+  param: IParameter,
+  chats: Chat[]
+): Promise<void> => {
   const kuromojiWorkerApi = await createKuromojiWorker();
   const publicChats = chats
     .filter(

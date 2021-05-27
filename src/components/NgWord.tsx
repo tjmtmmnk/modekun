@@ -5,13 +5,13 @@ const StyledContainer = styled.div`
   width: 300px;
 `;
 
-export const NgWord = (props: { storageKey: string }) => {
-  const { storageKey } = props;
-  const [text, setText] = React.useState("");
+export const NgWord = (props: { storageKey: string; defaultValue: string }) => {
+  const { storageKey, defaultValue } = props;
+  const [text, setText] = React.useState(defaultValue);
 
   React.useEffect(() => {
-    const words = text === "" ? [] : text.split(",");
-    chrome.storage.sync.set({ [storageKey]: words });
+    console.log(`set ${storageKey} : ${text}`);
+    chrome.storage.sync.set({ [storageKey]: text });
   }, [text]);
 
   const onChange: React.ChangeEventHandler<HTMLInputElement> = (event) => {
@@ -20,7 +20,7 @@ export const NgWord = (props: { storageKey: string }) => {
 
   return (
     <StyledContainer>
-      <input onChange={onChange} />
+      <input onChange={onChange} value={text} />
     </StyledContainer>
   );
 };

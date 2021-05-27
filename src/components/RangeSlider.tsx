@@ -117,7 +117,9 @@ export const RangeSlider = (props: {
   const [currentValue, setValue] = React.useState(defaultValue);
 
   React.useEffect(() => {
-    chrome.storage.sync.set({ [storageKey]: currentValue });
+    chrome.storage.sync.set({ [storageKey]: currentValue }, () => {
+      console.log(`set ${storageKey} : ${currentValue}`);
+    });
   }, [currentValue]);
 
   const onChange: React.ChangeEventHandler<HTMLInputElement> = (event) => {
