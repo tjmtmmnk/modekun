@@ -1,9 +1,21 @@
 import { Chat } from "../chat";
-import { hideNgWords, hideRepeatThrow, hideRepeatWords } from "../moderate";
+import {
+  hideNgWords,
+  hideRepeatThrow,
+  hideRepeatWords,
+  IParameter,
+} from "../moderate";
 import { IKuromojiWorker } from "../kuromoji.worker";
 import { IpadicFeatures } from "kuromoji";
 
 describe("moderate", () => {
+  const params: IParameter = {
+    repeat_throw_threshold: 2,
+    repeat_word_threshold: 2,
+    look_chats: 10,
+    execution_interval: 1000,
+    ng_words: ["なう"],
+  };
   describe("hideRepeatWords", () => {
     const chats: Chat[] = [
       {
@@ -34,7 +46,7 @@ describe("moderate", () => {
         }),
     };
     test("can hide", async () => {
-      await hideRepeatWords(apiMock, chats);
+      await hideRepeatWords(params, apiMock, chats);
       expect(chats[0].element.dataset.isHiddenByModekun).toBeFalsy();
       expect(chats[1].element.dataset.isHiddenByModekun).toBeTruthy();
     });
@@ -68,7 +80,7 @@ describe("moderate", () => {
       },
     ];
     test("can hide", () => {
-      hideRepeatThrow(chats);
+      hideRepeatThrow(params, chats);
       expect(chats[0].element.dataset.isHiddenByModekun).toBeFalsy();
       expect(chats[1].element.dataset.isHiddenByModekun).toBeTruthy();
       expect(chats[2].element.dataset.isHiddenByModekun).toBeTruthy();
@@ -76,7 +88,7 @@ describe("moderate", () => {
     });
   });
 
-  describe("hideRepeatThrow", () => {
+  describe("hideNgWords", () => {
     const chats: Chat[] = [
       {
         key: "test1こんにちは",
@@ -92,7 +104,7 @@ describe("moderate", () => {
       },
     ];
     test("can hide", () => {
-      hideNgWords(chats);
+      hideNgWords(params, chats);
       expect(chats[0].element.dataset.isHiddenByModekun).toBeFalsy();
       expect(chats[1].element.dataset.isHiddenByModekun).toBeTruthy();
     });

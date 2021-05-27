@@ -2,14 +2,27 @@ import { Chat } from "./chat";
 import { IKuromojiWorker, KuromojiWorker } from "./kuromoji.worker";
 import { wrap } from "comlink";
 
-const REPEAT_THROW_THRESHOLD = 2;
-const REPEAT_WORD_THRESHOLD = 2;
-const LOOK_CHATS = 50;
-
 export const DEFAULT_REPEAT_THROW_THRESHOLD = 2;
 export const DEFAULT_REPEAT_WORD_THRESHOLD = 2;
 export const DEFAULT_LOOK_CHATS = 50;
-const NG_WORDS = ["なう"];
+
+export interface IParameter {
+  repeat_throw_threshold: number;
+  repeat_word_threshold: number;
+  look_chats: number;
+  execution_interval: number;
+  ng_words: string[];
+}
+
+export const isParameter = (arg: any): arg is IParameter => {
+  return (
+    arg.repeat_throw_threshold !== undefined &&
+    arg.repeat_word_threshold !== undefined &&
+    arg.look_chats !== undefined &&
+    arg.execution_interval !== undefined &&
+    arg.ng_words !== undefined
+  );
+};
 
 const createKuromojiWorker = async (): Promise<KuromojiWorker> => {
   const worker = await fetch(chrome.extension.getURL("js/worker.js"));
@@ -23,7 +36,7 @@ const createKuromojiWorker = async (): Promise<KuromojiWorker> => {
   return instance;
 };
 
-export const hideRepeatThrow = (chats: Chat[]) => {
+export const hideRepeatThrow = (param: IParameter, chats: Chat[]) => {
   const duplicateCount: { [key: string]: number } = {};
   for (const chat of chats) {
     if (!duplicateCount[chat.key]) {
@@ -32,15 +45,15 @@ export const hideRepeatThrow = (chats: Chat[]) => {
     duplicateCount[chat.key]++;
   }
   for (const chat of chats) {
-    if (duplicateCount[chat.key] >= REPEAT_THROW_THRESHOLD) {
+    if (duplicateCount[chat.key] >= param.repeat_throw_threshold) {
       hide(chat);
     }
   }
 };
 
-export const hideNgWords = (chats: Chat[]) => {
+export const hideNgWords = (param: IParameter, chats: Chat[]) => {
   for (const chat of chats) {
-    for (const ngWord of NG_WORDS) {
+    for (const ngWord of param.ng_words) {
       if (chat.message.includes(ngWord)) {
         hide(chat);
       }
@@ -48,16 +61,20 @@ export const hideNgWords = (chats: Chat[]) => {
   }
 };
 
-export const hideRepeatWords = async (api: IKuromojiWorker, chats: Chat[]) => {
+export const hideRepeatWords = async (
+  param: IParameter,
+  api: IKuromojiWorker,
+  chats: Chat[]
+) => {
   const counts = await api.getMaxRepeatWordCounts(chats.map((c) => c.message));
   chats.forEach((chat, i) => {
-    if (counts[i] > REPEAT_WORD_THRESHOLD) {
+    if (counts[i] > param.repeat_word_threshold) {
       hide(chat);
     }
   });
 };
 
-export const moderate = async (chats: Chat[]) => {
+export const moderate = async (param: IParameter, chats: Chat[]): Promise<void> => {
   const kuromojiWorkerApi = await createKuromojiWorker();
   const publicChats = chats
     .filter(
@@ -65,14 +82,14 @@ export const moderate = async (chats: Chat[]) => {
         !chat.element.dataset.isHiddenByModekun &&
         !chat.element.dataset.hasSeenByModekun
     )
-    .slice(-LOOK_CHATS);
+    .slice(-param.look_chats);
 
   for (const chat of publicChats) {
     chat.element.dataset.hasSeenByModekun = "1";
   }
-  hideRepeatThrow(publicChats);
-  hideNgWords(publicChats);
-  hideRepeatWords(kuromojiWorkerApi, publicChats);
+  hideRepeatThrow(param, publicChats);
+  hideNgWords(param, publicChats);
+  hideRepeatWords(param, kuromojiWorkerApi, publicChats);
 };
 
 const hide = (chat: Chat) => {
