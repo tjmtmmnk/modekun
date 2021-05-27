@@ -1,5 +1,10 @@
 root = true
 
-[*]
+[*.{ts,tsx}]
+indent_style = space
+indent_size = 2
+trim_trailing_whitespace = true
+
+[{package.json,.travis.yml}]
 indent_style = space
 indent_size = 2
