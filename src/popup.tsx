@@ -1,51 +1,48 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import ReactDOM from "react-dom";
+import {
+  DEFAULT_LOOK_CHATS,
+  DEFAULT_REPEAT_THROW_THRESHOLD,
+  DEFAULT_REPEAT_WORD_THRESHOLD,
+} from "./moderate";
+import { RangeSlider } from "./components/RangeSlider";
+import styled from "styled-components";
+
+const StyledContainer = styled.div`
+  width: 500px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+`;
 
 const Popup = () => {
-  const [count, setCount] = useState(0);
-  const [currentURL, setCurrentURL] = useState<string>();
-
-  useEffect(() => {
-    chrome.browserAction.setBadgeText({ text: count.toString() });
-  }, [count]);
-
-  useEffect(() => {
-    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-      setCurrentURL(tabs[0].url);
-    });
-  }, []);
-
-  const changeBackground = () => {
-    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-      const tab = tabs[0];
-      if (tab.id) {
-        chrome.tabs.sendMessage(
-          tab.id,
-          {
-            color: "#555555",
-          },
-          (msg) => {
-            console.log("result message:", msg);
-          }
-        );
-      }
-    });
-  };
-
   return (
-    <>
-      <ul style={{ minWidth: "700px" }}>
-        <li>Current URL: {currentURL}</li>
-        <li>Current Time: {new Date().toLocaleTimeString()}</li>
-      </ul>
-      <button
-        onClick={() => setCount(count + 1)}
-        style={{ marginRight: "5px" }}
-      >
-        count up
-      </button>
-      <button onClick={changeBackground}>change background</button>
-    </>
+    <StyledContainer>
+      <RangeSlider
+        label={"連投閾値"}
+        min={1}
+        max={10}
+        step={1}
+        defaultValue={DEFAULT_REPEAT_THROW_THRESHOLD}
+        storageKey={"repeat-throw-threshold"}
+      />
+      <RangeSlider
+        label={"単語繰り返し閾値"}
+        min={1}
+        max={20}
+        step={1}
+        defaultValue={DEFAULT_REPEAT_WORD_THRESHOLD}
+        storageKey={"repeat-word-threshold"}
+      />
+      <RangeSlider
+        label={"対象コメント数"}
+        min={1}
+        max={250}
+        step={1}
+        defaultValue={DEFAULT_LOOK_CHATS}
+        storageKey={"look-chats"}
+      />
+    </StyledContainer>
   );
 };
 

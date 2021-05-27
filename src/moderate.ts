@@ -5,10 +5,13 @@ import { wrap } from "comlink";
 const REPEAT_THROW_THRESHOLD = 2;
 const REPEAT_WORD_THRESHOLD = 2;
 const LOOK_CHATS = 50;
+
+export const DEFAULT_REPEAT_THROW_THRESHOLD = 2;
+export const DEFAULT_REPEAT_WORD_THRESHOLD = 2;
+export const DEFAULT_LOOK_CHATS = 50;
 const NG_WORDS = ["なう"];
 
 const createKuromojiWorker = async (): Promise<KuromojiWorker> => {
-  console.time("load");
   const worker = await fetch(chrome.extension.getURL("js/worker.js"));
   const js = await worker.text();
   const blob = new Blob([js], { type: "text/javascript" });
@@ -17,7 +20,6 @@ const createKuromojiWorker = async (): Promise<KuromojiWorker> => {
   const instance = await new workerClass(
     chrome.extension.getURL("kuromoji/dict/")
   );
-  console.timeEnd("load");
   return instance;
 };
 
