@@ -1,41 +1,39 @@
 {
-  "name": "chrome-extension-typescript-starter",
+  "name": "modekun",
   "version": "1.0.0",
-  "description": "chrome-extension-typescript-starter",
+  "description": "moderate live chat",
   "main": "index.js",
   "scripts": {
     "watch": "webpack --config webpack/webpack.dev.js --watch",
     "build": "webpack --config webpack/webpack.prod.js",
-    "clean": "rimraf dist",
     "test": "npx jest",
     "style": "prettier --write \"src/**/*.{ts,tsx}\""
   },
-  "author": "",
+  "author": "tjmtmmnk",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/chibat/chrome-extension-typescript-starter.git"
+    "url": "https://github.com/tjmtmmnk/modekun"
   },
   "dependencies": {
-    "@tensorflow-models/toxicity": "^1.2.2",
     "kuromoji": "^0.1.2",
     "react": "^17.0.1",
-    "react-dom": "^17.0.1"
+    "react-dom": "^17.0.1",
+    "styled-components": "^5.3.0"
   },
   "devDependencies": {
     "@types/chrome": "0.0.100",
     "@types/jest": "^25.1.4",
-    "@types/jquery": "^3.3.33",
     "@types/kuromoji": "^0.1.0",
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
+    "@types/styled-components": "^5.1.9",
     "clean-webpack-plugin": "^4.0.0-alpha.0",
     "comlink": "^4.3.1",
     "copy-webpack-plugin": "^6.1.0",
     "glob": "^7.1.6",
     "jest": "^26.6.3",
     "prettier": "^2.2.1",
-    "rimraf": "^3.0.2 ",
     "ts-jest": "^25.2.1 ",
     "ts-loader": "^6.2.1",
     "typescript": "~3.8.3 ",
