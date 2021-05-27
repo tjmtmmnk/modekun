@@ -16,7 +16,7 @@ const StyledContainer = styled.div`
   justify-content: space-between;
 `;
 
-export const MainPage = (props: { params: IParameter }) => {
+export const HomePage = (props: { params: IParameter }) => {
   const { params } = props;
   return (
     <StyledContainer>
