@@ -4,7 +4,7 @@ const path = require("path");
 
 describe("KuromojiWorker", () => {
   const kuromojiWorker = new KuromojiWorker(
-    path.join(__dirname, "../..", "dist/kuromoji/dict")
+    path.join(__dirname, "..", "kuromoji/dict")
   );
 
   test("tokenize", async () => {
