@@ -1,15 +1,9 @@
 {
   "manifest_version": 2,
 
-  "name": "Chrome Extension TypeScript Starter",
-  "description": "Chrome Extension, TypeScript, Visual Studio Code",
+  "name": "modekun",
+  "description": "moderate live chat",
   "version": "1.0",
-
-  "options_ui": {
-    "page": "options.html",
-    "chrome_style": true
-  },
-
   "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
 
   "browser_action": {
@@ -19,7 +13,7 @@
 
   "content_scripts": [
     {
-      "matches": ["https://www.youtube.com/*", "https://www.google.com/*"],
+      "matches": ["https://www.google.com/*"],
       "js": ["js/content_script.js"]
     }
   ],
