@@ -53,11 +53,20 @@ export const NgWordList = (props: {
   const [ngWords, setNgWords] = useState(defaultValue);
 
   useEffect(() => {
+    let isMounted = true;
     getItems([storageKey]).then((item) => {
-      if (!item[storageKey]) return;
-      const ngWords: string[] = item[storageKey];
-      setNgWords(ngWords);
+      if (isMounted) {
+        if (!item[storageKey]) {
+          setNgWords([]);
+        } else {
+          const ngWords: string[] = item[storageKey];
+          setNgWords(ngWords);
+        }
+      }
     });
+    return () => {
+      isMounted = false;
+    };
   });
 
   return (
@@ -75,19 +84,25 @@ export const NgWordInput = (props: { storageKey: string }) => {
   const [doSave, setDoSave] = React.useState(false);
 
   React.useEffect(() => {
+    let isMounted = true;
     if (!doSave || ngWord === "") return;
     console.log(`set ${storageKey} : ${ngWord}`);
 
     getItems([storageKey]).then((item) => {
-      const ngWords: string[] = item[storageKey];
-      if (!ngWords) {
-        chrome.storage.sync.set({ [storageKey]: [ngWord] });
-      } else {
-        chrome.storage.sync.set({ [storageKey]: [...ngWords, ngWord] });
+      if (isMounted) {
+        const ngWords: string[] = item[storageKey];
+        if (!ngWords) {
+          chrome.storage.sync.set({ [storageKey]: [ngWord] });
+        } else {
+          chrome.storage.sync.set({ [storageKey]: [...ngWords, ngWord] });
+        }
       }
     });
-
     setNgWord("");
+
+    return () => {
+      isMounted = false;
+    };
   }, [doSave]);
 
   const onChange: React.ChangeEventHandler<HTMLInputElement> = (event) => {
