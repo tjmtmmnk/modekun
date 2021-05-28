@@ -99,8 +99,14 @@ describe("moderate", () => {
         element: document.createElement("div"),
       },
       {
-        key: "test3ないた",
+        key: "test3なうい",
         author: "test3",
+        message: "なうい",
+        element: document.createElement("div"),
+      },
+      {
+        key: "test4ないた",
+        author: "test4",
         message: "ないた",
         element: document.createElement("div"),
       },
@@ -109,7 +115,8 @@ describe("moderate", () => {
       hideNgWords(params, chats);
       expect(chats[0].element.dataset.isHiddenByModekun).toBeFalsy();
       expect(chats[1].element.dataset.isHiddenByModekun).toBeTruthy();
-      expect(chats[2].element.dataset.isHiddenByModekun).toBeFalsy();
+      expect(chats[2].element.dataset.isHiddenByModekun).toBeTruthy();
+      expect(chats[3].element.dataset.isHiddenByModekun).toBeFalsy();
     });
   });
 });
