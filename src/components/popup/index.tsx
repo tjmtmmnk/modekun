@@ -1,21 +1,20 @@
 import React from "react";
-import { BrowserRouter as Router, Link, Switch, Route } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { IParameter } from "../../moderate";
 import { HomePage } from "./HomePage";
 import { NgWordPage } from "./NgWordPage";
 import { Navigation } from "./Navigation";
 
 export default function PopupPage(props: { params: IParameter }) {
-  const { params } = props;
   return (
     <Router>
       <Navigation />
       <Switch>
         <Route path="/ngword">
-          <NgWordPage params={params} />
+          <NgWordPage />
         </Route>
         <Route path="/">
-          <HomePage params={params} />
+          <HomePage />
         </Route>
       </Switch>
     </Router>

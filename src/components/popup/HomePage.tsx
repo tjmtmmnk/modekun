@@ -1,4 +1,3 @@
-import { IParameter } from "../../moderate";
 import { RangeSlider } from "./RangeSlider";
 import {
   KEY_EXECUTION_INTERVAL,
@@ -8,6 +7,8 @@ import {
 } from "../../config";
 import * as React from "react";
 import styled from "styled-components";
+import { useParams } from "../../popup";
+import { IParameter } from "../../moderate";
 
 const StyledContainer = styled.div`
   width: 320px;
@@ -16,7 +17,12 @@ const StyledContainer = styled.div`
   justify-content: space-between;
 `;
 
-export const HomePage = (props: { params: IParameter }) => {
+export const HomePage = () => {
+  const params = useParams();
+  return <>{params && <HomePageChild params={params} />}</>;
+};
+
+export const HomePageChild = (props: { params: IParameter }) => {
   const { params } = props;
   return (
     <StyledContainer>
@@ -25,7 +31,7 @@ export const HomePage = (props: { params: IParameter }) => {
         min={1}
         max={10}
         step={1}
-        defaultValue={params.repeat_throw_threshold}
+        defaultValue={params[KEY_REPEAT_THROW]}
         storageKey={KEY_REPEAT_THROW}
       />
       <RangeSlider
@@ -33,7 +39,7 @@ export const HomePage = (props: { params: IParameter }) => {
         min={1}
         max={20}
         step={1}
-        defaultValue={params.repeat_word_threshold}
+        defaultValue={params[KEY_REPEAT_WORD]}
         storageKey={KEY_REPEAT_WORD}
       />
       <RangeSlider
@@ -41,7 +47,7 @@ export const HomePage = (props: { params: IParameter }) => {
         min={1}
         max={250}
         step={1}
-        defaultValue={params.look_chats}
+        defaultValue={params[KEY_LOOK_CHATS]}
         storageKey={KEY_LOOK_CHATS}
       />
       <RangeSlider
@@ -49,7 +55,7 @@ export const HomePage = (props: { params: IParameter }) => {
         min={500}
         max={10000}
         step={100}
-        defaultValue={params.execution_interval}
+        defaultValue={params[KEY_EXECUTION_INTERVAL]}
         storageKey={KEY_EXECUTION_INTERVAL}
       />
     </StyledContainer>

@@ -3,27 +3,34 @@ import ReactDOM from "react-dom";
 import { IParameter, isParameter } from "./moderate";
 import PopupPage from "./components/popup";
 
-import {
-  allKeys,
-  defaultParams,
-} from "./config";
+import { paramKeys, defaultParams } from "./config";
 
 import { getItems } from "./storage";
 
-const Popup = () => {
+export const useParams = (): IParameter | undefined => {
   const [params, setParams] = React.useState<IParameter>();
+  let isMounted = true;
   React.useEffect(() => {
-    getItems(allKeys())
+    getItems(paramKeys())
       .then((p) => {
-        if (isParameter(p)) {
-          setParams(p);
-        } else {
-          setParams(defaultParams);
+        if (isMounted) {
+          if (isParameter(p)) {
+            setParams(p);
+          } else {
+            setParams(defaultParams);
+          }
         }
       })
       .catch((e) => console.log(e));
-  }, []);
+    return () => {
+      isMounted = false;
+    };
+  });
+  return params;
+};
 
+const Popup = () => {
+  const params = useParams();
   return <>{params && <PopupPage params={params} />}</>;
 };
 

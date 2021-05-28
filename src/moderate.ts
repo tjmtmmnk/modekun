@@ -15,8 +15,7 @@ export const isParameter = (arg: any): arg is IParameter => {
     arg.repeat_throw_threshold !== undefined &&
     arg.repeat_word_threshold !== undefined &&
     arg.look_chats !== undefined &&
-    arg.execution_interval !== undefined &&
-    arg.ng_words !== undefined
+    arg.execution_interval !== undefined
   );
 };
 

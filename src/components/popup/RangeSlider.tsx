@@ -1,5 +1,7 @@
 import * as React from "react";
 import styled from "styled-components";
+import { getItems } from "../../storage";
+import {paramKeys} from "../../config";
 
 const KEY_UP = 38;
 const KEY_DOWN = 40;

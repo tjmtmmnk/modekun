@@ -6,7 +6,7 @@ export const KEY_LOOK_CHATS = "look_chats";
 export const KEY_EXECUTION_INTERVAL = "execution_interval";
 export const KEY_NG_WORDS = "ng_words";
 
-export const allKeys = () => {
+export const paramKeys = () => {
   return [
     KEY_REPEAT_THROW,
     KEY_REPEAT_WORD,
@@ -24,9 +24,9 @@ const DEFAULT_NG_WORDS: string[] = [];
 export const DEFAULT_EXECUTION_INTERVAL_MS = 5000;
 
 export const defaultParams: IParameter = {
-  repeat_throw_threshold: DEFAULT_REPEAT_THROW_THRESHOLD,
-  repeat_word_threshold: DEFAULT_REPEAT_WORD_THRESHOLD,
-  look_chats: DEFAULT_LOOK_CHATS,
-  execution_interval: DEFAULT_EXECUTION_INTERVAL_MS,
-  ng_words: DEFAULT_NG_WORDS,
+  [KEY_REPEAT_THROW]: DEFAULT_REPEAT_THROW_THRESHOLD,
+  [KEY_REPEAT_WORD]: DEFAULT_REPEAT_WORD_THRESHOLD,
+  [KEY_LOOK_CHATS]: DEFAULT_LOOK_CHATS,
+  [KEY_EXECUTION_INTERVAL]: DEFAULT_EXECUTION_INTERVAL_MS,
+  [KEY_NG_WORDS]: DEFAULT_NG_WORDS,
 };

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { getItems } from "../../storage";
+import { defaultParams } from "../../config";
 
 const ENTER = 13;
 
@@ -45,12 +46,9 @@ const StyledSpan = styled.span`
   margin-left: 254px;
 `;
 
-export const NgWordList = (props: {
-  storageKey: string;
-  defaultValue: string[];
-}) => {
-  const { storageKey, defaultValue } = props;
-  const [ngWords, setNgWords] = useState(defaultValue);
+export const NgWordList = (props: { storageKey: string }) => {
+  const { storageKey } = props;
+  const [ngWords, setNgWords] = useState<string[]>([]);
 
   useEffect(() => {
     let isMounted = true;
@@ -59,7 +57,7 @@ export const NgWordList = (props: {
         if (!item[storageKey]) {
           setNgWords([]);
         } else {
-          const ngWords: string[] = item[storageKey];
+          const ngWords: string[] = JSON.parse(item[storageKey]);
           setNgWords(ngWords);
         }
       }
@@ -90,11 +88,13 @@ export const NgWordInput = (props: { storageKey: string }) => {
 
     getItems([storageKey]).then((item) => {
       if (isMounted) {
-        const ngWords: string[] = item[storageKey];
-        if (!ngWords) {
-          chrome.storage.sync.set({ [storageKey]: [ngWord] });
+        if (item[storageKey]) {
+          const ngWords = JSON.parse(item[storageKey]);
+          chrome.storage.sync.set({
+            [storageKey]: JSON.stringify([...ngWords, ngWord]),
+          });
         } else {
-          chrome.storage.sync.set({ [storageKey]: [...ngWords, ngWord] });
+          chrome.storage.sync.set({ [storageKey]: JSON.stringify([ngWord]) });
         }
       }
     });
