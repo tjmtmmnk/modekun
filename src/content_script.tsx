@@ -1,8 +1,12 @@
-import { isParameter, moderate } from "./moderate";
+import { moderate } from "./moderate";
 import { Youtube } from "./youtube";
 import { TestSource } from "./testSource";
 import { getItems } from "./storage";
-import { paramKeys, DEFAULT_EXECUTION_INTERVAL_MS } from "./config";
+import {
+  paramKeys,
+  DEFAULT_EXECUTION_INTERVAL_MS,
+  isParameter,
+} from "./config";
 
 window.addEventListener("load", async () => {
   const modekun = async () => {

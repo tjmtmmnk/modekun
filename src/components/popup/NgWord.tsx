@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { getItems } from "../../storage";
-import { defaultParams } from "../../config";
 
 const ENTER = 13;
 

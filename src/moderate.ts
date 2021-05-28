@@ -1,23 +1,7 @@
 import { Chat } from "./chat";
 import { IKuromojiWorker, KuromojiWorker } from "./kuromoji.worker";
 import { wrap } from "comlink";
-
-export interface IParameter {
-  repeat_throw_threshold: number;
-  repeat_word_threshold: number;
-  look_chats: number;
-  execution_interval: number;
-  ng_words: string[];
-}
-
-export const isParameter = (arg: any): arg is IParameter => {
-  return (
-    arg.repeat_throw_threshold !== undefined &&
-    arg.repeat_word_threshold !== undefined &&
-    arg.look_chats !== undefined &&
-    arg.execution_interval !== undefined
-  );
-};
+import { IParameter } from "./config";
 
 const createKuromojiWorker = async (): Promise<KuromojiWorker> => {
   const worker = await fetch(chrome.extension.getURL("js/worker.js"));

@@ -1,4 +1,4 @@
-import {defaultParams, KEY_NG_WORDS} from "../../config";
+import { KEY_NG_WORDS } from "../../config";
 import { NgWordInput, NgWordList } from "./NgWord";
 import React from "react";
 import styled from "styled-components";
@@ -18,9 +18,7 @@ export const NgWordPage = () => {
     <StyledContainer>
       {params && (
         <>
-          <NgWordList
-            storageKey={KEY_NG_WORDS}
-          />
+          <NgWordList storageKey={KEY_NG_WORDS} />
           <NgWordInput storageKey={KEY_NG_WORDS} />
         </>
       )}

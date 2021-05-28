@@ -1,12 +1,8 @@
 import { Chat } from "../chat";
-import {
-  hideNgWords,
-  hideRepeatThrow,
-  hideRepeatWords,
-  IParameter,
-} from "../moderate";
+import { hideNgWords, hideRepeatThrow, hideRepeatWords } from "../moderate";
 import { IKuromojiWorker } from "../kuromoji.worker";
 import { IpadicFeatures } from "kuromoji";
+import { IParameter } from "../config";
 
 describe("moderate", () => {
   const params: IParameter = {

@@ -1,5 +1,6 @@
 import { RangeSlider } from "./RangeSlider";
 import {
+  IParameter,
   KEY_EXECUTION_INTERVAL,
   KEY_LOOK_CHATS,
   KEY_REPEAT_THROW,
@@ -8,7 +9,6 @@ import {
 import * as React from "react";
 import styled from "styled-components";
 import { useParams } from "../../popup";
-import { IParameter } from "../../moderate";
 
 const StyledContainer = styled.div`
   width: 320px;

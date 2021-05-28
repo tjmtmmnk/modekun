@@ -10,6 +10,12 @@ export class TestSource implements Source {
         message: "こんにちは",
         element: document.createElement("div"),
       },
+      {
+        key: "test1ab",
+        author: "test1",
+        message: "ab",
+        element: document.createElement("div"),
+      },
     ];
   }
 }

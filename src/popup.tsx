@@ -1,9 +1,14 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { IParameter, isParameter } from "./moderate";
 import PopupPage from "./components/popup";
 
-import { paramKeys, defaultParams } from "./config";
+import {
+  paramKeys,
+  defaultParams,
+  isParameter,
+  IParameter,
+  serializedParams,
+} from "./config";
 
 import { getItems } from "./storage";
 
@@ -18,6 +23,7 @@ export const useParams = (): IParameter | undefined => {
             setParams(p);
           } else {
             setParams(defaultParams);
+            chrome.storage.sync.set(serializedParams(defaultParams));
           }
         }
       })
