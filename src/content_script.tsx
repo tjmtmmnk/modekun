@@ -14,9 +14,9 @@ window.addEventListener("load", async () => {
     const params = await getItems(paramKeys());
     if (!isParameter(params)) return;
 
-    const source = new TestSource();
+    const source = new Youtube();
     const chats = source.extractChats();
-    moderate(params, chats);
+    await moderate(params, chats);
 
     window.setTimeout(modekun, params.execution_interval);
   };

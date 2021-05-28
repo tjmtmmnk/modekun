@@ -13,7 +13,7 @@
 
   "content_scripts": [
     {
-      "matches": ["https://www.google.com/*"],
+      "matches": ["https://www.youtube.com/*","https://www.google.com/*"],
       "js": ["js/content_script.js"]
     }
   ],
