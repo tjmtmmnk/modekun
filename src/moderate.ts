@@ -7,7 +7,7 @@ export interface IParameter {
   repeat_word_threshold: number;
   look_chats: number;
   execution_interval: number;
-  ng_words: string;
+  ng_words: string[];
 }
 
 export const isParameter = (arg: any): arg is IParameter => {
@@ -49,7 +49,7 @@ export const hideRepeatThrow = (param: IParameter, chats: Chat[]) => {
 
 export const hideNgWords = (param: IParameter, chats: Chat[]) => {
   for (const chat of chats) {
-    for (const ngWord of param.ng_words.split(",")) {
+    for (const ngWord of param.ng_words) {
       if (chat.message.includes(ngWord)) {
         hide(chat);
       }

@@ -19,7 +19,7 @@ export const allKeys = () => {
 const DEFAULT_REPEAT_THROW_THRESHOLD = 2;
 const DEFAULT_REPEAT_WORD_THRESHOLD = 2;
 const DEFAULT_LOOK_CHATS = 50;
-const DEFAULT_NG_WORDS = "";
+const DEFAULT_NG_WORDS: string[] = [];
 
 export const DEFAULT_EXECUTION_INTERVAL_MS = 5000;
 

@@ -10,7 +10,7 @@ import * as React from "react";
 import styled from "styled-components";
 
 const StyledContainer = styled.div`
-  width: 500px;
+  width: 320px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;

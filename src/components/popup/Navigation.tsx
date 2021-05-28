@@ -2,6 +2,10 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 import React, { useState } from "react";
 
+const StyledNav = styled.nav`
+  width: 320px;
+`;
+
 const StyledUl = styled.ul`
   display: table;
   margin: 0 auto;
@@ -50,7 +54,7 @@ export const Navigation = () => {
   const [current, setCurrent] = useState("/");
 
   return (
-    <nav>
+    <StyledNav>
       <StyledUl>
         <NavigationItem
           to={"/"}
@@ -65,6 +69,6 @@ export const Navigation = () => {
           isSelected={current === "/ngword"}
         />
       </StyledUl>
-    </nav>
+    </StyledNav>
   );
 };

@@ -14,7 +14,7 @@ describe("moderate", () => {
     repeat_word_threshold: 2,
     look_chats: 10,
     execution_interval: 1000,
-    ng_words: "なう",
+    ng_words: ["なう"],
   };
   describe("hideRepeatWords", () => {
     const chats: Chat[] = [
