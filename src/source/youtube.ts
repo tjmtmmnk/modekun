@@ -1,6 +1,6 @@
-import { Chat } from "./chat";
-import { kanaToHiragana, removeSymbols } from "./util";
-import { Source } from "./source";
+import { IChat } from "../chat";
+import { kanaToHiragana, removeSymbols } from "../util";
+import { ISource } from "./source";
 
 const chatSelector = {
   chatSection: "#chatframe",
@@ -9,8 +9,8 @@ const chatSelector = {
   author: "#author-name",
 };
 
-export class Youtube implements Source {
-  extractChats(): Chat[] {
+export class Youtube implements ISource {
+  extractChats(): IChat[] {
     const chatSection = document.querySelector<HTMLIFrameElement>(
       chatSelector.chatSection
     );
@@ -19,7 +19,7 @@ export class Youtube implements Source {
     const chatBlocks = chatSection.contentWindow.document.querySelectorAll<HTMLElement>(
       chatSelector.chatBlock
     );
-    const chats: Chat[] = [];
+    const chats: IChat[] = [];
     chatBlocks.forEach((chatBlock) => {
       const messageElement = chatBlock.querySelector<HTMLElement>(
         chatSelector.message

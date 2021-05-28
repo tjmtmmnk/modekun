@@ -1,4 +1,4 @@
-export interface Chat {
+export interface IChat {
   key: string;
   author?: string;
   message: string;

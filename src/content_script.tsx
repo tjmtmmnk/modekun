@@ -1,6 +1,6 @@
 import { moderate } from "./moderate";
-import { Youtube } from "./youtube";
-import { TestSource } from "./testSource";
+import { Youtube } from "./source/youtube";
+import { Mock } from "./source/mock";
 import { getItems } from "./storage";
 import {
   paramKeys,

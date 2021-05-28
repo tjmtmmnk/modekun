@@ -1,4 +1,4 @@
-import { Chat } from "../chat";
+import { IChat } from "../chat";
 import { hideNgWords, hideRepeatThrow, hideRepeatWords } from "../moderate";
 import { IKuromojiWorker } from "../kuromoji.worker";
 import { IpadicFeatures } from "kuromoji";
@@ -13,7 +13,7 @@ describe("moderate", () => {
     ng_words: ["なう"],
   };
   describe("hideRepeatWords", () => {
-    const chats: Chat[] = [
+    const chats: IChat[] = [
       {
         key: "test1こんにちは",
         author: "test1",
@@ -49,7 +49,7 @@ describe("moderate", () => {
   });
 
   describe("hideRepeatThrow", () => {
-    const chats: Chat[] = [
+    const chats: IChat[] = [
       {
         key: "test1こんにちは",
         author: "test1",
@@ -85,7 +85,7 @@ describe("moderate", () => {
   });
 
   describe("hideNgWords", () => {
-    const chats: Chat[] = [
+    const chats: IChat[] = [
       {
         key: "test1こんにちは",
         author: "test1",
@@ -98,11 +98,18 @@ describe("moderate", () => {
         message: "なう",
         element: document.createElement("div"),
       },
+      {
+        key: "test3ないた",
+        author: "test3",
+        message: "ないた",
+        element: document.createElement("div"),
+      },
     ];
     test("can hide", () => {
       hideNgWords(params, chats);
       expect(chats[0].element.dataset.isHiddenByModekun).toBeFalsy();
       expect(chats[1].element.dataset.isHiddenByModekun).toBeTruthy();
+      expect(chats[2].element.dataset.isHiddenByModekun).toBeFalsy();
     });
   });
 });

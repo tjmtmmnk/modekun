@@ -1,8 +1,8 @@
-import { Source } from "./source";
-import { Chat } from "./chat";
+import { ISource } from "./source";
+import { IChat } from "../chat";
 
-export class TestSource implements Source {
-  extractChats(): Chat[] {
+export class Mock implements ISource {
+  extractChats(): IChat[] {
     return [
       {
         key: "test1こんにちは",

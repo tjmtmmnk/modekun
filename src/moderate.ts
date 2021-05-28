@@ -1,4 +1,4 @@
-import { Chat } from "./chat";
+import { IChat } from "./chat";
 import { IKuromojiWorker, KuromojiWorker } from "./kuromoji.worker";
 import { wrap } from "comlink";
 import { IParameter } from "./config";
@@ -15,7 +15,7 @@ const createKuromojiWorker = async (): Promise<KuromojiWorker> => {
   return instance;
 };
 
-export const hideRepeatThrow = (param: IParameter, chats: Chat[]) => {
+export const hideRepeatThrow = (param: IParameter, chats: IChat[]) => {
   const duplicateCount: { [key: string]: number } = {};
   for (const chat of chats) {
     if (!duplicateCount[chat.key]) {
@@ -25,16 +25,16 @@ export const hideRepeatThrow = (param: IParameter, chats: Chat[]) => {
   }
   for (const chat of chats) {
     if (duplicateCount[chat.key] >= param.repeat_throw_threshold) {
-      hide(chat);
+      hide("連投", chat);
     }
   }
 };
 
-export const hideNgWords = (param: IParameter, chats: Chat[]) => {
+export const hideNgWords = (param: IParameter, chats: IChat[]) => {
   for (const chat of chats) {
     for (const ngWord of param.ng_words) {
       if (chat.message.includes(ngWord)) {
-        hide(chat);
+        hide("NGワード", chat);
       }
     }
   }
@@ -43,19 +43,19 @@ export const hideNgWords = (param: IParameter, chats: Chat[]) => {
 export const hideRepeatWords = async (
   param: IParameter,
   api: IKuromojiWorker,
-  chats: Chat[]
+  chats: IChat[]
 ) => {
   const counts = await api.getMaxRepeatWordCounts(chats.map((c) => c.message));
   chats.forEach((chat, i) => {
-    if (counts[i] > param.repeat_word_threshold) {
-      hide(chat);
+    if (counts[i] >= param.repeat_word_threshold) {
+      hide("単語繰り返し", chat);
     }
   });
 };
 
 export const moderate = async (
   param: IParameter,
-  chats: Chat[]
+  chats: IChat[]
 ): Promise<void> => {
   const kuromojiWorkerApi = await createKuromojiWorker();
   const publicChats = chats
@@ -74,9 +74,9 @@ export const moderate = async (
   hideRepeatWords(param, kuromojiWorkerApi, publicChats);
 };
 
-const hide = (chat: Chat) => {
+const hide = (type: string, chat: IChat) => {
   if (!chat.element.dataset.isHiddenByModekun) {
-    console.log(`hide ${chat.author} ${chat.message}`);
+    console.log(`[${type}] hide ${chat.author} ${chat.message}`);
 
     chat.element.style.display = "none";
     chat.element.dataset.isHiddenByModekun = "1";
