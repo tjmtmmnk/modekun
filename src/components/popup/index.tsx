@@ -3,9 +3,8 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { HomePage } from "./HomePage";
 import { NgWordPage } from "./NgWordPage";
 import { Navigation } from "./Navigation";
-import { IParameter } from "../../config";
 
-export default function PopupPage(props: { params: IParameter }) {
+export default function PopupPage() {
   return (
     <Router>
       <Navigation />

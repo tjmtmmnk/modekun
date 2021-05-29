@@ -36,8 +36,7 @@ export const useParams = (): IParameter | undefined => {
 };
 
 const Popup = () => {
-  const params = useParams();
-  return <>{params && <PopupPage params={params} />}</>;
+  return <PopupPage />;
 };
 
 ReactDOM.render(
