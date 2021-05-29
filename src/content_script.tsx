@@ -6,13 +6,12 @@ import {
 } from "./moderate";
 import { Youtube } from "./source/youtube";
 import { Mock } from "./source/mock";
-import { getItems } from "./storage";
+import { getItems, setItem } from "./storage";
 import {
   paramKeys,
   DEFAULT_EXECUTION_INTERVAL_MS,
-  isParameter,
-  KEY_NG_WORDS,
   defaultParams,
+  parseParams, serializedParams,
 } from "./config";
 
 window.addEventListener("load", async () => {
@@ -22,17 +21,12 @@ window.addEventListener("load", async () => {
   const modekun = async () => {
     console.log("modekun");
     const paramsJson = await getItems(paramKeys()).catch(() => defaultParams);
-    const params: any =
-      JSON.stringify(paramsJson) === JSON.stringify({})
-        ? defaultParams
-        : {
-            ...paramsJson,
-            ng_words: JSON.parse(paramsJson[KEY_NG_WORDS]),
-          };
 
-    if (!isParameter(params)) {
-      terminateWorker(worker);
-      return;
+    let params = defaultParams;
+    try {
+      params = parseParams(paramsJson);
+    } catch (e) {
+      chrome.storage.sync.set(serializedParams(defaultParams));
     }
 
     const source = new Mock();

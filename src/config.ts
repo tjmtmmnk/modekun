@@ -36,6 +36,16 @@ export const serializedParams = (params: IParameter) => {
   };
 };
 
+export const parseParams = (paramsJson: any): IParameter => {
+  const params = {
+    ...paramsJson,
+    ng_words: JSON.parse(paramsJson[KEY_NG_WORDS]),
+  };
+  if (!isParameter(params)) throw "incorrect parameter format";
+
+  return params;
+};
+
 export interface IParameter {
   repeat_throw_threshold: number;
   repeat_word_threshold: number;

@@ -4,9 +4,22 @@ export const getItems = async (
   return new Promise((resolve, reject) => {
     chrome.storage.sync.get(keys, (items) => {
       if (chrome.runtime.lastError) {
-        return reject(chrome.runtime.lastError);
+        reject(chrome.runtime.lastError);
+      } else {
+        resolve(items);
       }
-      resolve(items);
+    });
+  });
+};
+
+export const setItem = async (item: { [key: string]: any }): Promise<void> => {
+  return new Promise((resolve, reject) => {
+    chrome.storage.sync.set(item, () => {
+      if (chrome.runtime.lastError) {
+        reject(chrome.runtime.lastError);
+      } else {
+        resolve();
+      }
     });
   });
 };
