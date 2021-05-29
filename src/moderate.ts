@@ -57,6 +57,8 @@ export const moderate = async (
   param: IParameter,
   chats: IChat[]
 ): Promise<void> => {
+  if (chats.length < 1) return;
+
   const kuromojiWorkerApi = await createKuromojiWorker();
   const publicChats = chats
     .filter(
