@@ -3,16 +3,27 @@ import { IKuromojiWorker, KuromojiWorker } from "./kuromoji.worker";
 import { wrap } from "comlink";
 import { IParameter } from "./config";
 
-const createKuromojiWorker = async (): Promise<KuromojiWorker> => {
+export const createKuromojiWorker = async (): Promise<Worker> => {
   const worker = await fetch(chrome.extension.getURL("js/worker.js"));
   const js = await worker.text();
   const blob = new Blob([js], { type: "text/javascript" });
   const url = URL.createObjectURL(blob);
-  const workerClass: any = wrap<KuromojiWorker>(new Worker(url));
+
+  return new Worker(url);
+};
+
+export const createKuromojiWorkerApi = async (
+  worker: Worker
+): Promise<IKuromojiWorker> => {
+  const workerClass: any = wrap<IKuromojiWorker>(worker);
   const instance = await new workerClass(
     chrome.extension.getURL("kuromoji/dict/")
   );
   return instance;
+};
+
+export const terminateWorker = (worker: Worker) => {
+  worker.terminate();
 };
 
 export const hideRepeatThrow = (param: IParameter, chats: IChat[]) => {
@@ -54,12 +65,10 @@ export const hideRepeatWords = async (
 };
 
 export const moderate = async (
+  kuromojiWorkerApi: IKuromojiWorker,
   param: IParameter,
   chats: IChat[]
 ): Promise<void> => {
-  if (chats.length < 1) return;
-
-  const kuromojiWorkerApi = await createKuromojiWorker();
   const publicChats = chats
     .filter(
       (chat) =>

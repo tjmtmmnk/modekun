@@ -16,6 +16,12 @@ export class Mock implements ISource {
         message: "ab",
         element: document.createElement("div"),
       },
+      {
+        key: "test1最強最強最強",
+        author: "test1",
+        message: "最強最強最強",
+        element: document.createElement("div"),
+      },
     ];
   }
 }

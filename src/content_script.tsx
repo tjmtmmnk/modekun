@@ -1,4 +1,9 @@
-import { moderate } from "./moderate";
+import {
+  createKuromojiWorker,
+  createKuromojiWorkerApi,
+  moderate,
+  terminateWorker,
+} from "./moderate";
 import { Youtube } from "./source/youtube";
 import { Mock } from "./source/mock";
 import { getItems } from "./storage";
@@ -7,22 +12,37 @@ import {
   DEFAULT_EXECUTION_INTERVAL_MS,
   isParameter,
   KEY_NG_WORDS,
+  defaultParams,
 } from "./config";
 
 window.addEventListener("load", async () => {
+  const worker = await createKuromojiWorker();
+  const api = await createKuromojiWorkerApi(worker);
+
   const modekun = async () => {
     console.log("modekun");
-    const paramsJson = await getItems(paramKeys());
-    const params: any = {
-      ...paramsJson,
-      ng_words: JSON.parse(paramsJson[KEY_NG_WORDS]),
-    };
+    const paramsJson = await getItems(paramKeys()).catch(() => defaultParams);
+    const params: any =
+      JSON.stringify(paramsJson) === JSON.stringify({})
+        ? defaultParams
+        : {
+            ...paramsJson,
+            ng_words: JSON.parse(paramsJson[KEY_NG_WORDS]),
+          };
 
-    if (!isParameter(params)) return;
+    if (!isParameter(params)) {
+      terminateWorker(worker);
+      return;
+    }
 
-    const source = new Youtube();
+    const source = new Mock();
     const chats = source.extractChats();
-    await moderate(params, chats);
+
+    if (chats.length < 1) {
+      terminateWorker(worker);
+    }
+
+    await moderate(api, params, chats);
 
     window.setTimeout(modekun, params.execution_interval);
   };

@@ -31,7 +31,7 @@ export const useParams = (): IParameter | undefined => {
     return () => {
       isMounted = false;
     };
-  });
+  }, []);
   return params;
 };
 
