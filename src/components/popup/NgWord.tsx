@@ -31,18 +31,47 @@ const StyledUl = styled.ul`
   list-style-type: none;
   border-top: solid 1px #3dbfb8;
   overflow-y: scroll;
+  max-height: 280px;
 `;
 
 const StyledLi = styled.li`
-  padding: 10px 20px;
+  padding: 0.5em 20px;
   background: #e3f6f5;
   border-bottom: solid 1px #3dbfb8;
+  overflow-wrap: anywhere;
+  max-width: 280px;
+  height: auto;
+  position: relative;
 `;
 
 const StyledSpan = styled.span`
   font-size: 0.3em;
   color: gray;
   margin-left: 254px;
+`;
+
+const StyledDeleteSpan = styled.span`
+  position: relative;
+`;
+
+const StyledDeleteButton = styled.button`
+  background: transparent;
+  border: 1px solid #f00;
+  border-radius: 2em;
+  color: #f00;
+  display: inline-block;
+  font-size: 12px;
+  height: 13px;
+  line-height: 2px;
+  margin: 0.5em 2px;
+  padding: 0;
+  text-align: center;
+  width: 13px;
+  position: absolute;
+  right: 4px;
+  top: 4px;
+  z-index: 1;
+  cursor: pointer;
 `;
 
 export const NgWordList = (props: { storageKey: string }) => {
@@ -69,7 +98,10 @@ export const NgWordList = (props: { storageKey: string }) => {
   return (
     <StyledUl>
       {ngWords.map((ngWord, i) => (
-        <StyledLi key={i}>{ngWord}</StyledLi>
+        <StyledLi key={i}>
+          <StyledDeleteSpan>{ngWord}</StyledDeleteSpan>
+          <StyledDeleteButton>×</StyledDeleteButton>
+        </StyledLi>
       ))}
     </StyledUl>
   );

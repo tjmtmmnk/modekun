@@ -15,6 +15,7 @@ const StyledContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  margin-top: 1em;
 `;
 
 export const HomePage = () => {
