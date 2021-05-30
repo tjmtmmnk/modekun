@@ -6,7 +6,7 @@ import {
   KEY_REPEAT_THROW,
   KEY_REPEAT_WORD,
 } from "../../config";
-import * as React from "react";
+import React from "react";
 import styled from "styled-components";
 import { useParams } from "../../popup";
 

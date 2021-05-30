@@ -8,7 +8,8 @@ const StyledInput = styled.input`
   border: 1px solid #acacac;
   color: #fff;
   opacity: 0.7;
-  width: 250px;
+  width: 14em;
+  padding: 0px 1em;
   border-radius: 10px;
   text-align: center;
   align-self: center;
@@ -18,8 +19,9 @@ const StyledInput = styled.input`
   font-size: 13px;
   outline: none;
   background-color: #acacac;
+  margin-left: 3em;
   &:focus {
-    width: 290px;
+    width: 16em;
     outline: none;
   }
 `;
@@ -101,7 +103,7 @@ const isValidInput = async (text: string): Promise<boolean> => {
   if (text === "") return false;
   const ngWords = await getNgWords().catch((e) => console.error(e));
   if (!ngWords) return false;
-  console.log(ngWords);
+  // don't allow duplicate
   return !ngWords.includes(text);
 };
 

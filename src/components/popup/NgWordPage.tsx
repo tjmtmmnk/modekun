@@ -12,7 +12,7 @@ const StyledContainer = styled.div`
   margin-top: 1em;
 `;
 
-export interface State {
+interface State {
   ngWords: string[];
 }
 
