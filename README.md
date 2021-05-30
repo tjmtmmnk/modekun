@@ -13,10 +13,13 @@ Now, modekun can be used only in Youtube, and only Japanese.
   - NG word
   
 popup looks like this
+
 ![popup-home](docs/popup-home.png)
 ![popup-ng](docs/popup-ng.png)
 
+
 chats are hidden automatically
+
 ![chats](docs/chats.png)
 
 ### repeat post 
