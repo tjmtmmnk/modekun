@@ -13,33 +13,20 @@ const StyledContainer = styled.div`
 `;
 
 export interface State {
-  ngWord: string;
   ngWords: string[];
-  isSaved: boolean;
 }
 
 type Action =
   | { type: "init"; ngWords: string[] }
-  | { type: "edit"; ngWord: string }
-  | { type: "save" };
-
-const isValidInput = (text: string): boolean => {
-  return text !== "";
-};
+  | { type: "save"; ngWord: string };
 
 const reducer = (state: State, action: Action): State => {
   switch (action.type) {
     case "init":
       return { ...state, ngWords: action.ngWords };
-    case "edit":
-      return { ...state, ngWord: action.ngWord };
     case "save":
-      if (isValidInput(state.ngWord)) {
-        state.ngWords.push(state.ngWord);
-      }
       setItem({ [KEY_NG_WORDS]: JSON.stringify(state.ngWords) });
-      state.ngWord = "";
-      return { ...state, ngWord: "" };
+      return { ...state, ngWords: [...state.ngWords, action.ngWord] };
   }
 };
 
@@ -47,24 +34,23 @@ export type DispatchType = (action: Action) => void;
 
 export const NgWordPage = () => {
   const [state, dispatch] = useReducer(reducer, {
-    ngWord: "",
     ngWords: [],
-    isSaved: false,
   });
 
   React.useEffect(() => {
     let isMounted = true;
     getItems([KEY_NG_WORDS]).then((item) => {
       if (isMounted) {
-        if (item[KEY_NG_WORDS] === undefined) {
+        if (!item[KEY_NG_WORDS]) {
           dispatch({ type: "init", ngWords: [] });
         } else {
           let ngWords: string[] = [];
           try {
             ngWords = JSON.parse(item[KEY_NG_WORDS]);
           } catch (e) {
-            console.log(item[KEY_NG_WORDS]);
+            console.error(item[KEY_NG_WORDS]);
             console.error(e);
+            return;
           }
           dispatch({ type: "init", ngWords: ngWords });
         }
@@ -77,12 +63,8 @@ export const NgWordPage = () => {
 
   return (
     <StyledContainer>
-      <NgWordList storageKey={KEY_NG_WORDS} state={state} />
-      <NgWordInput
-        storageKey={KEY_NG_WORDS}
-        state={state}
-        dispatch={dispatch}
-      />
+      <NgWordList ngWords={state.ngWords} />
+      <NgWordInput dispatch={dispatch} />
     </StyledContainer>
   );
 };

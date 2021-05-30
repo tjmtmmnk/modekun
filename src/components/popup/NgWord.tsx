@@ -1,9 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { getItems } from "../../storage";
 import { DispatchType, State } from "./NgWordPage";
-
-const ENTER = 13;
 
 const StyledInput = styled.input`
   margin-top: 0.8em;
@@ -75,12 +73,12 @@ const StyledDeleteButton = styled.button`
   cursor: pointer;
 `;
 
-export const NgWordList = (props: { storageKey: string; state: State }) => {
-  const { storageKey, state } = props;
+export const NgWordList = (props: { ngWords: string[] }) => {
+  const { ngWords } = props;
 
   return (
     <StyledUl>
-      {state.ngWords.map((ngWord, i) => (
+      {ngWords.map((ngWord, i) => (
         <StyledLi key={i}>
           <StyledDeleteSpan>{ngWord}</StyledDeleteSpan>
           <StyledDeleteButton>×</StyledDeleteButton>
@@ -90,32 +88,30 @@ export const NgWordList = (props: { storageKey: string; state: State }) => {
   );
 };
 
-export const NgWordInput = (props: {
-  storageKey: string;
-  state: State;
-  dispatch: DispatchType;
-}) => {
-  const { storageKey, state, dispatch } = props;
+const isValidInput = (text: string): boolean => {
+  return text !== "";
+};
 
-  const onChange: React.ChangeEventHandler<HTMLInputElement> = (event) => {
-    dispatch({ type: "edit", ngWord: event.target.value });
-  };
+export const NgWordInput = (props: { dispatch: DispatchType }) => {
+  const { dispatch } = props;
 
-  const onKeyDown: React.KeyboardEventHandler<HTMLInputElement> = (event) => {
-    const { which } = event;
-    if (which === ENTER) {
-      dispatch({ type: "save" });
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (inputRef && inputRef.current) {
+      if (isValidInput(inputRef.current.value)) {
+        dispatch({ type: "save", ngWord: inputRef.current.value });
+        inputRef.current.value = "";
+      }
     }
   };
 
   return (
     <>
-      <StyledInput
-        onChange={onChange}
-        onKeyDown={onKeyDown}
-        value={state.ngWord}
-        placeholder={"NGワードを入力"}
-      />
+      <form onSubmit={handleSubmit}>
+        <StyledInput ref={inputRef} placeholder={"NGワードを入力"} />
+      </form>
       <StyledSpan>※Enterで保存</StyledSpan>
     </>
   );

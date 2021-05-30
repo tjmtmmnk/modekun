@@ -11,7 +11,8 @@ import {
   paramKeys,
   DEFAULT_EXECUTION_INTERVAL_MS,
   defaultParams,
-  parseParams, serializedParams,
+  parseParams,
+  serializedParams,
 } from "./config";
 
 window.addEventListener("load", async () => {
