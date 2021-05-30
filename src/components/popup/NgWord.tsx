@@ -73,15 +73,24 @@ const StyledDeleteButton = styled.button`
   cursor: pointer;
 `;
 
-export const NgWordList = (props: { ngWords: string[] }) => {
-  const { ngWords } = props;
+export const NgWordList = (props: {
+  dispatch: DispatchType;
+  ngWords: string[];
+}) => {
+  const { dispatch, ngWords } = props;
+
+  const onClick = (word: string) => {
+    return () => {
+      dispatch({ type: "delete", ngWord: word });
+    };
+  };
 
   return (
     <StyledUl>
       {ngWords.map((ngWord, i) => (
         <StyledLi key={i}>
           <StyledDeleteSpan>{ngWord}</StyledDeleteSpan>
-          <StyledDeleteButton>×</StyledDeleteButton>
+          <StyledDeleteButton onClick={onClick(ngWord)}>×</StyledDeleteButton>
         </StyledLi>
       ))}
     </StyledUl>

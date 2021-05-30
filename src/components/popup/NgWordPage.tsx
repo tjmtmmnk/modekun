@@ -18,15 +18,24 @@ export interface State {
 
 type Action =
   | { type: "init"; ngWords: string[] }
-  | { type: "save"; ngWord: string };
+  | { type: "save"; ngWord: string }
+  | { type: "delete"; ngWord: string };
 
 const reducer = (state: State, action: Action): State => {
   switch (action.type) {
-    case "init":
+    case "init": {
       return { ...state, ngWords: action.ngWords };
-    case "save":
-      setItem({ [KEY_NG_WORDS]: JSON.stringify(state.ngWords) });
-      return { ...state, ngWords: [...state.ngWords, action.ngWord] };
+    }
+    case "save": {
+      const ngWords = [...state.ngWords, action.ngWord];
+      setItem({ [KEY_NG_WORDS]: JSON.stringify(ngWords) });
+      return { ...state, ngWords };
+    }
+    case "delete": {
+      const ngWords = state.ngWords.filter((word) => word !== action.ngWord);
+      setItem({ [KEY_NG_WORDS]: JSON.stringify(ngWords) });
+      return { ...state, ngWords };
+    }
   }
 };
 
@@ -63,7 +72,7 @@ export const NgWordPage = () => {
 
   return (
     <StyledContainer>
-      <NgWordList ngWords={state.ngWords} />
+      <NgWordList dispatch={dispatch} ngWords={state.ngWords} />
       <NgWordInput dispatch={dispatch} />
     </StyledContainer>
   );
