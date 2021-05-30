@@ -6,7 +6,7 @@ import {
 } from "./moderate";
 import { Youtube } from "./source/youtube";
 import { Mock } from "./source/mock";
-import { getItems, setItem } from "./storage";
+import { getItems } from "./storage";
 import {
   paramKeys,
   DEFAULT_EXECUTION_INTERVAL_MS,

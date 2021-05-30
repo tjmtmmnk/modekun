@@ -1,7 +1,7 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React from "react";
 import styled from "styled-components";
-import { getItems } from "../../storage";
-import { DispatchType, State } from "./NgWordPage";
+import { DispatchType } from "./NgWordPage";
+import { getNgWords } from "../../config";
 
 const StyledInput = styled.input`
   margin-top: 0.8em;
@@ -97,19 +97,24 @@ export const NgWordList = (props: {
   );
 };
 
-const isValidInput = (text: string): boolean => {
-  return text !== "";
+const isValidInput = async (text: string): Promise<boolean> => {
+  if (text === "") return false;
+  const ngWords = await getNgWords().catch((e) => console.error(e));
+  if (!ngWords) return false;
+  console.log(ngWords);
+  return !ngWords.includes(text);
 };
 
 export const NgWordInput = (props: { dispatch: DispatchType }) => {
   const { dispatch } = props;
 
-  const inputRef = useRef<HTMLInputElement>(null);
+  const inputRef = React.useRef<HTMLInputElement>(null);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (inputRef && inputRef.current) {
-      if (isValidInput(inputRef.current.value)) {
+      const isValid = await isValidInput(inputRef.current.value);
+      if (isValid) {
         dispatch({ type: "save", ngWord: inputRef.current.value });
         inputRef.current.value = "";
       }

@@ -1,8 +1,8 @@
-import { KEY_NG_WORDS } from "../../config";
+import { getNgWords, KEY_NG_WORDS } from "../../config";
 import { NgWordInput, NgWordList } from "./NgWord";
 import React, { useReducer } from "react";
 import styled from "styled-components";
-import { getItems, setItem } from "../../storage";
+import { setItem } from "../../storage";
 
 const StyledContainer = styled.div`
   width: 320px;
@@ -48,21 +48,9 @@ export const NgWordPage = () => {
 
   React.useEffect(() => {
     let isMounted = true;
-    getItems([KEY_NG_WORDS]).then((item) => {
+    getNgWords().then((ngWords) => {
       if (isMounted) {
-        if (!item[KEY_NG_WORDS]) {
-          dispatch({ type: "init", ngWords: [] });
-        } else {
-          let ngWords: string[] = [];
-          try {
-            ngWords = JSON.parse(item[KEY_NG_WORDS]);
-          } catch (e) {
-            console.error(item[KEY_NG_WORDS]);
-            console.error(e);
-            return;
-          }
-          dispatch({ type: "init", ngWords: ngWords });
-        }
+        dispatch({ type: "init", ngWords });
       }
     });
     return () => {

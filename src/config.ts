@@ -1,3 +1,5 @@
+import { getItems } from "./storage";
+
 export const KEY_REPEAT_THROW = "repeat_throw_threshold";
 export const KEY_REPEAT_WORD = "repeat_word_threshold";
 export const KEY_LOOK_CHATS = "look_chats";
@@ -62,4 +64,16 @@ export const isParameter = (arg: any): arg is IParameter => {
     arg.execution_interval !== undefined &&
     arg.ng_words !== undefined
   );
+};
+
+export const getNgWords = async (): Promise<string[]> => {
+  const ngWordsJson: any = await getItems([KEY_NG_WORDS]);
+  if (!ngWordsJson) return [];
+  let ngWords: string[];
+  try {
+    ngWords = JSON.parse(ngWordsJson[KEY_NG_WORDS]);
+  } catch (e) {
+    throw e;
+  }
+  return ngWords;
 };
