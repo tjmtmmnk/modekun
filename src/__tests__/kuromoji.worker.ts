@@ -7,12 +7,6 @@ describe("KuromojiWorker", () => {
     path.join(__dirname, "..", "kuromoji/dict")
   );
 
-  test("tokenize", async () => {
-    const tokens = await kuromojiWorker.tokenize("猫");
-    expect(tokens.length).toBe(1);
-    expect(tokens[0].pos).toBe("名詞");
-  });
-
   test("bulkTokenize", async () => {
     const tokensList = await kuromojiWorker.bulkTokenize(["猫", "私は猫"]);
     const expected = [

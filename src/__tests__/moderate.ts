@@ -1,8 +1,8 @@
 import { IChat } from "../chat";
 import { hideNgWords, hideRepeatThrow, hideRepeatWords } from "../moderate";
 import { IKuromojiWorker } from "../kuromoji.worker";
-import { IpadicFeatures } from "kuromoji";
 import { IParameter } from "../config";
+import { KuromojiToken } from "kuromojin";
 
 describe("moderate", () => {
   const params: IParameter = {
@@ -28,12 +28,8 @@ describe("moderate", () => {
       },
     ];
     const apiMock: IKuromojiWorker = {
-      tokenize: (text: string) =>
-        new Promise<IpadicFeatures[]>((resolve) => {
-          resolve();
-        }),
       bulkTokenize: (texts: string[]) =>
-        new Promise<IpadicFeatures[][]>((resolve) => {
+        new Promise<KuromojiToken[][]>((resolve) => {
           resolve();
         }),
       getMaxRepeatWordCounts: (texts: string[]) =>
