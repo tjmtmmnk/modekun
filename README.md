@@ -1,46 +1,67 @@
-# Chrome Extension TypeScript Starter
+# modekun
 
-![build](https://github.com/chibat/chrome-extension-typescript-starter/workflows/build/badge.svg)
+[![build](https://github.com/tjmtmmnk/modekun/actions/workflows/build.yml/badge.svg)](https://github.com/tjmtmmnk/modekun/actions/workflows/build.yml)
 
-Chrome Extension, TypeScript and Visual Studio Code
+moderate live chat
+
+## Usage
+Now, modekun can be used only in Youtube, and only Japanese.
+
+- moderate
+  - repeat post 
+  - repeat word in a chat
+  - NG word
+  
+popup looks like this
+![popup-home](docs/popup-home.png)
+![popup-ng](docs/popup-ng.png)
+
+chats are hidden automatically
+![chats](docs/chats.png)
+
+### repeat post 
+repeat post threshold (連投閾値) can control how many chats posted by the same user should not be hidden.
+  
+#### example
+```
+user A: こんにちは
+user A: こんにちは
+user A: こんにちは
+user B: こんにちは
+user B: こんにちは
+```
+If `repeat post threshold = 2`, chats posted by user A will be hidden. 
+
+### repeat word in a chat
+repeat word in a chat (単語繰り返し閾値) can control how many words shown in a chat should not be hidden.
+
+#### example
+```
+user A: 最強最強最強
+user B: こんにちは
+```
+If `repeat word in a chat = 2`, chats posted by user A will be hidden.
+
+### NG word
+```
+user A: こんにちは
+user A: こん
+user B: ハロー
+```
+If `NG word = こん`, chats posted by user A will be hidden.
+
+
+---
 
 ## Prerequisites
 
 * [node + npm](https://nodejs.org/) (Current Version)
-
-## Option
-
-* [Visual Studio Code](https://code.visualstudio.com/)
-
-## Includes the following
-
-* TypeScript
-* Webpack
-* React
-* Jest
-* Example Code
-    * Chrome Storage
-    * Options Version 2
-    * content script
-    * count up badge number
-    * background
-
-## Project Structure
-
-* src/typescript: TypeScript source files
-* src/assets: static files
-* dist: Chrome Extension directory
-* dist/js: Generated JavaScript files
 
 ## Setup
 
 ```
 npm install
 ```
-
-## Import as Visual Studio Code project
-
-...
 
 ## Build
 
@@ -55,12 +76,6 @@ npm run build
 ```
 npm run watch
 ```
-
-### Visual Studio Code
-
-Run watch mode.
-
-type `Ctrl + Shift + B`
 
 ## Load extension to chrome
 
