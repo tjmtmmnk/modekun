@@ -13,10 +13,13 @@ Now, modekun can be used only in Youtube, and only Japanese.
   - NG word
   
 popup looks like this
+
 ![popup-home](docs/popup-home.png)
 ![popup-ng](docs/popup-ng.png)
 
+
 chats are hidden automatically
+
 ![chats](docs/chats.png)
 
 ### repeat post 
@@ -30,7 +33,7 @@ user A: こんにちは
 user B: こんにちは
 user B: こんにちは
 ```
-If `repeat post threshold = 2`, chats posted by user A will be hidden. 
+If `repeat post threshold = 3`, chats posted by user A will be hidden. 
 
 ### repeat word in a chat
 repeat word in a chat (単語繰り返し閾値) can control how many words shown in a chat should not be hidden.
