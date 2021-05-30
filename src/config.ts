@@ -31,7 +31,9 @@ export const defaultParams: IParameter = {
   [KEY_NG_WORDS]: DEFAULT_NG_WORDS,
 };
 
-export const serializedParams = (params: IParameter) => {
+export const serializedParams = (
+  params: IParameter
+): { [key: string]: any } => {
   return {
     ...params,
     [KEY_NG_WORDS]: JSON.stringify(params.ng_words),
@@ -76,4 +78,16 @@ export const getNgWords = async (): Promise<string[]> => {
     throw e;
   }
   return ngWords;
+};
+
+export const getParams = async (): Promise<IParameter> => {
+  const paramsJson = await getItems(paramKeys()).catch(() => defaultParams);
+  let params = defaultParams;
+  try {
+    params = parseParams(paramsJson);
+  } catch (e) {
+    throw e;
+  }
+
+  return params;
 };
