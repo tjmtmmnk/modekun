@@ -7,7 +7,6 @@ import {
 import { Youtube } from "./source/youtube";
 import { Mock } from "./source/mock";
 import {
-  paramKeys,
   DEFAULT_EXECUTION_INTERVAL_MS,
   defaultParams,
   serializedParams,
@@ -26,7 +25,7 @@ window.addEventListener("load", async () => {
     );
     if (!params) return;
 
-    const source = new Mock();
+    const source = new Youtube();
     const chats = source.extractChats();
 
     if (chats.length < 1) {

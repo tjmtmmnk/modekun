@@ -1,43 +1,20 @@
 import { expose } from "comlink";
-import { TokenizerBuilder, IpadicFeatures, builder, Tokenizer } from "kuromoji";
+import { KuromojiToken, getTokenizer } from "kuromojin";
 
 export interface IKuromojiWorker {
-  tokenize: (text: string) => Promise<IpadicFeatures[]>;
-  bulkTokenize: (texts: string[]) => Promise<IpadicFeatures[][]>;
+  bulkTokenize: (texts: string[]) => Promise<KuromojiToken[][]>;
   getMaxRepeatWordCounts: (texts: string[]) => Promise<number[]>;
 }
 
 export class KuromojiWorker implements IKuromojiWorker {
-  kuromoji: TokenizerBuilder<IpadicFeatures>;
+  dicPath: string;
   constructor(dicPath: string) {
-    this.kuromoji = builder({
-      dicPath: dicPath,
-    });
-  }
-  async tokenize(text: string): Promise<IpadicFeatures[]> {
-    return new Promise((resolve) => {
-      this.kuromoji.build((err, tokenizer) => {
-        if (err) return;
-        const tokens = tokenizer.tokenize(text);
-        resolve(tokens);
-      });
-    });
+    this.dicPath = dicPath;
   }
 
-  async bulkTokenize(texts: string[]): Promise<IpadicFeatures[][]> {
-    return new Promise((resolve) => {
-      // kuromoji.build read dictionary every time, it took about 2s
-      this.kuromoji.build((err, tokenizer) => {
-        if (err) return;
-
-        const tokensList = [];
-        for (const text of texts) {
-          const tokens = tokenizer.tokenize(text);
-          tokensList.push(tokens);
-        }
-        resolve(tokensList);
-      });
-    });
+  async bulkTokenize(texts: string[]): Promise<KuromojiToken[][]> {
+    const kuromoji = await getTokenizer({ dicPath: this.dicPath });
+    return texts.map((text) => kuromoji.tokenize(text));
   }
 
   async getMaxRepeatWordCounts(texts: string[]): Promise<number[]> {
