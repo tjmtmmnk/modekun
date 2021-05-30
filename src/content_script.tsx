@@ -13,10 +13,14 @@ import {
   getParams,
 } from "./config";
 import { setItem } from "./storage";
+import { IKuromojiWorker } from "./kuromoji.worker";
+
+let worker: Worker;
+let api: IKuromojiWorker;
 
 window.addEventListener("load", async () => {
-  const worker = await createKuromojiWorker();
-  const api = await createKuromojiWorkerApi(worker);
+  worker = await createKuromojiWorker();
+  api = await createKuromojiWorkerApi(worker);
 
   const modekun = async () => {
     console.log("modekun");
@@ -25,7 +29,7 @@ window.addEventListener("load", async () => {
     );
     if (!params) return;
 
-    const source = new Youtube();
+    const source = new Mock();
     const chats = source.extractChats();
 
     if (chats.length < 1) {
@@ -38,3 +42,15 @@ window.addEventListener("load", async () => {
   };
   window.setTimeout(modekun, DEFAULT_EXECUTION_INTERVAL_MS);
 });
+
+let currentLocation = window.location.href;
+const observeLocation = async () => {
+  if (currentLocation !== window.location.href) {
+    terminateWorker(worker);
+    worker = await createKuromojiWorker();
+    api = await createKuromojiWorkerApi(worker);
+    currentLocation = window.location.href;
+  }
+  window.setTimeout(observeLocation, 5000);
+};
+window.setTimeout(observeLocation, 5000);
