@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { getItems } from "../../storage";
+import { DispatchType, State } from "./NgWordPage";
 
 const ENTER = 13;
 
@@ -74,30 +75,12 @@ const StyledDeleteButton = styled.button`
   cursor: pointer;
 `;
 
-export const NgWordList = (props: { storageKey: string }) => {
-  const { storageKey } = props;
-  const [ngWords, setNgWords] = useState<string[]>([]);
-
-  useEffect(() => {
-    let isMounted = true;
-    getItems([storageKey]).then((item) => {
-      if (isMounted) {
-        if (!item[storageKey]) {
-          setNgWords([]);
-        } else {
-          const ngWords: string[] = JSON.parse(item[storageKey]);
-          setNgWords(ngWords);
-        }
-      }
-    });
-    return () => {
-      isMounted = false;
-    };
-  });
+export const NgWordList = (props: { storageKey: string; state: State }) => {
+  const { storageKey, state } = props;
 
   return (
     <StyledUl>
-      {ngWords.map((ngWord, i) => (
+      {state.ngWords.map((ngWord, i) => (
         <StyledLi key={i}>
           <StyledDeleteSpan>{ngWord}</StyledDeleteSpan>
           <StyledDeleteButton>×</StyledDeleteButton>
@@ -107,45 +90,21 @@ export const NgWordList = (props: { storageKey: string }) => {
   );
 };
 
-export const NgWordInput = (props: { storageKey: string }) => {
-  const { storageKey } = props;
-  const [ngWord, setNgWord] = React.useState("");
-  const [doSave, setDoSave] = React.useState(false);
-
-  React.useEffect(() => {
-    let isMounted = true;
-    if (!doSave || ngWord === "") return;
-    console.log(`set ${storageKey} : ${ngWord}`);
-
-    getItems([storageKey]).then((item) => {
-      if (isMounted) {
-        if (item[storageKey]) {
-          const ngWords = JSON.parse(item[storageKey]);
-          chrome.storage.sync.set({
-            [storageKey]: JSON.stringify([...ngWords, ngWord]),
-          });
-        } else {
-          chrome.storage.sync.set({ [storageKey]: JSON.stringify([ngWord]) });
-        }
-      }
-    });
-    setNgWord("");
-
-    return () => {
-      isMounted = false;
-    };
-  }, [doSave]);
+export const NgWordInput = (props: {
+  storageKey: string;
+  state: State;
+  dispatch: DispatchType;
+}) => {
+  const { storageKey, state, dispatch } = props;
 
   const onChange: React.ChangeEventHandler<HTMLInputElement> = (event) => {
-    setNgWord(event.target.value);
+    dispatch({ type: "edit", ngWord: event.target.value });
   };
 
   const onKeyDown: React.KeyboardEventHandler<HTMLInputElement> = (event) => {
     const { which } = event;
     if (which === ENTER) {
-      setDoSave(true);
-    } else {
-      setDoSave(false);
+      dispatch({ type: "save" });
     }
   };
 
@@ -154,7 +113,7 @@ export const NgWordInput = (props: { storageKey: string }) => {
       <StyledInput
         onChange={onChange}
         onKeyDown={onKeyDown}
-        value={ngWord}
+        value={state.ngWord}
         placeholder={"NGワードを入力"}
       />
       <StyledSpan>※Enterで保存</StyledSpan>
