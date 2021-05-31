@@ -20,9 +20,9 @@ import { IKuromojiWorker } from "./kuromoji.worker";
 import { Mildom } from "./source/mildom";
 import { ISource } from "./source/source";
 
-let worker: Worker;
-let api: IKuromojiWorker;
-let source: ISource;
+let worker: Worker | null;
+let api: IKuromojiWorker | null;
+let source: ISource | null;
 
 window.addEventListener("load", async () => {
   worker = await createKuromojiWorker();
@@ -31,7 +31,8 @@ window.addEventListener("load", async () => {
 
   const modekun = async () => {
     console.log("modekun");
-    
+
+    if (!source || !api) return;
     const chats = source.extractChats();
     if (chats.length < 1) {
       terminateWorker(worker);
@@ -51,8 +52,10 @@ window.addEventListener("load", async () => {
   window.setTimeout(modekun, DEFAULT_EXECUTION_INTERVAL_MS);
 });
 
-let currentLocation = window.location.href;
+let previousLocation = window.location.href;
 const observeLocation = async () => {
+  source = null;
+  const currentLocation = window.location.href;
   if (YOUTUBE_REGEX.test(currentLocation)) {
     source = new Youtube();
   } else if (MILDOM_REGEX.test(currentLocation)) {
@@ -60,11 +63,14 @@ const observeLocation = async () => {
   } else {
     source = new Mock();
   }
-  if (currentLocation !== window.location.href) {
-    terminateWorker(worker);
+  if (currentLocation !== previousLocation) {
+    worker && terminateWorker(worker);
+    // avoid memory leak, worker allocates a lot of memory
+    worker = null;
+    api = null;
     worker = await createKuromojiWorker();
     api = await createKuromojiWorkerApi(worker);
-    currentLocation = window.location.href;
+    previousLocation = currentLocation;
   }
   window.setTimeout(observeLocation, OBSERVATION_INTERVAL_MS);
 };

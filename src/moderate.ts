@@ -22,8 +22,8 @@ export const createKuromojiWorkerApi = async (
   return instance;
 };
 
-export const terminateWorker = (worker: Worker) => {
-  worker.terminate();
+export const terminateWorker = (worker: Worker | undefined) => {
+  worker && worker.terminate();
 };
 
 export const hideRepeatThrow = (param: IParameter, chats: IChat[]) => {
