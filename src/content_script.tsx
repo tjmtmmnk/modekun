@@ -35,7 +35,8 @@ window.addEventListener("load", async () => {
     if (!source || !api) return;
     const chats = source.extractChats();
     if (chats.length < 1) {
-      terminateWorker(worker);
+      // NOTE: Don't terminate worker here.
+      // Because an archive video may be able to open a chat section which was closed at first.
       window.setTimeout(modekun, DEFAULT_EXECUTION_INTERVAL_MS);
       return;
     }
