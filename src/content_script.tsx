@@ -25,14 +25,13 @@ let api: IKuromojiWorker | null;
 let source: ISource | null;
 
 window.addEventListener("load", async () => {
-  worker = await createKuromojiWorker();
-  api = await createKuromojiWorkerApi(worker);
-  source = new Youtube();
-
   const modekun = async () => {
     console.log("modekun");
 
-    if (!source || !api) return;
+    if (!source || !api) {
+      window.setTimeout(modekun, DEFAULT_EXECUTION_INTERVAL_MS);
+      return;
+    }
     const chats = source.extractChats();
     if (chats.length < 1) {
       // NOTE: Don't terminate worker here.
@@ -44,7 +43,10 @@ window.addEventListener("load", async () => {
     const params = await getParams().catch(
       async () => await setItem(serializedParams(defaultParams))
     );
-    if (!params) return;
+    if (!params) {
+      window.setTimeout(modekun, DEFAULT_EXECUTION_INTERVAL_MS);
+      return;
+    }
 
     await moderate(api, params, chats);
 
