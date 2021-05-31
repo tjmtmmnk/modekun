@@ -25,10 +25,13 @@ export class Youtube implements ISource {
         chatSelector.message
       );
       if (!messageElement) return;
-      const authorElement = chatSelector.author
-        ? chatBlock.querySelector<HTMLElement>(chatSelector.author)
-        : null;
-      const author = authorElement?.innerText;
+
+      const authorElement = chatBlock.querySelector<HTMLElement>(
+        chatSelector.author
+      );
+      if (!authorElement) return;
+
+      const author = authorElement.innerText;
       const message = messageElement.innerText;
       const key = removeSymbols(kanaToHiragana(author + message));
       chats.push({
