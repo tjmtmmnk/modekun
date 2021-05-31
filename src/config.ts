@@ -22,6 +22,10 @@ const DEFAULT_LOOK_CHATS = 50;
 const DEFAULT_NG_WORDS: string[] = [];
 
 export const DEFAULT_EXECUTION_INTERVAL_MS = 3000;
+export const OBSERVATION_INTERVAL_MS = 5000;
+
+export const YOUTUBE_REGEX = /https:\/\/www\.youtube\.com.*/;
+export const MILDOM_REGEX = /https:\/\/www\.mildom\.com.*/;
 
 export const defaultParams: IParameter = {
   [KEY_REPEAT_THROW]: DEFAULT_REPEAT_THROW_THRESHOLD,
