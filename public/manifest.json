@@ -4,16 +4,22 @@
   "name": "modekun",
   "description": "moderate live chat",
   "version": "1.0",
-  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
+  "content_security_policy": "script-src 'self'; object-src 'none'",
 
   "browser_action": {
     "default_icon": "icon.png",
     "default_popup": "popup.html"
   },
 
+  "icons": {
+    "16": "icon16.png",
+    "48": "icon48.png",
+    "64": "icon64.png"
+  },
+
   "content_scripts": [
     {
-      "matches": ["https://www.google.com/*"],
+      "matches": ["https://www.youtube.com/*", "https://www.mildom.com/*"],
       "js": ["js/content_script.js"]
     }
   ],

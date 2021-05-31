@@ -5,7 +5,7 @@
 moderate live chat
 
 ## Usage
-Now, modekun can be used only in Youtube, and only Japanese.
+Now, modekun can be used only in Youtube and Mildom, and only Japanese.
 
 - moderate
   - repeat post 
