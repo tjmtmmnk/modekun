@@ -9,7 +9,7 @@ const chatSelector = {
   author: "#author-name",
 };
 
-export class Youtube implements ISource {
+export const Youtube: ISource = {
   extractChats(): IChat[] {
     const chatSection = document.querySelector<HTMLIFrameElement>(
       chatSelector.chatSection
@@ -42,5 +42,5 @@ export class Youtube implements ISource {
       });
     });
     return chats;
-  }
-}
+  },
+};

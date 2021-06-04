@@ -1,7 +1,7 @@
 import { ISource } from "./source";
 import { IChat } from "../chat";
 
-export class Mock implements ISource {
+export const Mock: ISource = {
   extractChats(): IChat[] {
     return [
       {
@@ -23,5 +23,5 @@ export class Mock implements ISource {
         element: document.createElement("div"),
       },
     ];
-  }
-}
+  },
+};

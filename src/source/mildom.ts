@@ -5,7 +5,7 @@ const chatSelector = {
   chatBlock: "#message-list-container .text-message",
 };
 
-export class Mildom implements ISource {
+export const Mildom: ISource = {
   extractChats(): IChat[] {
     const chatBlocks = document.querySelectorAll<HTMLElement>(
       chatSelector.chatBlock
@@ -27,8 +27,8 @@ export class Mildom implements ISource {
       });
     }
     return chats;
-  }
-}
+  },
+};
 
 interface IMildomChat {
   author: string;
