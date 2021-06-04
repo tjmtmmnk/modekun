@@ -70,16 +70,9 @@ export const moderate = async (
   chats: IChat[]
 ): Promise<void> => {
   const publicChats = chats
-    .filter(
-      (chat) =>
-        !chat.element.dataset.isHiddenByModekun &&
-        !chat.element.dataset.hasSeenByModekun
-    )
-    .slice(-param.look_chats);
+    .slice(-param.look_chats)
+    .filter((chat) => !chat.element.dataset.isHiddenByModekun);
 
-  for (const chat of publicChats) {
-    chat.element.dataset.hasSeenByModekun = "1";
-  }
   hideRepeatThrow(param, publicChats);
   hideNgWords(param, publicChats);
   hideRepeatWords(param, kuromojiWorkerApi, publicChats);
