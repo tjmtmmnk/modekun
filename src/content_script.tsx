@@ -23,20 +23,24 @@ import { ISource } from "./source/source";
 let worker: Worker | null;
 let api: IKuromojiWorker | null;
 let source: ISource | null;
+let timerId: number;
 
 window.addEventListener("load", async () => {
   const modekun = async () => {
     console.log("modekun");
 
+  const modekun = async () => {
+    window.clearTimeout(timerId);
     if (!source || !api) {
-      window.setTimeout(modekun, DEFAULT_EXECUTION_INTERVAL_MS);
+      timerId = window.setTimeout(modekun, DEFAULT_EXECUTION_INTERVAL_MS);
       return;
     }
+
     const chats = source.extractChats();
     if (chats.length < 1) {
       // NOTE: Don't terminate worker here.
       // Because an archive video may be able to open a chat section which was closed at first.
-      window.setTimeout(modekun, DEFAULT_EXECUTION_INTERVAL_MS);
+      timerId = window.setTimeout(modekun, DEFAULT_EXECUTION_INTERVAL_MS);
       return;
     }
 
@@ -44,15 +48,15 @@ window.addEventListener("load", async () => {
       async () => await setItem(serializedParams(defaultParams))
     );
     if (!params) {
-      window.setTimeout(modekun, DEFAULT_EXECUTION_INTERVAL_MS);
+      timerId = window.setTimeout(modekun, DEFAULT_EXECUTION_INTERVAL_MS);
       return;
     }
 
     await moderate(api, params, chats);
 
-    window.setTimeout(modekun, params.execution_interval);
+    timerId = window.setTimeout(modekun, params.execution_interval);
   };
-  window.setTimeout(modekun, DEFAULT_EXECUTION_INTERVAL_MS);
+  timerId = window.setTimeout(modekun, DEFAULT_EXECUTION_INTERVAL_MS);
 });
 
 let previousLocation = window.location.href;
