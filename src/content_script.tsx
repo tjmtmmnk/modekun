@@ -5,7 +5,6 @@ import {
   terminateWorker,
 } from "./moderate";
 import { Youtube } from "./source/youtube";
-import { Mock } from "./source/mock";
 import {
   DEFAULT_EXECUTION_INTERVAL_MS,
   defaultParams,
@@ -18,16 +17,19 @@ import {
 import { setItem } from "./storage";
 import { IKuromojiWorker } from "./kuromoji.worker";
 import { Mildom } from "./source/mildom";
-import { ISource } from "./source/source";
 
 let worker: Worker | null;
 let api: IKuromojiWorker | null;
-let source: ISource | null;
+
 let timerId: number;
 
 window.addEventListener("load", async () => {
-  const modekun = async () => {
-    console.log("modekun");
+  const currentLocation = window.location.href;
+  const source = YOUTUBE_REGEX.test(currentLocation)
+    ? Youtube
+    : MILDOM_REGEX.test(currentLocation)
+    ? Mildom
+    : null;
 
   const modekun = async () => {
     window.clearTimeout(timerId);
@@ -61,15 +63,7 @@ window.addEventListener("load", async () => {
 
 let previousLocation = window.location.href;
 const observeLocation = async () => {
-  source = null;
   const currentLocation = window.location.href;
-  if (YOUTUBE_REGEX.test(currentLocation)) {
-    source = new Youtube();
-  } else if (MILDOM_REGEX.test(currentLocation)) {
-    source = new Mildom();
-  } else {
-    source = new Mock();
-  }
   if (currentLocation !== previousLocation) {
     worker && terminateWorker(worker);
     // avoid memory leak, worker allocates a lot of memory
