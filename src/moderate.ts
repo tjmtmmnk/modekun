@@ -36,7 +36,7 @@ export const hideRepeatThrow = (param: IParameter, chats: IChat[]) => {
   }
   for (const chat of chats) {
     if (duplicateCount[chat.key] >= param.repeat_throw_threshold) {
-      hide("連投", chat);
+      hide(chat);
     }
   }
 };
@@ -45,7 +45,7 @@ export const hideNgWords = (param: IParameter, chats: IChat[]) => {
   for (const chat of chats) {
     for (const ngWord of param.ng_words) {
       if (chat.message.includes(ngWord)) {
-        hide("NGワード", chat);
+        hide(chat);
       }
     }
   }
@@ -59,7 +59,7 @@ export const hideRepeatWords = async (
   const counts = await api.getMaxRepeatWordCounts(chats.map((c) => c.message));
   chats.forEach((chat, i) => {
     if (counts[i] >= param.repeat_word_threshold) {
-      hide("単語繰り返し", chat);
+      hide(chat);
     }
   });
 };
@@ -78,10 +78,8 @@ export const moderate = async (
   hideRepeatWords(param, kuromojiWorkerApi, publicChats);
 };
 
-const hide = (type: string, chat: IChat) => {
+const hide = (chat: IChat) => {
   if (!chat.element.dataset.isHiddenByModekun) {
-    console.log(`[${type}] hide ${chat.author} ${chat.message}`);
-
     chat.element.style.display = "none";
     chat.element.dataset.isHiddenByModekun = "1";
   }

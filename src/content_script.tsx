@@ -31,9 +31,14 @@ window.addEventListener("load", async () => {
     ? Mildom
     : null;
 
+  worker = await createKuromojiWorker();
+  api = await createKuromojiWorkerApi(worker);
+
   const modekun = async () => {
     window.clearTimeout(timerId);
-    if (!source || !api) {
+    if (!source) return;
+
+    if (!api) {
       timerId = window.setTimeout(modekun, DEFAULT_EXECUTION_INTERVAL_MS);
       return;
     }
