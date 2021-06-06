@@ -107,7 +107,7 @@ export const moderate = async (
 
 const hide = (chat: IChat) => {
   if (!chat.element.dataset.isHiddenByModekun) {
-    chat.element.style.display = "none";
+    chat.element.style.visibility = "hidden";
     chat.element.dataset.isHiddenByModekun = "1";
   }
 };
