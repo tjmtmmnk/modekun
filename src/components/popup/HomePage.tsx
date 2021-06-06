@@ -3,6 +3,7 @@ import {
   IParameter,
   KEY_EXECUTION_INTERVAL,
   KEY_LOOK_CHATS,
+  KEY_POST_FLOOD,
   KEY_REPEAT_THROW,
   KEY_REPEAT_WORD,
 } from "../../config";
@@ -42,6 +43,14 @@ export const HomePageChild = (props: { params: IParameter }) => {
         step={1}
         defaultValue={params[KEY_REPEAT_WORD]}
         storageKey={KEY_REPEAT_WORD}
+      />
+      <RangeSlider
+        label={"投稿速度 (個/実行間隔)"}
+        min={1}
+        max={20}
+        step={1}
+        defaultValue={params[KEY_POST_FLOOD]}
+        storageKey={KEY_POST_FLOOD}
       />
       <RangeSlider
         label={"制御対象コメント数 (個)"}

@@ -82,7 +82,7 @@ export const hidePostFlood = (param: IParameter, chats: IChat[]) => {
   }
 
   for (const [author, count] of Object.entries(authorCount)) {
-    if (count >= 2) {
+    if (count >= param.post_flood_threshold) {
       for (const c of authorToChats[author]) {
         hide(c);
       }
@@ -99,6 +99,7 @@ export const moderate = async (
     .slice(-param.look_chats)
     .filter((chat) => !chat.element.dataset.isHiddenByModekun);
 
+  hidePostFlood(param, publicChats);
   hideRepeatThrow(param, publicChats);
   hideNgWords(param, publicChats);
   hideRepeatWords(param, kuromojiWorkerApi, publicChats);

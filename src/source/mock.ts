@@ -22,6 +22,12 @@ export const Mock: ISource = {
         message: "最強最強最強",
         element: document.createElement("div"),
       },
+      {
+        key: "test2こんにちは",
+        author: "test2",
+        message: "こんにちは",
+        element: document.createElement("div"),
+      },
     ];
   },
 };
