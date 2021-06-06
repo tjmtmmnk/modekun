@@ -64,6 +64,32 @@ export const hideRepeatWords = async (
   });
 };
 
+export const hidePostFlood = (param: IParameter, chats: IChat[]) => {
+  const authorCount: { [author: string]: number } = {};
+  const authorToChats: { [author: string]: IChat[] } = {};
+
+  for (const chat of chats) {
+    if (!authorCount[chat.author]) {
+      authorCount[chat.author] = 1;
+    } else {
+      authorCount[chat.author]++;
+    }
+    if (!authorToChats[chat.author]) {
+      authorToChats[chat.author] = [chat];
+    } else {
+      authorToChats[chat.author].push(chat);
+    }
+  }
+
+  for (const [author, count] of Object.entries(authorCount)) {
+    if (count >= 2) {
+      for (const c of authorToChats[author]) {
+        hide(c);
+      }
+    }
+  }
+};
+
 export const moderate = async (
   kuromojiWorkerApi: IKuromojiWorker,
   param: IParameter,
