@@ -29,6 +29,7 @@
     "glob": "^7.1.6",
     "jest": "^26.6.3",
     "kuromojin": "^3.0.0",
+    "obtain-unicode": "^0.0.5",
     "prettier": "^2.2.1",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
