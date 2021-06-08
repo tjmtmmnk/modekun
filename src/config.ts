@@ -1,4 +1,4 @@
-import { getItems } from "./storage";
+import { getItems, setItem } from "./storage";
 
 export const KEY_REPEAT_THROW = "repeat_throw_threshold";
 export const KEY_REPEAT_WORD = "repeat_word_threshold";
@@ -100,4 +100,17 @@ export const getParams = async (): Promise<IParameter> => {
   }
 
   return params;
+};
+
+// deal with difference of params between version
+export const setParamsWithCompatibility = async (): Promise<void> => {
+  const currentParams = await getItems(paramKeys());
+  const newParams = { ...currentParams };
+  for (const key of paramKeys()) {
+    if (!currentParams[key]) {
+      // @ts-ignore
+      newParams[key] = defaultParams[key];
+    }
+  }
+  await setItem(serializedParams(newParams as IParameter));
 };
