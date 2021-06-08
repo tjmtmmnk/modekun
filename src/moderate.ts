@@ -95,9 +95,9 @@ export const moderate = async (
   param: IParameter,
   chats: IChat[]
 ): Promise<void> => {
-  const publicChats = chats
-    .slice(-param.look_chats)
-    .filter((chat) => !chat.element.dataset.isHiddenByModekun);
+  const publicChats = chats.filter(
+    (chat) => !chat.element.dataset.isHiddenByModekun
+  );
 
   hidePostFlood(param, publicChats);
   hideRepeatThrow(param, publicChats);

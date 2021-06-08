@@ -4,21 +4,24 @@ import { ISource } from "./source";
 
 const chatSelector = {
   chatSection: "#chatframe",
-  chatBlock: ".yt-live-chat-text-message-renderer",
+  chatBlock: "#content",
   message: "#message",
   author: "#author-name",
 };
 
 export const Youtube: ISource = {
-  extractChats(): IChat[] {
+  extractChats(lookNum: number): IChat[] {
     const chatSection = document.querySelector<HTMLIFrameElement>(
       chatSelector.chatSection
     );
     if (!chatSection || !chatSection.contentWindow) return [];
 
-    const chatBlocks = chatSection.contentWindow.document.querySelectorAll<HTMLElement>(
-      chatSelector.chatBlock
-    );
+    const chatBlocks = [
+      ...chatSection.contentWindow.document.querySelectorAll<HTMLElement>(
+        chatSelector.chatBlock
+      ),
+    ].slice(-lookNum);
+
     const chats: IChat[] = [];
     chatBlocks.forEach((chatBlock) => {
       const messageElement = chatBlock.querySelector<HTMLElement>(

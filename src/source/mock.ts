@@ -2,7 +2,7 @@ import { ISource } from "./source";
 import { IChat } from "../chat";
 
 export const Mock: ISource = {
-  extractChats(): IChat[] {
+  extractChats(lookNum: number): IChat[] {
     return [
       {
         key: "test1こんにちは",
