@@ -57,7 +57,7 @@ export const parseParams = (paramsJson: any): IParameter => {
     ...paramsJson,
     ng_words: JSON.parse(paramsJson[KEY_NG_WORDS]),
   };
-  if (!isParameter(params)) throw "incorrect parameter format";
+  if (!isParameter(params)) throw new Error("incorrect parameter format");
 
   return params;
 };
@@ -97,8 +97,10 @@ export const getNgWords = async (): Promise<string[]> => {
 };
 
 export const getParams = async (): Promise<IParameter> => {
-  const paramsJson = await getItems(paramKeys()).catch(() => defaultParams);
-  let params = defaultParams;
+  const paramsJson = await getItems(paramKeys()).catch((e) => {
+    throw e;
+  });
+  let params: IParameter;
   try {
     params = parseParams(paramsJson);
   } catch (e) {
