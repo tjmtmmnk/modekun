@@ -36,6 +36,11 @@ const StyledLabel = styled.span`
   color: #335599;
 `;
 
+const StyledUnitLabel = styled.span`
+  margin-left: 0.5em;
+  font-size: 0.5em;
+`;
+
 interface IRangeValueProps {
   newValue: number;
   newPosition: number;
@@ -107,13 +112,14 @@ const StyledLine = styled.input`
 
 export const RangeSlider = (props: {
   label: string;
+  unitLabel: string;
   min: number;
   max: number;
   step: number;
   defaultValue: number;
   storageKey: string;
 }) => {
-  const { label, min, max, step, defaultValue, storageKey } = props;
+  const { label, unitLabel, min, max, step, defaultValue, storageKey } = props;
   const [currentValue, setValue] = React.useState(defaultValue);
 
   React.useEffect(() => {
@@ -142,7 +148,10 @@ export const RangeSlider = (props: {
 
   return (
     <StyledContainer>
-      <StyledLabel>{label}</StyledLabel>
+      <StyledLabel>
+        {label}
+        <StyledUnitLabel>({unitLabel})</StyledUnitLabel>
+      </StyledLabel>
       <StyledRangeSlider>
         <StyledRangeValueContainer
           newValue={newValue}
