@@ -13,6 +13,7 @@ import {
   OBSERVATION_INTERVAL_MS,
   YOUTUBE_REGEX,
   MILDOM_REGEX,
+  setParamsWithCompatibility,
 } from "./config";
 import { setItem } from "./storage";
 import { IKuromojiWorker } from "./kuromoji.worker";
@@ -43,18 +44,18 @@ window.addEventListener("load", async () => {
       return;
     }
 
-    const chats = source.extractChats();
-    if (chats.length < 1) {
-      // NOTE: Don't terminate worker here.
-      // Because an archive video may be able to open a chat section which was closed at first.
+    const params = await getParams().catch(
+      async () => await setParamsWithCompatibility()
+    );
+    if (!params) {
       timerId = window.setTimeout(modekun, DEFAULT_EXECUTION_INTERVAL_MS);
       return;
     }
 
-    const params = await getParams().catch(
-      async () => await setItem(serializedParams(defaultParams))
-    );
-    if (!params) {
+    const chats = source.extractChats(params.look_chats);
+    if (chats.length < 1) {
+      // NOTE: Don't terminate worker here.
+      // Because an archive video may be able to open a chat section which was closed at first.
       timerId = window.setTimeout(modekun, DEFAULT_EXECUTION_INTERVAL_MS);
       return;
     }

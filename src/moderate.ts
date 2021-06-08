@@ -64,15 +64,42 @@ export const hideRepeatWords = async (
   });
 };
 
+export const hidePostFlood = (param: IParameter, chats: IChat[]) => {
+  const authorCount: { [author: string]: number } = {};
+  const authorToChats: { [author: string]: IChat[] } = {};
+
+  for (const chat of chats) {
+    if (!authorCount[chat.author]) {
+      authorCount[chat.author] = 1;
+    } else {
+      authorCount[chat.author]++;
+    }
+    if (!authorToChats[chat.author]) {
+      authorToChats[chat.author] = [chat];
+    } else {
+      authorToChats[chat.author].push(chat);
+    }
+  }
+
+  for (const [author, count] of Object.entries(authorCount)) {
+    if (count >= param.post_flood_threshold) {
+      for (const c of authorToChats[author]) {
+        hide(c);
+      }
+    }
+  }
+};
+
 export const moderate = async (
   kuromojiWorkerApi: IKuromojiWorker,
   param: IParameter,
   chats: IChat[]
 ): Promise<void> => {
-  const publicChats = chats
-    .slice(-param.look_chats)
-    .filter((chat) => !chat.element.dataset.isHiddenByModekun);
+  const publicChats = chats.filter(
+    (chat) => !chat.element.dataset.isHiddenByModekun
+  );
 
+  hidePostFlood(param, publicChats);
   hideRepeatThrow(param, publicChats);
   hideNgWords(param, publicChats);
   hideRepeatWords(param, kuromojiWorkerApi, publicChats);
@@ -80,7 +107,7 @@ export const moderate = async (
 
 const hide = (chat: IChat) => {
   if (!chat.element.dataset.isHiddenByModekun) {
-    chat.element.style.display = "none";
+    chat.element.style.visibility = "hidden";
     chat.element.dataset.isHiddenByModekun = "1";
   }
 };

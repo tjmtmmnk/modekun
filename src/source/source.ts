@@ -1,5 +1,5 @@
 import { IChat } from "../chat";
 
 export interface ISource {
-  extractChats: () => IChat[];
+  extractChats: (lookNum: number) => IChat[];
 }

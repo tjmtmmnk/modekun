@@ -1,5 +1,10 @@
 import { IChat } from "../chat";
-import { hideNgWords, hideRepeatThrow, hideRepeatWords } from "../moderate";
+import {
+  hideNgWords,
+  hidePostFlood,
+  hideRepeatThrow,
+  hideRepeatWords,
+} from "../moderate";
 import { IKuromojiWorker } from "../kuromoji.worker";
 import { IParameter } from "../config";
 import { KuromojiToken } from "kuromojin";
@@ -8,6 +13,7 @@ describe("moderate", () => {
   const params: IParameter = {
     repeat_throw_threshold: 2,
     repeat_word_threshold: 2,
+    post_flood_threshold: 2,
     look_chats: 10,
     execution_interval: 1000,
     ng_words: ["なう"],
@@ -113,6 +119,36 @@ describe("moderate", () => {
       expect(chats[1].element.dataset.isHiddenByModekun).toBeTruthy();
       expect(chats[2].element.dataset.isHiddenByModekun).toBeTruthy();
       expect(chats[3].element.dataset.isHiddenByModekun).toBeFalsy();
+    });
+  });
+
+  describe("hidePostFlood", () => {
+    const chats: IChat[] = [
+      {
+        key: "test1こんにちは",
+        author: "test1",
+        message: "こんにちは",
+        element: document.createElement("div"),
+      },
+      {
+        key: "test1こんにち",
+        author: "test1",
+        message: "こんにち",
+        element: document.createElement("div"),
+      },
+      {
+        key: "test2こんにちは",
+        author: "test2",
+        message: "こんにちは",
+        element: document.createElement("div"),
+      },
+    ];
+
+    test("can hide", () => {
+      hidePostFlood(params, chats);
+      expect(chats[0].element.dataset.isHiddenByModekun).toBeTruthy();
+      expect(chats[1].element.dataset.isHiddenByModekun).toBeTruthy();
+      expect(chats[2].element.dataset.isHiddenByModekun).toBeFalsy();
     });
   });
 });

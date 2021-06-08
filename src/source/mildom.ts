@@ -6,10 +6,11 @@ const chatSelector = {
 };
 
 export const Mildom: ISource = {
-  extractChats(): IChat[] {
-    const chatBlocks = document.querySelectorAll<HTMLElement>(
-      chatSelector.chatBlock
-    );
+  extractChats(lookNum: number): IChat[] {
+    const chatBlocks = [
+      ...document.querySelectorAll<HTMLElement>(chatSelector.chatBlock),
+    ].slice(-lookNum);
+
     const chats: IChat[] = [];
     for (const chatBlock of chatBlocks) {
       if (!chatBlock.textContent) continue;

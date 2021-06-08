@@ -3,6 +3,7 @@ import {
   IParameter,
   KEY_EXECUTION_INTERVAL,
   KEY_LOOK_CHATS,
+  KEY_POST_FLOOD,
   KEY_REPEAT_THROW,
   KEY_REPEAT_WORD,
 } from "../../config";
@@ -28,7 +29,8 @@ export const HomePageChild = (props: { params: IParameter }) => {
   return (
     <StyledContainer>
       <RangeSlider
-        label={"連投閾値 (回)"}
+        label={"連投閾値"}
+        unitLabel={"回"}
         min={1}
         max={10}
         step={1}
@@ -36,7 +38,8 @@ export const HomePageChild = (props: { params: IParameter }) => {
         storageKey={KEY_REPEAT_THROW}
       />
       <RangeSlider
-        label={"単語繰り返し閾値 (回)"}
+        label={"単語繰り返し閾値"}
+        unitLabel={"回"}
         min={1}
         max={20}
         step={1}
@@ -44,7 +47,17 @@ export const HomePageChild = (props: { params: IParameter }) => {
         storageKey={KEY_REPEAT_WORD}
       />
       <RangeSlider
-        label={"制御対象コメント数 (個)"}
+        label={"投稿頻度"}
+        unitLabel={"個/コメント数"}
+        min={1}
+        max={50}
+        step={1}
+        defaultValue={params[KEY_POST_FLOOD]}
+        storageKey={KEY_POST_FLOOD}
+      />
+      <RangeSlider
+        label={"制御対象コメント数"}
+        unitLabel={"個"}
         min={1}
         max={250}
         step={1}
@@ -52,7 +65,8 @@ export const HomePageChild = (props: { params: IParameter }) => {
         storageKey={KEY_LOOK_CHATS}
       />
       <RangeSlider
-        label={"実行間隔 (ms)"}
+        label={"実行間隔"}
+        unitLabel={"ms"}
         min={500}
         max={10000}
         step={100}
