@@ -2,6 +2,7 @@ import * as StorageModule from "../storage";
 import {
   defaultParams,
   KEY_EXECUTION_INTERVAL,
+  KEY_LENGTH,
   KEY_LOOK_CHATS,
   KEY_NG_WORDS,
   KEY_POST_FLOOD,
@@ -24,6 +25,7 @@ describe("setParamsWithCompatibility", () => {
       Promise.resolve({
         [KEY_REPEAT_THROW]: 2,
         [KEY_REPEAT_WORD]: 2,
+        [KEY_LENGTH]: 3,
         [KEY_LOOK_CHATS]: 50,
         [KEY_EXECUTION_INTERVAL]: 3000,
         [KEY_NG_WORDS]: [],
@@ -36,6 +38,7 @@ describe("setParamsWithCompatibility", () => {
       [KEY_REPEAT_THROW]: 2,
       [KEY_REPEAT_WORD]: 2,
       [KEY_POST_FLOOD]: 5,
+      [KEY_LENGTH]: 3,
       [KEY_LOOK_CHATS]: 50,
       [KEY_EXECUTION_INTERVAL]: 3000,
       [KEY_NG_WORDS]: [],

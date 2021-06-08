@@ -2,6 +2,7 @@ import { RangeSlider } from "./RangeSlider";
 import {
   IParameter,
   KEY_EXECUTION_INTERVAL,
+  KEY_LENGTH,
   KEY_LOOK_CHATS,
   KEY_POST_FLOOD,
   KEY_REPEAT_THROW,
@@ -54,6 +55,15 @@ export const HomePageChild = (props: { params: IParameter }) => {
         step={1}
         defaultValue={params[KEY_POST_FLOOD]}
         storageKey={KEY_POST_FLOOD}
+      />
+      <RangeSlider
+        label={"文字数上限"}
+        unitLabel={"文字"}
+        min={1}
+        max={200}
+        step={1}
+        defaultValue={params[KEY_LENGTH]}
+        storageKey={KEY_LENGTH}
       />
       <RangeSlider
         label={"制御対象コメント数"}

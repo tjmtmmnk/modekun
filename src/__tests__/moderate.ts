@@ -15,6 +15,7 @@ describe("moderate", () => {
     repeat_throw_threshold: 2,
     repeat_word_threshold: 2,
     post_flood_threshold: 2,
+    length_threshold: 3,
     look_chats: 10,
     execution_interval: 1000,
     ng_words: ["なう"],

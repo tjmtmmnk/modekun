@@ -3,6 +3,7 @@ import { getItems, setItem } from "./storage";
 export const KEY_REPEAT_THROW = "repeat_throw_threshold";
 export const KEY_REPEAT_WORD = "repeat_word_threshold";
 export const KEY_POST_FLOOD = "post_flood_threshold";
+export const KEY_LENGTH = "length_threshold";
 export const KEY_LOOK_CHATS = "look_chats";
 export const KEY_EXECUTION_INTERVAL = "execution_interval";
 export const KEY_NG_WORDS = "ng_words";
@@ -12,6 +13,7 @@ export const paramKeys = () => {
     KEY_REPEAT_THROW,
     KEY_REPEAT_WORD,
     KEY_POST_FLOOD,
+    KEY_LENGTH,
     KEY_LOOK_CHATS,
     KEY_EXECUTION_INTERVAL,
     KEY_NG_WORDS,
@@ -21,6 +23,7 @@ export const paramKeys = () => {
 const DEFAULT_REPEAT_THROW_THRESHOLD = 2;
 const DEFAULT_REPEAT_WORD_THRESHOLD = 2;
 const DEFAULT_POST_FLOOD_THRESHOLD = 5;
+const DEFAULT_LENGTH_THRESHOLD = 200;
 const DEFAULT_LOOK_CHATS = 50;
 const DEFAULT_NG_WORDS: string[] = [];
 
@@ -34,6 +37,7 @@ export const defaultParams: IParameter = {
   [KEY_REPEAT_THROW]: DEFAULT_REPEAT_THROW_THRESHOLD,
   [KEY_REPEAT_WORD]: DEFAULT_REPEAT_WORD_THRESHOLD,
   [KEY_POST_FLOOD]: DEFAULT_POST_FLOOD_THRESHOLD,
+  [KEY_LENGTH]: DEFAULT_LENGTH_THRESHOLD,
   [KEY_LOOK_CHATS]: DEFAULT_LOOK_CHATS,
   [KEY_EXECUTION_INTERVAL]: DEFAULT_EXECUTION_INTERVAL_MS,
   [KEY_NG_WORDS]: DEFAULT_NG_WORDS,
@@ -62,6 +66,7 @@ export interface IParameter {
   repeat_throw_threshold: number;
   repeat_word_threshold: number;
   post_flood_threshold: number;
+  length_threshold: number;
   look_chats: number;
   execution_interval: number;
   ng_words: string[];
@@ -72,6 +77,7 @@ export const isParameter = (arg: any): arg is IParameter => {
     arg.repeat_throw_threshold !== undefined &&
     arg.repeat_word_threshold !== undefined &&
     arg.post_flood_threshold !== undefined &&
+    arg.length_threshold !== undefined &&
     arg.look_chats !== undefined &&
     arg.execution_interval !== undefined &&
     arg.ng_words !== undefined
