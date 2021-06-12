@@ -11,6 +11,8 @@ Now, modekun can be used only in Youtube and Mildom, and only Japanese.
   - repeat post 
   - repeat word in a chat
   - NG word
+  - post frequency
+  - limit length
   
 popup looks like this
 
@@ -53,8 +55,22 @@ user B: ハロー
 ```
 If `NG word = こん`, chats posted by user A will be hidden.
 
+### post frequency
+post frequency(投稿頻度) can control how many posts by the same user in obtained chats.
+```
+user A: abc
+user A: def
+user B: こんにちは
+```
+If `post frequency threshold = 2`, chats posted by user A will be hidden.
 
----
+### limit length
+limit length(文字数上限) can control maximum the length of a chat.
+```
+user A: abcdefghi...z
+user B: こんにちは
+```
+If `limit length = 10`, chats posted by user A will be hidden.
 
 ## Prerequisites
 
