@@ -7,6 +7,7 @@ const KEY_DOWN = 40;
 const StyledContainer = styled.div`
   align-items: stretch;
   display: flex;
+  height: 55px;
   justify-content: center;
   align-content: stretch;
   line-height: 1.5;
@@ -23,14 +24,15 @@ const StyledRangeSlider = styled.div`
   width: 100px;
   height: auto;
   position: relative;
+  right: 15px;
   display: flex;
-  margin-top: 20px;
+  margin-top: 18px;
 `;
 
 const StyledLabel = styled.span`
-  margin-right: 3em;
-  text-align: center;
-  padding-top: 24px;
+  margin-right: auto;
+  position: relative;
+  top: 17px;
   font-weight: bold;
   letter-spacing: 0.1em;
   color: #335599;
