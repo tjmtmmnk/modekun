@@ -1,5 +1,5 @@
 import { IChat } from "./chat";
-import { IKuromojiWorker, KuromojiWorker } from "./kuromoji.worker";
+import { IKuromojiWorker } from "./kuromoji.worker";
 import { wrap } from "comlink";
 import { IParameter } from "./config";
 
@@ -90,6 +90,14 @@ export const hidePostFlood = (param: IParameter, chats: IChat[]) => {
   }
 };
 
+export const hideByLength = (params: IParameter, chats: IChat[]) => {
+  for (const chat of chats) {
+    if (chat.message.length >= params.length_threshold) {
+      hide(chat);
+    }
+  }
+};
+
 export const moderate = async (
   kuromojiWorkerApi: IKuromojiWorker,
   param: IParameter,
@@ -99,10 +107,11 @@ export const moderate = async (
     (chat) => !chat.element.dataset.isHiddenByModekun
   );
 
+  hideRepeatWords(param, kuromojiWorkerApi, publicChats);
   hidePostFlood(param, publicChats);
   hideRepeatThrow(param, publicChats);
   hideNgWords(param, publicChats);
-  hideRepeatWords(param, kuromojiWorkerApi, publicChats);
+  hideByLength(param, publicChats);
 };
 
 const hide = (chat: IChat) => {

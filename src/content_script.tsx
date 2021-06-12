@@ -7,20 +7,19 @@ import {
 import { Youtube } from "./source/youtube";
 import {
   DEFAULT_EXECUTION_INTERVAL_MS,
-  defaultParams,
-  serializedParams,
   getParams,
   OBSERVATION_INTERVAL_MS,
   YOUTUBE_REGEX,
   MILDOM_REGEX,
   setParamsWithCompatibility,
 } from "./config";
-import { setItem } from "./storage";
 import { IKuromojiWorker } from "./kuromoji.worker";
 import { Mildom } from "./source/mildom";
 
 let worker: Worker | null;
 let api: IKuromojiWorker | null;
+
+let lookChats = 0;
 
 let timerId: number;
 
@@ -44,6 +43,14 @@ window.addEventListener("load", async () => {
       return;
     }
 
+    const chats = source.extractChats(lookChats);
+    if (chats.length < 1) {
+      // NOTE: Don't terminate worker here.
+      // Because an archive video may be able to open a chat section which was closed at first.
+      timerId = window.setTimeout(modekun, DEFAULT_EXECUTION_INTERVAL_MS);
+      return;
+    }
+
     const params = await getParams().catch(
       async () => await setParamsWithCompatibility()
     );
@@ -51,14 +58,7 @@ window.addEventListener("load", async () => {
       timerId = window.setTimeout(modekun, DEFAULT_EXECUTION_INTERVAL_MS);
       return;
     }
-
-    const chats = source.extractChats(params.look_chats);
-    if (chats.length < 1) {
-      // NOTE: Don't terminate worker here.
-      // Because an archive video may be able to open a chat section which was closed at first.
-      timerId = window.setTimeout(modekun, DEFAULT_EXECUTION_INTERVAL_MS);
-      return;
-    }
+    lookChats = params.look_chats;
 
     await moderate(api, params, chats);
 

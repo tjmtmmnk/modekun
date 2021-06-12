@@ -1,5 +1,6 @@
 import { IChat } from "../chat";
 import {
+  hideByLength,
   hideNgWords,
   hidePostFlood,
   hideRepeatThrow,
@@ -14,6 +15,7 @@ describe("moderate", () => {
     repeat_throw_threshold: 2,
     repeat_word_threshold: 2,
     post_flood_threshold: 2,
+    length_threshold: 3,
     look_chats: 10,
     execution_interval: 1000,
     ng_words: ["なう"],
@@ -149,6 +151,56 @@ describe("moderate", () => {
       expect(chats[0].element.dataset.isHiddenByModekun).toBeTruthy();
       expect(chats[1].element.dataset.isHiddenByModekun).toBeTruthy();
       expect(chats[2].element.dataset.isHiddenByModekun).toBeFalsy();
+    });
+  });
+
+  describe("hideByLength", () => {
+    const chats: IChat[] = [
+      {
+        key: "test1ab",
+        author: "test1",
+        message: "ab",
+        element: document.createElement("div"),
+      },
+      {
+        key: "test1あい",
+        author: "test1",
+        message: "あい",
+        element: document.createElement("div"),
+      },
+      {
+        key: "test1吉吉",
+        author: "test1",
+        message: "吉吉",
+        element: document.createElement("div"),
+      },
+      {
+        key: "test1🔥",
+        author: "test1",
+        message: "🔥",
+        element: document.createElement("div"),
+      },
+      {
+        key: "test1😇😇",
+        author: "test1",
+        message: "😇😇",
+        element: document.createElement("div"),
+      },
+      {
+        key: "test1文字数オーバー",
+        author: "test1",
+        message: "文字数オーバー",
+        element: document.createElement("div"),
+      },
+    ];
+    test("can hide", () => {
+      hideByLength(params, chats);
+      expect(chats[0].element.dataset.isHiddenByModekun).toBeFalsy();
+      expect(chats[1].element.dataset.isHiddenByModekun).toBeFalsy();
+      expect(chats[2].element.dataset.isHiddenByModekun).toBeFalsy();
+      expect(chats[3].element.dataset.isHiddenByModekun).toBeFalsy();
+      expect(chats[4].element.dataset.isHiddenByModekun).toBeTruthy();
+      expect(chats[5].element.dataset.isHiddenByModekun).toBeTruthy();
     });
   });
 });
