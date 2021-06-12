@@ -2,7 +2,6 @@ import { IChat } from "./chat";
 import { IKuromojiWorker } from "./kuromoji.worker";
 import { wrap } from "comlink";
 import { IParameter } from "./config";
-import { obtainUnicode } from "obtain-unicode";
 
 export const createKuromojiWorker = async (): Promise<Worker> => {
   const worker = await fetch(chrome.extension.getURL("js/worker.js"));
@@ -93,8 +92,7 @@ export const hidePostFlood = (param: IParameter, chats: IChat[]) => {
 
 export const hideByLength = (params: IParameter, chats: IChat[]) => {
   for (const chat of chats) {
-    const codePoints = obtainUnicode(chat.message);
-    if (codePoints.length >= params.length_threshold) {
+    if (chat.message.length >= params.length_threshold) {
       hide(chat);
     }
   }

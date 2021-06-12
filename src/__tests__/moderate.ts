@@ -169,15 +169,21 @@ describe("moderate", () => {
         element: document.createElement("div"),
       },
       {
-        key: "test1😇😇",
-        author: "test1",
-        message: "😇😇",
-        element: document.createElement("div"),
-      },
-      {
         key: "test1吉吉",
         author: "test1",
         message: "吉吉",
+        element: document.createElement("div"),
+      },
+      {
+        key: "test1🔥",
+        author: "test1",
+        message: "🔥",
+        element: document.createElement("div"),
+      },
+      {
+        key: "test1😇😇",
+        author: "test1",
+        message: "😇😇",
         element: document.createElement("div"),
       },
       {
@@ -194,6 +200,7 @@ describe("moderate", () => {
       expect(chats[2].element.dataset.isHiddenByModekun).toBeFalsy();
       expect(chats[3].element.dataset.isHiddenByModekun).toBeFalsy();
       expect(chats[4].element.dataset.isHiddenByModekun).toBeTruthy();
+      expect(chats[5].element.dataset.isHiddenByModekun).toBeTruthy();
     });
   });
 });
