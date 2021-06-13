@@ -1,4 +1,4 @@
-import { getItems, setItem } from "./storage";
+import { getItems } from "./storage";
 
 export const KEY_REPEAT_THROW = "repeat_throw_threshold";
 export const KEY_REPEAT_WORD = "repeat_word_threshold";
@@ -43,25 +43,6 @@ export const defaultParams: IParameter = {
   [KEY_NG_WORDS]: DEFAULT_NG_WORDS,
 };
 
-export const serializedParams = (
-  params: IParameter
-): { [key: string]: any } => {
-  return {
-    ...params,
-    [KEY_NG_WORDS]: JSON.stringify(params.ng_words),
-  };
-};
-
-export const parseParams = (paramsJson: any): IParameter => {
-  const params = {
-    ...paramsJson,
-    ng_words: JSON.parse(paramsJson[KEY_NG_WORDS]),
-  };
-  if (!isParameter(params)) throw new Error("incorrect parameter format");
-
-  return params;
-};
-
 export interface IParameter {
   repeat_throw_threshold: number;
   repeat_word_threshold: number;
@@ -87,38 +68,13 @@ export const isParameter = (arg: any): arg is IParameter => {
 export const getNgWords = async (): Promise<string[]> => {
   const ngWordsJson: any = await getItems([KEY_NG_WORDS]);
   if (!ngWordsJson) return [];
-  let ngWords: string[];
-  try {
-    ngWords = JSON.parse(ngWordsJson[KEY_NG_WORDS]);
-  } catch (e) {
-    throw e;
-  }
-  return ngWords;
+  const ngWords = ngWordsJson[KEY_NG_WORDS];
+  return Array.isArray(ngWords) ? ngWords : [];
 };
 
 export const getParams = async (): Promise<IParameter> => {
-  const paramsJson = await getItems(paramKeys()).catch((e) => {
+  const params = await getItems(paramKeys()).catch((e) => {
     throw e;
   });
-  let params: IParameter;
-  try {
-    params = parseParams(paramsJson);
-  } catch (e) {
-    throw e;
-  }
-
-  return params;
-};
-
-// deal with difference of params between version
-export const setParamsWithCompatibility = async (): Promise<void> => {
-  const currentParams = await getItems(paramKeys());
-  const newParams = { ...currentParams };
-  for (const key of paramKeys()) {
-    if (!currentParams[key]) {
-      // @ts-ignore
-      newParams[key] = defaultParams[key];
-    }
-  }
-  await setItem(serializedParams(newParams as IParameter));
+  return { ...defaultParams, ...params };
 };

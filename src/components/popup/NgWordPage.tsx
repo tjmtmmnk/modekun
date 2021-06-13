@@ -28,12 +28,12 @@ const reducer = (state: State, action: Action): State => {
     }
     case "save": {
       const ngWords = [...state.ngWords, action.ngWord];
-      setItem({ [KEY_NG_WORDS]: JSON.stringify(ngWords) });
+      setItem({ [KEY_NG_WORDS]: ngWords });
       return { ...state, ngWords };
     }
     case "delete": {
       const ngWords = state.ngWords.filter((word) => word !== action.ngWord);
-      setItem({ [KEY_NG_WORDS]: JSON.stringify(ngWords) });
+      setItem({ [KEY_NG_WORDS]: ngWords });
       return { ...state, ngWords };
     }
   }
