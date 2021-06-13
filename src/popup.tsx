@@ -7,7 +7,7 @@ import {
   defaultParams,
   isParameter,
   IParameter,
-  serializedParams,
+  getParams,
 } from "./config";
 
 import { getItems } from "./storage";
@@ -16,14 +16,14 @@ export const useParams = (): IParameter | undefined => {
   const [params, setParams] = React.useState<IParameter>();
   let isMounted = true;
   React.useEffect(() => {
-    getItems(paramKeys())
+    getParams()
       .then((p) => {
         if (isMounted) {
           if (isParameter(p)) {
             setParams(p);
           } else {
             setParams(defaultParams);
-            chrome.storage.sync.set(serializedParams(defaultParams));
+            chrome.storage.sync.set(defaultParams);
           }
         }
       })

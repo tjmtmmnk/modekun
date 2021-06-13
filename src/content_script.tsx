@@ -11,10 +11,10 @@ import {
   OBSERVATION_INTERVAL_MS,
   YOUTUBE_REGEX,
   MILDOM_REGEX,
-  setParamsWithCompatibility,
 } from "./config";
 import { IKuromojiWorker } from "./kuromoji.worker";
 import { Mildom } from "./source/mildom";
+import { setItem } from "./storage";
 
 let worker: Worker | null;
 let api: IKuromojiWorker | null;
@@ -24,6 +24,9 @@ let lookChats = 0;
 let timerId: number;
 
 window.addEventListener("load", async () => {
+  const params = await getParams().catch((e) => console.error(e));
+  params && (await setItem(params));
+
   const currentLocation = window.location.href;
   const source = YOUTUBE_REGEX.test(currentLocation)
     ? Youtube
@@ -51,9 +54,7 @@ window.addEventListener("load", async () => {
       return;
     }
 
-    const params = await getParams().catch(
-      async () => await setParamsWithCompatibility()
-    );
+    const params = await getParams().catch((e) => console.error(e));
     if (!params) {
       timerId = window.setTimeout(modekun, DEFAULT_EXECUTION_INTERVAL_MS);
       return;
