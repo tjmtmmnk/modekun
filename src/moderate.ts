@@ -116,7 +116,13 @@ export const moderate = async (
 
 const hide = (chat: IChat) => {
   if (!chat.element.dataset.isHiddenByModekun) {
-    chat.element.style.visibility = "hidden";
+    chat.element.style.opacity = "0";
     chat.element.dataset.isHiddenByModekun = "1";
+    chat.element.addEventListener("mouseenter", () => {
+      chat.element.style.opacity = "1";
+    });
+    chat.element.addEventListener("mouseleave", () => {
+      chat.element.style.opacity = "0";
+    });
   }
 };
