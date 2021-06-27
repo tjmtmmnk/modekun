@@ -1,5 +1,6 @@
 import * as React from "react";
 import styled from "styled-components";
+import { theme } from "../style/theme";
 
 const KEY_UP = 38;
 const KEY_DOWN = 40;
@@ -35,7 +36,7 @@ const StyledLabel = styled.span`
   top: 17px;
   font-weight: bold;
   letter-spacing: 0.1em;
-  color: #335599;
+  color: ${(props) => props.theme.labelColor};
 `;
 
 const StyledUnitLabel = styled.span`
@@ -150,7 +151,7 @@ export const RangeSlider = (props: {
 
   return (
     <StyledContainer>
-      <StyledLabel>
+      <StyledLabel theme={theme}>
         {label}
         <StyledUnitLabel>({unitLabel})</StyledUnitLabel>
       </StyledLabel>
