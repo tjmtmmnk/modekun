@@ -2,15 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import PopupPage from "./components/popup";
 
-import {
-  paramKeys,
-  defaultParams,
-  isParameter,
-  IParameter,
-  getParams,
-} from "./config";
-
-import { getItems } from "./storage";
+import { defaultParams, isParameter, IParameter, getParams } from "./config";
 
 export const useParams = (): IParameter | undefined => {
   const [params, setParams] = React.useState<IParameter>();
