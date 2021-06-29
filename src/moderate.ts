@@ -36,7 +36,7 @@ export const hideRepeatThrow = (param: IParameter, chats: IChat[]) => {
   }
   for (const chat of chats) {
     if (duplicateCount[chat.key] >= param.repeat_throw_threshold) {
-      hide("連投", chat);
+      hide(param, "連投", chat);
     }
   }
 };
@@ -45,7 +45,7 @@ export const hideNgWords = (param: IParameter, chats: IChat[]) => {
   for (const chat of chats) {
     for (const ngWord of param.ng_words) {
       if (chat.message.includes(ngWord)) {
-        hide("NGワード", chat);
+        hide(param, "NGワード", chat);
       }
     }
   }
@@ -59,7 +59,7 @@ export const hideRepeatWords = async (
   const counts = await api.getMaxRepeatWordCounts(chats.map((c) => c.message));
   chats.forEach((chat, i) => {
     if (counts[i] >= param.repeat_word_threshold) {
-      hide("単語繰り返し", chat);
+      hide(param, "単語繰り返し", chat);
     }
   });
 };
@@ -84,16 +84,16 @@ export const hidePostFlood = (param: IParameter, chats: IChat[]) => {
   for (const [author, count] of Object.entries(authorCount)) {
     if (count >= param.post_flood_threshold) {
       for (const c of authorToChats[author]) {
-        hide("投稿頻度", c);
+        hide(param, "投稿頻度", c);
       }
     }
   }
 };
 
-export const hideByLength = (params: IParameter, chats: IChat[]) => {
+export const hideByLength = (param: IParameter, chats: IChat[]) => {
   for (const chat of chats) {
-    if (chat.message.length >= params.length_threshold) {
-      hide("文字数制限", chat);
+    if (chat.message.length >= param.length_threshold) {
+      hide(param, "文字数制限", chat);
     }
   }
 };
@@ -114,25 +114,29 @@ export const moderate = async (
   hideByLength(param, publicChats);
 };
 
-const hide = (reason: string, chat: IChat) => {
+const hide = (param: IParameter, reason: string, chat: IChat) => {
   if (!chat.element.dataset.isHiddenByModekun) {
     chat.element.style.opacity = "0";
     chat.element.dataset.isHiddenByModekun = "1";
 
-    const reasonLabel = document.createElement("span");
-    reasonLabel.innerText = reason;
-    reasonLabel.style.color = "grey";
-    reasonLabel.style.position = "absolute";
-    reasonLabel.style.left = "50%";
-    chat.element.insertAdjacentElement("beforebegin", reasonLabel);
+    const reasonLabel = param.reason_switch
+      ? document.createElement("span")
+      : null;
+    if (reasonLabel) {
+      reasonLabel.innerText = reason;
+      reasonLabel.style.color = "grey";
+      reasonLabel.style.position = "absolute";
+      reasonLabel.style.left = "50%";
+      chat.element.insertAdjacentElement("beforebegin", reasonLabel);
+    }
 
     chat.element.addEventListener("mouseenter", () => {
       chat.element.style.opacity = "1";
-      reasonLabel.style.display = "none";
+      if (reasonLabel) reasonLabel.style.display = "none";
     });
     chat.element.addEventListener("mouseleave", () => {
       chat.element.style.opacity = "0";
-      reasonLabel.style.display = "inline";
+      if (reasonLabel) reasonLabel.style.display = "inline";
     });
   }
 };
