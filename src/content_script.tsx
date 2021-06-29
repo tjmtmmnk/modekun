@@ -6,6 +6,7 @@ import {
 } from "./moderate";
 import {
   DEFAULT_EXECUTION_INTERVAL_MS,
+  DEFAULT_LOOK_CHATS,
   getParams,
   OBSERVATION_INTERVAL_MS,
 } from "./config";
@@ -16,7 +17,7 @@ import { selectSource } from "./source/source";
 let worker: Worker | null;
 let api: IKuromojiWorker | null;
 
-let lookChats = 0;
+let lookChats = DEFAULT_LOOK_CHATS;
 
 let timerId: number;
 
