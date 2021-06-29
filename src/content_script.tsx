@@ -4,17 +4,14 @@ import {
   moderate,
   terminateWorker,
 } from "./moderate";
-import { Youtube } from "./source/youtube";
 import {
   DEFAULT_EXECUTION_INTERVAL_MS,
   getParams,
   OBSERVATION_INTERVAL_MS,
-  YOUTUBE_REGEX,
-  MILDOM_REGEX,
 } from "./config";
 import { IKuromojiWorker } from "./kuromoji.worker";
-import { Mildom } from "./source/mildom";
 import { setItem } from "./storage";
+import { selectSource } from "./source/source";
 
 let worker: Worker | null;
 let api: IKuromojiWorker | null;
@@ -27,12 +24,7 @@ window.addEventListener("load", async () => {
   const params = await getParams().catch((e) => console.error(e));
   params && (await setItem(params));
 
-  const currentLocation = window.location.href;
-  const source = YOUTUBE_REGEX.test(currentLocation)
-    ? Youtube
-    : MILDOM_REGEX.test(currentLocation)
-    ? Mildom
-    : null;
+  const source = selectSource(window.location.href);
 
   worker = await createKuromojiWorker();
   api = await createKuromojiWorkerApi(worker);
