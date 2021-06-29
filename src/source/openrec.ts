@@ -49,6 +49,8 @@ export const Openrec: ISource = {
           message: message,
           element: chatBlock,
         });
+      } else {
+        break;
       }
     }
     return chats;
