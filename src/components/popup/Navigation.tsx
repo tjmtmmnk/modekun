@@ -68,6 +68,12 @@ export const Navigation = () => {
           onClick={() => setCurrent("/ngword")}
           isSelected={current === "/ngword"}
         />
+        <NavigationItem
+          to={"/option"}
+          label={"option"}
+          onClick={() => setCurrent("/option")}
+          isSelected={current === "/option"}
+        />
       </StyledUl>
     </StyledNav>
   );
