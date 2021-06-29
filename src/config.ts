@@ -39,6 +39,7 @@ export const OBSERVATION_INTERVAL_MS = 5000;
 export const YOUTUBE_REGEX = /https:\/\/www\.youtube\.com.*/;
 export const MILDOM_REGEX = /https:\/\/www\.mildom\.com.*/;
 export const TWITCH_REGEX = /https:\/\/www\.twitch\.tv.*/;
+export const OPENREC_REGEX = /https:\/\/www\.openrec\.tv.*/;
 
 export const defaultParams: IParameter = {
   [KEY_REPEAT_THROW]: DEFAULT_REPEAT_THROW_THRESHOLD,
