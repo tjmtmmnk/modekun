@@ -28,17 +28,18 @@ const DEFAULT_REPEAT_THROW_THRESHOLD = 2;
 const DEFAULT_REPEAT_WORD_THRESHOLD = 2;
 const DEFAULT_POST_FLOOD_THRESHOLD = 5;
 const DEFAULT_LENGTH_THRESHOLD = 200;
-const DEFAULT_LOOK_CHATS = 50;
 const DEFAULT_NG_WORDS: string[] = [];
 const DEFAULT_IS_SHOW_REASON = false;
 const DEFAULT_IS_ACTIVATE = true;
 
+export const DEFAULT_LOOK_CHATS = 50;
 export const DEFAULT_EXECUTION_INTERVAL_MS = 3000;
 export const OBSERVATION_INTERVAL_MS = 5000;
 
 export const YOUTUBE_REGEX = /https:\/\/www\.youtube\.com.*/;
 export const MILDOM_REGEX = /https:\/\/www\.mildom\.com.*/;
 export const TWITCH_REGEX = /https:\/\/www\.twitch\.tv.*/;
+export const OPENREC_REGEX = /https:\/\/www\.openrec\.tv.*/;
 
 export const defaultParams: IParameter = {
   [KEY_REPEAT_THROW]: DEFAULT_REPEAT_THROW_THRESHOLD,
