@@ -57,7 +57,7 @@ export const OptionPageChild = (props: { params: IParameter }) => {
       <StyledUl>
         <StyledLi>
           <CheckBox
-            id={"reason-switch"}
+            id={"activate-switch"}
             label={"modekunを有効にする"}
             storageKey={KEY_IS_ACTIVATE}
             defaultChecked={params[KEY_IS_ACTIVATE]}
