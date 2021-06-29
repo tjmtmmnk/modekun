@@ -1,9 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 import { CheckBox } from "./CheckBox";
-import { IParameter, KEY_IS_SHOW_REASON, KEY_REPEAT_WORD } from "../../config";
+import { IParameter, KEY_IS_ACTIVATE, KEY_IS_SHOW_REASON } from "../../config";
 import { useParams } from "../../popup";
-import { HomePageChild } from "./HomePage";
 
 const StyledContainer = styled.div`
   width: 320px;
@@ -56,6 +55,14 @@ export const OptionPageChild = (props: { params: IParameter }) => {
   return (
     <StyledContainer>
       <StyledUl>
+        <StyledLi>
+          <CheckBox
+            id={"reason-switch"}
+            label={"modekunを有効にする"}
+            storageKey={KEY_IS_ACTIVATE}
+            defaultChecked={params[KEY_IS_ACTIVATE]}
+          />
+        </StyledLi>
         <StyledLi>
           <CheckBox
             id={"reason-switch"}

@@ -38,6 +38,7 @@ window.addEventListener("load", async () => {
   api = await createKuromojiWorkerApi(worker);
 
   const modekun = async () => {
+    console.log("modekun");
     window.clearTimeout(timerId);
     if (!source) return;
 
@@ -59,6 +60,11 @@ window.addEventListener("load", async () => {
       timerId = window.setTimeout(modekun, DEFAULT_EXECUTION_INTERVAL_MS);
       return;
     }
+
+    if (!params.is_activate_modekun) {
+      return;
+    }
+
     lookChats = params.look_chats;
 
     await moderate(api, params, chats);

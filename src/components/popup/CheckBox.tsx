@@ -68,9 +68,7 @@ export const CheckBox = (props: {
   const [checked, setChecked] = useState(defaultChecked);
 
   React.useEffect(() => {
-    chrome.storage.sync.set({ [storageKey]: checked }, () => {
-      console.log(`set ${storageKey} : ${checked}`);
-    });
+    chrome.storage.sync.set({ [storageKey]: checked });
   }, [checked]);
 
   const onChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
