@@ -59,6 +59,11 @@ window.addEventListener("load", async () => {
       timerId = window.setTimeout(modekun, DEFAULT_EXECUTION_INTERVAL_MS);
       return;
     }
+
+    if (!params.is_activate_modekun) {
+      return;
+    }
+
     lookChats = params.look_chats;
 
     await moderate(api, params, chats);

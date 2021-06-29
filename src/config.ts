@@ -8,6 +8,7 @@ export const KEY_LOOK_CHATS = "look_chats";
 export const KEY_EXECUTION_INTERVAL = "execution_interval";
 export const KEY_NG_WORDS = "ng_words";
 export const KEY_IS_SHOW_REASON = "is_show_reason";
+export const KEY_IS_ACTIVATE = "is_activate_modekun";
 
 export const paramKeys = () => {
   return [
@@ -19,6 +20,7 @@ export const paramKeys = () => {
     KEY_EXECUTION_INTERVAL,
     KEY_NG_WORDS,
     KEY_IS_SHOW_REASON,
+    KEY_IS_ACTIVATE,
   ];
 };
 
@@ -29,6 +31,7 @@ const DEFAULT_LENGTH_THRESHOLD = 200;
 const DEFAULT_LOOK_CHATS = 50;
 const DEFAULT_NG_WORDS: string[] = [];
 const DEFAULT_IS_SHOW_REASON = false;
+const DEFAULT_IS_ACTIVATE = true;
 
 export const DEFAULT_EXECUTION_INTERVAL_MS = 3000;
 export const OBSERVATION_INTERVAL_MS = 5000;
@@ -45,6 +48,7 @@ export const defaultParams: IParameter = {
   [KEY_EXECUTION_INTERVAL]: DEFAULT_EXECUTION_INTERVAL_MS,
   [KEY_NG_WORDS]: DEFAULT_NG_WORDS,
   [KEY_IS_SHOW_REASON]: DEFAULT_IS_SHOW_REASON,
+  [KEY_IS_ACTIVATE]: DEFAULT_IS_ACTIVATE,
 };
 
 export interface IParameter {
@@ -56,6 +60,7 @@ export interface IParameter {
   execution_interval: number;
   ng_words: string[];
   is_show_reason: boolean;
+  is_activate_modekun: boolean;
 }
 
 export const isParameter = (arg: any): arg is IParameter => {
@@ -67,7 +72,8 @@ export const isParameter = (arg: any): arg is IParameter => {
     arg.look_chats !== undefined &&
     arg.execution_interval !== undefined &&
     arg.ng_words !== undefined &&
-    arg.is_show_reason !== undefined
+    arg.is_show_reason !== undefined &&
+    arg.is_activate_modekun !== undefined
   );
 };
 
