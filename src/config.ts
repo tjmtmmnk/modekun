@@ -7,7 +7,7 @@ export const KEY_LENGTH = "length_threshold";
 export const KEY_LOOK_CHATS = "look_chats";
 export const KEY_EXECUTION_INTERVAL = "execution_interval";
 export const KEY_NG_WORDS = "ng_words";
-export const KEY_REASON_SWITCH = "reason_switch";
+export const KEY_IS_SHOW_REASON = "is_show_reason";
 
 export const paramKeys = () => {
   return [
@@ -18,7 +18,7 @@ export const paramKeys = () => {
     KEY_LOOK_CHATS,
     KEY_EXECUTION_INTERVAL,
     KEY_NG_WORDS,
-    KEY_REASON_SWITCH,
+    KEY_IS_SHOW_REASON,
   ];
 };
 
@@ -28,7 +28,7 @@ const DEFAULT_POST_FLOOD_THRESHOLD = 5;
 const DEFAULT_LENGTH_THRESHOLD = 200;
 const DEFAULT_LOOK_CHATS = 50;
 const DEFAULT_NG_WORDS: string[] = [];
-const DEFAULT_REASON_SWITCH = false;
+const DEFAULT_IS_SHOW_REASON = false;
 
 export const DEFAULT_EXECUTION_INTERVAL_MS = 3000;
 export const OBSERVATION_INTERVAL_MS = 5000;
@@ -44,7 +44,7 @@ export const defaultParams: IParameter = {
   [KEY_LOOK_CHATS]: DEFAULT_LOOK_CHATS,
   [KEY_EXECUTION_INTERVAL]: DEFAULT_EXECUTION_INTERVAL_MS,
   [KEY_NG_WORDS]: DEFAULT_NG_WORDS,
-  [KEY_REASON_SWITCH]: DEFAULT_REASON_SWITCH,
+  [KEY_IS_SHOW_REASON]: DEFAULT_IS_SHOW_REASON,
 };
 
 export interface IParameter {
@@ -55,7 +55,7 @@ export interface IParameter {
   look_chats: number;
   execution_interval: number;
   ng_words: string[];
-  reason_switch: boolean;
+  is_show_reason: boolean;
 }
 
 export const isParameter = (arg: any): arg is IParameter => {
@@ -67,7 +67,7 @@ export const isParameter = (arg: any): arg is IParameter => {
     arg.look_chats !== undefined &&
     arg.execution_interval !== undefined &&
     arg.ng_words !== undefined &&
-    arg.reason_switch !== undefined
+    arg.is_show_reason !== undefined
   );
 };
 

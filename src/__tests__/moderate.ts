@@ -19,7 +19,7 @@ describe("moderate", () => {
     look_chats: 10,
     execution_interval: 1000,
     ng_words: ["なう"],
-    reason_switch: false,
+    is_show_reason: false,
   };
   describe("hideRepeatWords", () => {
     const chats: IChat[] = [

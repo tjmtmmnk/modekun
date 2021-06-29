@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { CheckBox } from "./CheckBox";
-import { IParameter, KEY_REASON_SWITCH, KEY_REPEAT_WORD } from "../../config";
+import { IParameter, KEY_IS_SHOW_REASON, KEY_REPEAT_WORD } from "../../config";
 import { useParams } from "../../popup";
 import { HomePageChild } from "./HomePage";
 
@@ -60,8 +60,8 @@ export const OptionPageChild = (props: { params: IParameter }) => {
           <CheckBox
             id={"reason-switch"}
             label={"非表示の理由を表示する"}
-            storageKey={KEY_REASON_SWITCH}
-            defaultChecked={params[KEY_REASON_SWITCH]}
+            storageKey={KEY_IS_SHOW_REASON}
+            defaultChecked={params[KEY_IS_SHOW_REASON]}
           />
         </StyledLi>
       </StyledUl>

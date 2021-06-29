@@ -119,7 +119,7 @@ const hide = (param: IParameter, reason: string, chat: IChat) => {
     chat.element.style.opacity = "0";
     chat.element.dataset.isHiddenByModekun = "1";
 
-    const reasonLabel = param.reason_switch
+    const reasonLabel = param.is_show_reason
       ? document.createElement("span")
       : null;
     if (reasonLabel) {
