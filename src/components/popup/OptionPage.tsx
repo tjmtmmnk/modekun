@@ -1,7 +1,13 @@
 import React from "react";
 import styled from "styled-components";
 import { CheckBox } from "./CheckBox";
-import { IParameter, KEY_IS_ACTIVATE, KEY_IS_SHOW_REASON } from "../../config";
+import {
+  IParameter,
+  KEY_CONSIDER_AUTHOR_LENGTH,
+  KEY_CONSIDER_AUTHOR_NGWORD,
+  KEY_IS_ACTIVATE,
+  KEY_IS_SHOW_REASON,
+} from "../../config";
 import { useParams } from "../../popup";
 
 const StyledContainer = styled.div`
@@ -69,6 +75,22 @@ export const OptionPageChild = (props: { params: IParameter }) => {
             label={"非表示の理由を表示する"}
             storageKey={KEY_IS_SHOW_REASON}
             defaultChecked={params[KEY_IS_SHOW_REASON]}
+          />
+        </StyledLi>
+        <StyledLi>
+          <CheckBox
+            id={"consider-author-ngword"}
+            label={"投稿者名をNGワード判定対象にする"}
+            storageKey={KEY_CONSIDER_AUTHOR_NGWORD}
+            defaultChecked={params[KEY_CONSIDER_AUTHOR_NGWORD]}
+          />
+        </StyledLi>
+        <StyledLi>
+          <CheckBox
+            id={"consider-author-length"}
+            label={"投稿者名を文字数上限対象にする"}
+            storageKey={KEY_CONSIDER_AUTHOR_LENGTH}
+            defaultChecked={params[KEY_CONSIDER_AUTHOR_LENGTH]}
           />
         </StyledLi>
       </StyledUl>
