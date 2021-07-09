@@ -21,6 +21,8 @@ describe("moderate", () => {
     ng_words: ["なう"],
     is_show_reason: false,
     is_activate_modekun: true,
+    consider_author_length: false,
+    consider_author_ngword: false,
   };
   describe("hideRepeatWords", () => {
     const chats: IChat[] = [
@@ -40,7 +42,7 @@ describe("moderate", () => {
     const apiMock: IKuromojiWorker = {
       bulkTokenize: (texts: string[]) =>
         new Promise<KuromojiToken[][]>((resolve) => {
-          resolve();
+          resolve([]);
         }),
       getMaxRepeatWordCounts: (texts: string[]) =>
         new Promise<number[]>((resolve) => {

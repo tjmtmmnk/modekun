@@ -8,8 +8,8 @@ const StyledCheckBoxWrapper = styled.div`
 `;
 const StyledCheckBoxLabel = styled.label`
   position: absolute;
-  top: 0;
-  left: 0;
+  top: 0px;
+  left: 40px;
   width: 42px;
   height: 26px;
   border-radius: 15px;
