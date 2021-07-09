@@ -44,7 +44,11 @@ export const hideRepeatThrow = (param: IParameter, chats: IChat[]) => {
 export const hideNgWords = (param: IParameter, chats: IChat[]) => {
   for (const chat of chats) {
     for (const ngWord of param.ng_words) {
-      if (chat.message.includes(ngWord)) {
+      const isHideMessage = chat.message.includes(ngWord);
+      const isHideAuthor =
+        param.consider_author_ngword && chat.author.includes(ngWord);
+
+      if (isHideMessage || isHideAuthor) {
         hide(param, "NGワード", chat);
       }
     }
@@ -92,7 +96,12 @@ export const hidePostFlood = (param: IParameter, chats: IChat[]) => {
 
 export const hideByLength = (param: IParameter, chats: IChat[]) => {
   for (const chat of chats) {
-    if (chat.message.length >= param.length_threshold) {
+    const isHideMessage = chat.message.length >= param.length_threshold;
+    const isHideAuthor =
+      param.consider_author_length &&
+      chat.author.length >= param.length_threshold;
+
+    if (isHideMessage || isHideAuthor) {
       hide(param, "文字数制限", chat);
     }
   }
