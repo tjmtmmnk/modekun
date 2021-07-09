@@ -1,7 +1,7 @@
 import { IChat } from "./chat";
-import { IKuromojiWorker } from "./kuromoji.worker";
 import { wrap } from "comlink";
 import { IParameter } from "./config";
+import { IKuromojiWorker } from "./kuromoji";
 
 export const createKuromojiWorker = async (): Promise<Worker> => {
   const worker = await fetch(chrome.extension.getURL("js/worker.js"));

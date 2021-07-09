@@ -10,9 +10,9 @@ import {
   hideRepeatThrow,
   hideRepeatWords,
 } from "../moderate";
-import { IKuromojiWorker } from "../kuromoji.worker";
 import { IParameter } from "../config";
 import { KuromojiToken } from "kuromojin";
+import { IKuromojiWorker } from "../kuromoji";
 
 describe("moderate", () => {
   const params: IParameter = {
