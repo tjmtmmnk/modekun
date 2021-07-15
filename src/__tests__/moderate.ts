@@ -51,8 +51,8 @@ describe("moderate", () => {
     };
     test("can hide", async () => {
       await hideRepeatWords(params, apiMock, chats);
-      expect(chats[0].element.dataset.isHiddenByModekun).toBeFalsy();
-      expect(chats[1].element.dataset.isHiddenByModekun).toBeTruthy();
+      expect(chats[0].element.style.opacity).toBe("");
+      expect(chats[1].element.style.opacity).toBe("0");
     });
   });
 
@@ -85,10 +85,10 @@ describe("moderate", () => {
     ];
     test("can hide", () => {
       hideRepeatThrow(params, chats);
-      expect(chats[0].element.dataset.isHiddenByModekun).toBeFalsy();
-      expect(chats[1].element.dataset.isHiddenByModekun).toBeTruthy();
-      expect(chats[2].element.dataset.isHiddenByModekun).toBeTruthy();
-      expect(chats[3].element.dataset.isHiddenByModekun).toBeTruthy();
+      expect(chats[0].element.style.opacity).toBe("");
+      expect(chats[1].element.style.opacity).toBe("0");
+      expect(chats[2].element.style.opacity).toBe("0");
+      expect(chats[3].element.style.opacity).toBe("0");
     });
   });
 
@@ -121,10 +121,10 @@ describe("moderate", () => {
         },
       ];
       hideNgWords(params, chats);
-      expect(chats[0].element.dataset.isHiddenByModekun).toBeFalsy();
-      expect(chats[1].element.dataset.isHiddenByModekun).toBeTruthy();
-      expect(chats[2].element.dataset.isHiddenByModekun).toBeTruthy();
-      expect(chats[3].element.dataset.isHiddenByModekun).toBeFalsy();
+      expect(chats[0].element.style.opacity).toBe("");
+      expect(chats[1].element.style.opacity).toBe("0");
+      expect(chats[2].element.style.opacity).toBe("0");
+      expect(chats[3].element.style.opacity).toBe("");
     });
     test("can hide by author", () => {
       const chats: IChat[] = [
@@ -146,8 +146,8 @@ describe("moderate", () => {
         consider_author_ngword: true,
       };
       hideNgWords(param, chats);
-      expect(chats[0].element.dataset.isHiddenByModekun).toBeFalsy();
-      expect(chats[1].element.dataset.isHiddenByModekun).toBeTruthy();
+      expect(chats[0].element.style.opacity).toBe("");
+      expect(chats[1].element.style.opacity).toBe("0");
     });
   });
 
@@ -175,9 +175,9 @@ describe("moderate", () => {
 
     test("can hide", () => {
       hidePostFlood(params, chats);
-      expect(chats[0].element.dataset.isHiddenByModekun).toBeTruthy();
-      expect(chats[1].element.dataset.isHiddenByModekun).toBeTruthy();
-      expect(chats[2].element.dataset.isHiddenByModekun).toBeFalsy();
+      expect(chats[0].element.style.opacity).toBe("0");
+      expect(chats[1].element.style.opacity).toBe("0");
+      expect(chats[2].element.style.opacity).toBe("");
     });
   });
 
@@ -222,12 +222,12 @@ describe("moderate", () => {
         },
       ];
       hideByLength(params, chats);
-      expect(chats[0].element.dataset.isHiddenByModekun).toBeFalsy();
-      expect(chats[1].element.dataset.isHiddenByModekun).toBeFalsy();
-      expect(chats[2].element.dataset.isHiddenByModekun).toBeFalsy();
-      expect(chats[3].element.dataset.isHiddenByModekun).toBeFalsy();
-      expect(chats[4].element.dataset.isHiddenByModekun).toBeTruthy();
-      expect(chats[5].element.dataset.isHiddenByModekun).toBeTruthy();
+      expect(chats[0].element.style.opacity).toBe("");
+      expect(chats[1].element.style.opacity).toBe("");
+      expect(chats[2].element.style.opacity).toBe("");
+      expect(chats[3].element.style.opacity).toBe("");
+      expect(chats[4].element.style.opacity).toBe("0");
+      expect(chats[5].element.style.opacity).toBe("0");
     });
 
     test("can hide by author", () => {
@@ -251,8 +251,42 @@ describe("moderate", () => {
         consider_author_length: true,
       };
       hideByLength(param, chats);
-      expect(chats[0].element.dataset.isHiddenByModekun).toBeTruthy();
-      expect(chats[1].element.dataset.isHiddenByModekun).toBeFalsy();
+      expect(chats[0].element.style.opacity).toBe("0");
+      expect(chats[1].element.style.opacity).toBe("");
+    });
+  });
+  describe("repeat post and repeat frequency", () => {
+    const chats: IChat[] = [
+      {
+        key: "test1aaa",
+        author: "test1",
+        message: "aaa",
+        element: document.createElement("div"),
+      },
+      {
+        key: "test1aaa",
+        author: "test1",
+        message: "aaa",
+        element: document.createElement("div"),
+      },
+      {
+        key: "test1bbb",
+        author: "test1",
+        message: "bbb",
+        element: document.createElement("div"),
+      },
+    ];
+    const param: IParameter = {
+      ...params,
+      repeat_throw_threshold: 2,
+      post_flood_threshold: 3,
+    };
+    test("can hide by both filter", () => {
+      hideRepeatThrow(param, chats);
+      hidePostFlood(param, chats);
+      expect(chats[0].element.style.opacity).toBe("0");
+      expect(chats[1].element.style.opacity).toBe("0");
+      expect(chats[2].element.style.opacity).toBe("0");
     });
   });
 });
