@@ -112,40 +112,33 @@ export const moderate = async (
   param: IParameter,
   chats: IChat[]
 ): Promise<void> => {
-  const publicChats = chats.filter(
-    (chat) => !chat.element.dataset.isHiddenByModekun
-  );
-
-  hideRepeatWords(param, kuromojiWorkerApi, publicChats);
-  hidePostFlood(param, publicChats);
-  hideRepeatThrow(param, publicChats);
-  hideNgWords(param, publicChats);
-  hideByLength(param, publicChats);
+  hideRepeatWords(param, kuromojiWorkerApi, chats);
+  hidePostFlood(param, chats);
+  hideRepeatThrow(param, chats);
+  hideNgWords(param, chats);
+  hideByLength(param, chats);
 };
 
 const hide = (param: IParameter, reason: string, chat: IChat) => {
-  if (!chat.element.dataset.isHiddenByModekun) {
-    chat.element.style.opacity = "0";
-    chat.element.dataset.isHiddenByModekun = "1";
+  chat.element.style.opacity = "0";
 
-    const reasonLabel = param.is_show_reason
-      ? document.createElement("span")
-      : null;
-    if (reasonLabel) {
-      reasonLabel.innerText = reason;
-      reasonLabel.style.color = "grey";
-      reasonLabel.style.position = "absolute";
-      reasonLabel.style.left = "50%";
-      chat.element.insertAdjacentElement("beforebegin", reasonLabel);
-    }
-
-    chat.element.addEventListener("mouseenter", () => {
-      chat.element.style.opacity = "1";
-      if (reasonLabel) reasonLabel.style.display = "none";
-    });
-    chat.element.addEventListener("mouseleave", () => {
-      chat.element.style.opacity = "0";
-      if (reasonLabel) reasonLabel.style.display = "inline";
-    });
+  const reasonLabel = param.is_show_reason
+    ? document.createElement("span")
+    : null;
+  if (reasonLabel) {
+    reasonLabel.innerText = reason;
+    reasonLabel.style.color = "grey";
+    reasonLabel.style.position = "absolute";
+    reasonLabel.style.left = "50%";
+    chat.element.insertAdjacentElement("beforebegin", reasonLabel);
   }
+
+  chat.element.addEventListener("mouseenter", () => {
+    chat.element.style.opacity = "1";
+    if (reasonLabel) reasonLabel.style.display = "none";
+  });
+  chat.element.addEventListener("mouseleave", () => {
+    chat.element.style.opacity = "0";
+    if (reasonLabel) reasonLabel.style.display = "inline";
+  });
 };
