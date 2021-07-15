@@ -77,7 +77,7 @@ export const HomePageChild = (props: { params: IParameter }) => {
       <RangeSlider
         label={"実行間隔"}
         unitLabel={"ms"}
-        min={500}
+        min={50}
         max={10000}
         step={100}
         defaultValue={params[KEY_EXECUTION_INTERVAL]}
