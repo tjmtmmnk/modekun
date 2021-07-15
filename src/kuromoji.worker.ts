@@ -1,10 +1,6 @@
 import { expose } from "comlink";
 import { KuromojiToken, getTokenizer } from "kuromojin";
-
-export interface IKuromojiWorker {
-  bulkTokenize: (texts: string[]) => Promise<KuromojiToken[][]>;
-  getMaxRepeatWordCounts: (texts: string[]) => Promise<number[]>;
-}
+import { IKuromojiWorker } from "./kuromoji";
 
 export class KuromojiWorker implements IKuromojiWorker {
   dicPath: string;

@@ -1,3 +1,7 @@
+/**
+ * @jest-environment jsdom
+ */
+
 import { KuromojiWorker } from "../kuromoji.worker";
 
 const path = require("path");

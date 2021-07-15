@@ -9,9 +9,9 @@ import {
   getParams,
   OBSERVATION_INTERVAL_MS,
 } from "./config";
-import { IKuromojiWorker } from "./kuromoji.worker";
 import { setItem } from "./storage";
 import { selectSource } from "./source/source";
+import { IKuromojiWorker } from "./kuromoji";
 
 let worker: Worker | null;
 let api: IKuromojiWorker | null;
