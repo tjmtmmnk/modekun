@@ -255,4 +255,38 @@ describe("moderate", () => {
       expect(chats[1].element.dataset.isHiddenByModekun).toBeFalsy();
     });
   });
+  describe("repeat post and repeat frequency", () => {
+    const chats: IChat[] = [
+      {
+        key: "test1aaa",
+        author: "test1",
+        message: "aaa",
+        element: document.createElement("div"),
+      },
+      {
+        key: "test1aaa",
+        author: "test1",
+        message: "aaa",
+        element: document.createElement("div"),
+      },
+      {
+        key: "test1bbb",
+        author: "test1",
+        message: "bbb",
+        element: document.createElement("div"),
+      },
+    ];
+    const param: IParameter = {
+      ...params,
+      repeat_throw_threshold: 2,
+      post_flood_threshold: 3,
+    };
+    test("can hide by both filter", () => {
+      hideRepeatThrow(param, chats);
+      hidePostFlood(param, chats);
+      expect(chats[0].element.dataset.isHiddenByModekun).toBeTruthy();
+      expect(chats[1].element.dataset.isHiddenByModekun).toBeTruthy();
+      expect(chats[2].element.dataset.isHiddenByModekun).toBeTruthy();
+    });
+  });
 });
