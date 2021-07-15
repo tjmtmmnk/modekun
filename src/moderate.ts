@@ -112,14 +112,17 @@ export const moderate = async (
   param: IParameter,
   chats: IChat[]
 ): Promise<void> => {
-  hideRepeatWords(param, kuromojiWorkerApi, chats);
-  hidePostFlood(param, chats);
-  hideRepeatThrow(param, chats);
-  hideNgWords(param, chats);
   hideByLength(param, chats);
+  hideNgWords(param, chats);
+  hideRepeatWords(param, kuromojiWorkerApi, chats);
+  hideRepeatThrow(param, chats);
+  hidePostFlood(param, chats);
 };
 
 const hide = (param: IParameter, reason: string, chat: IChat) => {
+  if (chat.element.dataset.isHiddenByModekun) return;
+
+  chat.element.dataset.isHiddenByModekun = "1";
   chat.element.style.opacity = "0";
 
   const reasonLabel = param.is_show_reason
