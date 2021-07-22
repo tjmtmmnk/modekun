@@ -47,6 +47,9 @@
   "includePosterInLimitChars": {
     "message": "Include poster name in max num of characters"
   },
+  "isHideCompletely": {
+    "message": "hide comments completely"
+  },
 
   "repeatPost": {
     "message": "repeat post"

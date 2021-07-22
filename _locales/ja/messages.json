@@ -47,6 +47,9 @@
   "includePosterInLimitChars": {
     "message": "投稿者名を文字数上限対象にする"
   },
+  "isHideCompletely": {
+    "message": "完全に非表示にする"
+  },
 
   "repeatPost": {
     "message": "連投"
