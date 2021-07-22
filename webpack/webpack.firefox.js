@@ -1,6 +1,7 @@
 const webpack = require("webpack");
 const path = require("path");
 const CopyPlugin = require("copy-webpack-plugin");
+const TerserPlugin = require("terser-webpack-plugin");
 
 const srcDir = path.join(__dirname, "..", "src");
 
@@ -11,7 +12,7 @@ module.exports = {
     worker: path.join(srcDir, "kuromoji.worker.ts"),
   },
   output: {
-    path: path.join(__dirname, "../dist/js"),
+    path: path.join(__dirname, "../dist-firefox/js"),
     filename: "[name].js",
     clean: {
       keep: "kuromoji/",
@@ -23,6 +24,10 @@ module.exports = {
         test: /\.tsx?$/,
         use: "ts-loader",
         exclude: /node_modules/,
+      },
+        {
+        test: /\.worker\.ts$/,
+        use: ['ts-loader', 'worker-loader'],
       },
     ],
   },
@@ -38,7 +43,7 @@ module.exports = {
           to: "..",
           context: "public",
           filter: async (resourcePath) => {
-            return !resourcePath.includes("manifest-firefox.json");
+            return !resourcePath.includes("manifest.json");
           },
         },
         { from: ".", to: "../_locales", context: "_locales" },
@@ -46,4 +51,6 @@ module.exports = {
       ],
     }),
   ],
+  devtool: "inline-source-map",
+  mode: "development",
 };
