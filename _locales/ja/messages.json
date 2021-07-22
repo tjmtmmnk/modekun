@@ -46,5 +46,18 @@
   },
   "includePosterInLimitChars": {
     "message": "投稿者名を文字数上限対象にする"
+  },
+
+  "repeatPost": {
+    "message": "連投"
+  },
+  "ngWord": {
+    "message": "NGワード"
+  },
+  "repeatWords": {
+    "message": "単語繰り返し"
+  },
+  "repeatFrequency": {
+    "message": "投稿頻度"
   }
 }

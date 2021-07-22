@@ -46,5 +46,18 @@
   },
   "includePosterInLimitChars": {
     "message": "Include poster name in max num of characters"
+  },
+
+  "repeatPost": {
+    "message": "repeat post"
+  },
+  "ngWord": {
+    "message": "NG word"
+  },
+  "repeatWords": {
+    "message": "repeat words"
+  },
+  "repeatFrequency": {
+    "message": "repeat frequency"
   }
 }
