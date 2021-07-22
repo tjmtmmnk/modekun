@@ -26,6 +26,14 @@ export const Twitch: ISource = {
       );
       if (!authorElement) return;
 
+      const associatedElements: HTMLElement[] = [];
+
+      const parentElement = chatBlock.parentElement;
+      parentElement && associatedElements.push(parentElement);
+
+      const grandParentElement = parentElement?.parentElement;
+      grandParentElement && associatedElements.push(grandParentElement);
+
       const author = authorElement.innerText;
       const message = messageElement.innerText;
       const key = removeSymbols(kanaToHiragana(author + message));
@@ -34,6 +42,7 @@ export const Twitch: ISource = {
         author: author,
         message: message,
         element: chatBlock,
+        associatedElements: associatedElements,
       });
     });
 
