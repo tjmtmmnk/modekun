@@ -29,7 +29,6 @@ export const Twitch: ISource = {
       const associatedElements: HTMLElement[] = [];
 
       const parentElement = chatBlock.parentElement;
-      parentElement && associatedElements.push(parentElement);
 
       const grandParentElement = parentElement?.parentElement;
       grandParentElement && associatedElements.push(grandParentElement);
