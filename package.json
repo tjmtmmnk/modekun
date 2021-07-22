@@ -16,7 +16,7 @@
     "url": "https://github.com/tjmtmmnk/modekun"
   },
   "devDependencies": {
-    "@types/chrome": "0.0.146",
+    "@types/chrome": "0.0.148",
     "@types/jest": "26.0.24",
     "@types/kuromoji": "0.1.1",
     "@types/react": "17.0.14",
