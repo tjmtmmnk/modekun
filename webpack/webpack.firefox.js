@@ -25,10 +25,6 @@ module.exports = {
         use: "ts-loader",
         exclude: /node_modules/,
       },
-        {
-        test: /\.worker\.ts$/,
-        use: ['ts-loader', 'worker-loader'],
-      },
     ],
   },
   resolve: {

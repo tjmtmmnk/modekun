@@ -13,12 +13,11 @@ export const createKuromojiWorker = async (): Promise<Worker> => {
 };
 
 export const createKuromojiWorkerApi = async (
-  worker: Worker
+  worker: Worker,
+  dicPath: string
 ): Promise<IKuromojiWorker> => {
   const workerClass: any = wrap<IKuromojiWorker>(worker);
-  const instance = await new workerClass(
-    chrome.extension.getURL("kuromoji/dict/")
-  );
+  const instance = await new workerClass(dicPath);
   return instance;
 };
 
