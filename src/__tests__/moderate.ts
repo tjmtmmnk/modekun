@@ -15,6 +15,15 @@ import { KuromojiToken } from "kuromojin";
 import { IKuromojiWorker } from "../kuromoji";
 
 describe("moderate", () => {
+  global.chrome = {
+    // @ts-ignore
+    i18n: {
+      getMessage(message: string, sub?: any) {
+        return "";
+      },
+    },
+  };
+
   const params: IParameter = {
     repeat_throw_threshold: 2,
     repeat_word_threshold: 2,
