@@ -3,4 +3,5 @@ export interface IChat {
   author: string;
   message: string;
   element: HTMLElement;
+  associatedElements?: HTMLElement[];
 }
