@@ -42,6 +42,9 @@ export const Youtube: ISource = {
         author: author,
         message: message,
         element: chatBlock,
+        associatedElements: chatBlock.parentElement
+          ? [chatBlock.parentElement]
+          : [],
       });
     });
     return chats;

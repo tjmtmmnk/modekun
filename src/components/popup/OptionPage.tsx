@@ -6,6 +6,7 @@ import {
   KEY_CONSIDER_AUTHOR_LENGTH,
   KEY_CONSIDER_AUTHOR_NGWORD,
   KEY_IS_ACTIVATE,
+  KEY_IS_HIDE_COMPLETELY,
   KEY_IS_SHOW_REASON,
 } from "../../config";
 import { useParams } from "../../popup";
@@ -91,6 +92,14 @@ export const OptionPageChild = (props: { params: IParameter }) => {
             label={chrome.i18n.getMessage("includePosterInLimitChars")}
             storageKey={KEY_CONSIDER_AUTHOR_LENGTH}
             defaultChecked={params[KEY_CONSIDER_AUTHOR_LENGTH]}
+          />
+        </StyledLi>
+        <StyledLi>
+          <CheckBox
+            id={"is-hide-completely"}
+            label={chrome.i18n.getMessage("isHideCompletely")}
+            storageKey={KEY_IS_HIDE_COMPLETELY}
+            defaultChecked={params[KEY_IS_HIDE_COMPLETELY]}
           />
         </StyledLi>
       </StyledUl>
