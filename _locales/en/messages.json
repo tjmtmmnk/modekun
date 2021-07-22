@@ -1,0 +1,63 @@
+{
+  "repeatPostThreshold": {
+    "message": "repeat post threshold"
+  },
+  "repeatWordsThreshold": {
+    "message": "repeat words threshold"
+  },
+  "postFrequency": {
+    "message": "post frequency"
+  },
+  "maxNumOfCharacters": {
+    "message": "max num of characters"
+  },
+  "numOfControllerdComments": {
+    "message": "num of controlled comments"
+  },
+  "executionInterval": {
+    "message": "execution interval"
+  },
+
+  "piece": {
+    "message": "pcs"
+  },
+  "piecePerComments": {
+    "message": "pcs/comments"
+  },
+  "times": {
+    "message": "times"
+  },
+
+  "inputNgWord": {
+    "message": "input NG word"
+  },
+  "saveByEnter": {
+    "message": "save by Enter"
+  },
+
+  "activateModekun": {
+    "message": "Activate modekun"
+  },
+  "showHiddenReason": {
+    "message": "Show hidden reason"
+  },
+  "includePosterInNgWord": {
+    "message": "Include poster name in NG word"
+  },
+  "includePosterInLimitChars": {
+    "message": "Include poster name in max num of characters"
+  },
+
+  "repeatPost": {
+    "message": "repeat post"
+  },
+  "ngWord": {
+    "message": "NG word"
+  },
+  "repeatWords": {
+    "message": "repeat words"
+  },
+  "repeatFrequency": {
+    "message": "repeat frequency"
+  }
+}

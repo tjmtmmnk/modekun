@@ -153,7 +153,9 @@ export const RangeSlider = (props: {
     <StyledContainer>
       <StyledLabel theme={theme}>
         {label}
-        <StyledUnitLabel>({unitLabel})</StyledUnitLabel>
+        <StyledUnitLabel>
+          {unitLabel === "" ? "" : `(${unitLabel})`}
+        </StyledUnitLabel>
       </StyledLabel>
       <StyledRangeSlider>
         <StyledRangeValueContainer

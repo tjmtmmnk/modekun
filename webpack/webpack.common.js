@@ -29,10 +29,16 @@ module.exports = {
     fallback: { path: require.resolve("path-browserify") },
   },
   plugins: [
-    new CleanWebpackPlugin(),
+    new CleanWebpackPlugin({
+      cleanStaleWebpackAssets: true,
+      dry: true,
+    }),
     new CopyPlugin({
-      patterns: [{ from: ".", to: "../", context: "public" }],
-      options: {},
+      patterns: [
+        { from: ".", to: "..", context: "public" },
+        { from: ".", to: "../_locales", context: "_locales" },
+        { from: ".", to: "../kuromoji/dict", context: "src/kuromoji/dict" },
+      ],
     }),
   ],
 };

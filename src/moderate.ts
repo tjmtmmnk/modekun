@@ -36,7 +36,7 @@ export const hideRepeatThrow = (param: IParameter, chats: IChat[]) => {
   }
   for (const chat of chats) {
     if (duplicateCount[chat.key] >= param.repeat_throw_threshold) {
-      hide(param, "連投", chat);
+      hide(param, chrome.i18n.getMessage("repeatPost"), chat);
     }
   }
 };
@@ -49,7 +49,7 @@ export const hideNgWords = (param: IParameter, chats: IChat[]) => {
         param.consider_author_ngword && chat.author.includes(ngWord);
 
       if (isHideMessage || isHideAuthor) {
-        hide(param, "NGワード", chat);
+        hide(param, chrome.i18n.getMessage("ngWord"), chat);
       }
     }
   }
@@ -63,7 +63,7 @@ export const hideRepeatWords = async (
   const counts = await api.getMaxRepeatWordCounts(chats.map((c) => c.message));
   chats.forEach((chat, i) => {
     if (counts[i] >= param.repeat_word_threshold) {
-      hide(param, "単語繰り返し", chat);
+      hide(param, chrome.i18n.getMessage("repeatWords"), chat);
     }
   });
 };
@@ -88,7 +88,7 @@ export const hidePostFlood = (param: IParameter, chats: IChat[]) => {
   for (const [author, count] of Object.entries(authorCount)) {
     if (count >= param.post_flood_threshold) {
       for (const c of authorToChats[author]) {
-        hide(param, "投稿頻度", c);
+        hide(param, chrome.i18n.getMessage("repeatFrequency"), c);
       }
     }
   }
@@ -102,7 +102,7 @@ export const hideByLength = (param: IParameter, chats: IChat[]) => {
       chat.author.length >= param.length_threshold;
 
     if (isHideMessage || isHideAuthor) {
-      hide(param, "文字数制限", chat);
+      hide(param, chrome.i18n.getMessage("maxNumOfCharacters"), chat);
     }
   }
 };
