@@ -64,7 +64,7 @@ export const OptionPageChild = (props: { params: IParameter }) => {
         <StyledLi>
           <CheckBox
             id={"activate-switch"}
-            label={"modekunを有効にする"}
+            label={chrome.i18n.getMessage("activateModekun")}
             storageKey={KEY_IS_ACTIVATE}
             defaultChecked={params[KEY_IS_ACTIVATE]}
           />
@@ -72,7 +72,7 @@ export const OptionPageChild = (props: { params: IParameter }) => {
         <StyledLi>
           <CheckBox
             id={"reason-switch"}
-            label={"非表示の理由を表示する"}
+            label={chrome.i18n.getMessage("showHiddenReason")}
             storageKey={KEY_IS_SHOW_REASON}
             defaultChecked={params[KEY_IS_SHOW_REASON]}
           />
@@ -80,7 +80,7 @@ export const OptionPageChild = (props: { params: IParameter }) => {
         <StyledLi>
           <CheckBox
             id={"consider-author-ngword"}
-            label={"投稿者名をNGワード判定対象にする"}
+            label={chrome.i18n.getMessage("includePosterInNgWord")}
             storageKey={KEY_CONSIDER_AUTHOR_NGWORD}
             defaultChecked={params[KEY_CONSIDER_AUTHOR_NGWORD]}
           />
@@ -88,7 +88,7 @@ export const OptionPageChild = (props: { params: IParameter }) => {
         <StyledLi>
           <CheckBox
             id={"consider-author-length"}
-            label={"投稿者名を文字数上限対象にする"}
+            label={chrome.i18n.getMessage("includePosterInLimitChars")}
             storageKey={KEY_CONSIDER_AUTHOR_LENGTH}
             defaultChecked={params[KEY_CONSIDER_AUTHOR_LENGTH]}
           />

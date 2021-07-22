@@ -126,9 +126,12 @@ export const NgWordInput = (props: { dispatch: DispatchType }) => {
   return (
     <>
       <form onSubmit={handleSubmit}>
-        <StyledInput ref={inputRef} placeholder={"NGワードを入力"} />
+        <StyledInput
+          ref={inputRef}
+          placeholder={chrome.i18n.getMessage("inputNgWord")}
+        />
       </form>
-      <StyledSpan>※Enterで保存</StyledSpan>
+      <StyledSpan>※{chrome.i18n.getMessage("saveByEnter")}</StyledSpan>
     </>
   );
 };
