@@ -1,0 +1,50 @@
+{
+  "repeatPostThreshold": {
+    "message": "連投閾値"
+  },
+  "repeatWordsThreshold": {
+    "message": "単語繰り返し閾値"
+  },
+  "postFrequency": {
+    "message": "投稿頻度"
+  },
+  "maxNumOfCharacters": {
+    "message": "文字数上限"
+  },
+  "numOfControllerdComments": {
+    "message": "制御対象コメント数"
+  },
+  "executionInterval": {
+    "message": "実行間隔"
+  },
+
+  "piece": {
+    "message": "個"
+  },
+  "piecePerComments": {
+    "message": "個/コメント数"
+  },
+  "times": {
+    "message": "回"
+  },
+
+  "inputNgWord": {
+    "message": "NGワードを入力"
+  },
+  "saveByEnter": {
+    "message": "Enterで保存"
+  },
+
+  "activateModekun": {
+    "message": "modekunを有効にする"
+  },
+  "showHiddenReason": {
+    "message": "非表示の理由を表示する"
+  },
+  "includePosterInNgWord": {
+    "message": "投稿者名をNGワード判定対象にする"
+  },
+  "includePosterInLimitChars": {
+    "message": "投稿者名を文字数上限対象にする"
+  }
+}
