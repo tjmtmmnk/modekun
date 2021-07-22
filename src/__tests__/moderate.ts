@@ -4,6 +4,7 @@
 
 import { IChat } from "../chat";
 import {
+  hide,
   hideByLength,
   hideNgWords,
   hidePostFlood,
@@ -301,6 +302,53 @@ describe("moderate", () => {
       expect(chats[0].element.dataset.isHiddenByModekun).toBeTruthy();
       expect(chats[1].element.dataset.isHiddenByModekun).toBeTruthy();
       expect(chats[2].element.dataset.isHiddenByModekun).toBeTruthy();
+    });
+  });
+  describe("hide", () => {
+    test("can hide with no opacity", () => {
+      const chat: IChat = {
+        key: "test1aaa",
+        author: "test1",
+        message: "aaa",
+        element: document.createElement("div"),
+      };
+      hide(params, "test", chat);
+      expect(chat.element.style.opacity).toBe("0");
+      expect(chat.element.style.display).not.toBe("none");
+    });
+    test("can hide with display none", () => {
+      const param: IParameter = {
+        ...params,
+        is_hide_completely: true,
+      };
+      const chat: IChat = {
+        key: "test1aaa",
+        author: "test1",
+        message: "aaa",
+        element: document.createElement("div"),
+      };
+      hide(param, "test", chat);
+      expect(chat.element.style.opacity).not.toBe("0");
+      expect(chat.element.style.display).toBe("none");
+    });
+    test("can hide associated elements with display none", () => {
+      const param: IParameter = {
+        ...params,
+        is_hide_completely: true,
+      };
+      const chat: IChat = {
+        key: "test1aaa",
+        author: "test1",
+        message: "aaa",
+        element: document.createElement("div"),
+        associatedElements: [document.createElement("div")],
+      };
+      hide(param, "test", chat);
+      expect(chat.element.style.opacity).not.toBe("0");
+      expect(chat.element.style.display).toBe("none");
+      expect(
+        chat.associatedElements?.map((e) => e.style.display)
+      ).toStrictEqual(["none"]);
     });
   });
 });

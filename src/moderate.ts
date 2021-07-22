@@ -119,7 +119,7 @@ export const moderate = async (
   hidePostFlood(param, chats);
 };
 
-const hide = (param: IParameter, reason: string, chat: IChat) => {
+export const hide = (param: IParameter, reason: string, chat: IChat) => {
   if (chat.element.dataset.isHiddenByModekun) return;
 
   chat.element.dataset.isHiddenByModekun = "1";
