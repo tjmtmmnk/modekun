@@ -36,6 +36,7 @@ describe("moderate", () => {
     is_activate_modekun: true,
     consider_author_length: false,
     consider_author_ngword: false,
+    is_hide_completely: false,
   };
   describe("hideRepeatWords", () => {
     const chats: IChat[] = [
