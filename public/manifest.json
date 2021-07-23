@@ -22,8 +22,7 @@
       "matches": [
         "https://www.youtube.com/*",
         "https://www.mildom.com/*",
-        "https://www.twitch.tv/*",
-        "https://www.google.com/*"
+        "https://www.twitch.tv/*"
       ],
       "js": ["js/content_script.js"]
     }
