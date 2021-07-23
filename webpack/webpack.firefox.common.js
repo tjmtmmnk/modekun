@@ -1,7 +1,6 @@
 const webpack = require("webpack");
 const path = require("path");
 const CopyPlugin = require("copy-webpack-plugin");
-const TerserPlugin = require("terser-webpack-plugin");
 
 const srcDir = path.join(__dirname, "..", "src");
 
@@ -47,6 +46,4 @@ module.exports = {
       ],
     }),
   ],
-  devtool: "inline-source-map",
-  mode: "development",
 };
