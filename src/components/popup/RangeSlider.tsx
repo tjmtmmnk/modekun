@@ -14,7 +14,7 @@ const StyledContainer = styled.div`
   line-height: 1.5;
   padding: 0.5em 0.5em 0.5em 1.7em;
   list-style-type: none !important;
-  background: -webkit-linear-gradient(top, #whitesmoke 0%, whitesmoke 100%);
+  background: linear-gradient(top, #whitesmoke 0%, whitesmoke 100%);
   background: linear-gradient(to bottom, whitesmoke 0%, #dadada 100%);
   text-shadow: 1px 1px 1px whitesmoke;
   color: black;
@@ -85,6 +85,7 @@ const StyledRangeValue = styled.span`
 
 const StyledLine = styled.input`
   -webkit-appearance: none;
+  -moz-appearance: none;
   margin: 20px 0;
   width: 100%;
   &:focus {
@@ -98,6 +99,15 @@ const StyledLine = styled.input`
     background: #03a9f4;
     border-radius: 25px;
   }
+  &::-moz-range-track {
+    width: 100%;
+    height: 4px;
+    cursor: pointer;
+    animate: 0.2s;
+    background: #03a9f4;
+    border-radius: 25px;
+  }
+
   &::-webkit-slider-thumb {
     height: 20px;
     width: 20px;
@@ -106,9 +116,24 @@ const StyledLine = styled.input`
     box-shadow: 0 0 4px 0 rgba(0, 0, 0, 1);
     cursor: pointer;
     -webkit-appearance: none;
+    -moz-appearance: none;
     margin-top: -8px;
   }
+  &::-moz-range-thumb {
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 0 4px 0 rgba(0, 0, 0, 1);
+    cursor: pointer;
+    -moz-appearance: none;
+    margin-top: -8px;
+  }
+
   &:focus::-webkit-slider-runnable-track {
+    background: #03a9f4;
+  }
+  &:focus::-moz-range-track {
     background: #03a9f4;
   }
 `;

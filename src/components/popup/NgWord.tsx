@@ -33,6 +33,7 @@ const StyledUl = styled.ul`
   border-top: solid 1px #3dbfb8;
   overflow-y: scroll;
   max-height: 280px;
+  font-size: 12px;
 `;
 
 const StyledLi = styled.li`

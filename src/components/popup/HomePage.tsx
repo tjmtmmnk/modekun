@@ -18,6 +18,7 @@ const StyledContainer = styled.div`
   flex-direction: column;
   justify-content: space-between;
   margin-top: 1em;
+  font-size: 12px;
 `;
 
 export const HomePage = () => {
