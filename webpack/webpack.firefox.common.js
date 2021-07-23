@@ -11,7 +11,7 @@ module.exports = {
     worker: path.join(srcDir, "kuromoji.worker.ts"),
   },
   output: {
-    path: path.join(__dirname, "../dist/js"),
+    path: path.join(__dirname, "../dist-firefox/js"),
     filename: "[name].js",
     clean: {
       keep: "kuromoji/",
@@ -38,7 +38,7 @@ module.exports = {
           to: "..",
           context: "public",
           filter: async (resourcePath) => {
-            return !resourcePath.includes("manifest-firefox.json");
+            return !resourcePath.includes("manifest.json");
           },
         },
         { from: ".", to: "../_locales", context: "_locales" },

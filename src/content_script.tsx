@@ -20,6 +20,16 @@ let lookChats = 0;
 
 let timerId: number;
 
+const getDicPath = () => {
+  const isFireFox = window.navigator.userAgent
+    .toLowerCase()
+    .includes("firefox");
+
+  return isFireFox
+    ? "https://cdn.jsdelivr.net/npm/kuromoji@0.1.2/dict"
+    : chrome.extension.getURL("kuromoji/dict/");
+};
+
 window.addEventListener("load", async () => {
   const params = await getParams().catch((e) => console.error(e));
   params && (await setItem(params));
@@ -27,7 +37,7 @@ window.addEventListener("load", async () => {
   const source = selectSource(window.location.href);
 
   worker = await createKuromojiWorker();
-  api = await createKuromojiWorkerApi(worker);
+  api = await createKuromojiWorkerApi(worker, getDicPath());
 
   const modekun = async () => {
     window.clearTimeout(timerId);
@@ -74,7 +84,7 @@ const observeLocation = async () => {
     worker = null;
     api = null;
     worker = await createKuromojiWorker();
-    api = await createKuromojiWorkerApi(worker);
+    api = await createKuromojiWorkerApi(worker, getDicPath());
     previousLocation = currentLocation;
   }
   window.setTimeout(observeLocation, OBSERVATION_INTERVAL_MS);
