@@ -8,7 +8,7 @@
   },
   "name": "modekun",
   "description": "moderate live chat",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "content_security_policy": "script-src 'self'; object-src 'none'",
 
   "browser_action": {
@@ -29,7 +29,8 @@
         "https://www.mildom.com/*",
         "https://www.twitch.tv/*"
       ],
-      "js": ["js/content_script.js"]
+      "js": ["js/content_script.js"],
+      "run_at": "document_start"
     }
   ],
 
