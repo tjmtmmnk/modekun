@@ -4,6 +4,10 @@
 
 moderate live chat
 
+## Install
+- Chrome: https://chrome.google.com/webstore/detail/modekun/lnlgicokoimnfncigoknlbiicjfbbejp
+- FireFox: https://addons.mozilla.org/ja/firefox/addon/modekun/
+
 ## Usage
 Now, modekun can be used only in Youtube and Mildom, and only Japanese.
 
