@@ -29,7 +29,7 @@
     "comlink": "4.3.1",
     "copy-webpack-plugin": "6.4.1",
     "glob": "7.1.7",
-    "jest": "27.0.6",
+    "jest": "27.1.0",
     "kuromojin": "3.0.0",
     "path-browserify": "1.0.1",
     "prettier": "2.3.2",
