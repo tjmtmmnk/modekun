@@ -5,11 +5,14 @@ import {
   terminateWorker,
 } from "./moderate";
 import {
+  defaultParamsV2,
   DEFAULT_EXECUTION_INTERVAL_MS,
   getParams,
+  IParameterV2,
+  keyStreamer,
   OBSERVATION_INTERVAL_MS,
 } from "./config";
-import { setItem } from "./storage";
+import { get, set, setItem } from "./storage";
 import { selectSource } from "./source/source";
 import { IKuromojiWorker } from "./kuromoji";
 
@@ -31,10 +34,11 @@ const getDicPath = () => {
 };
 
 window.addEventListener("load", async () => {
-  const params = await getParams().catch((e) => console.error(e));
-  params && (await setItem(params));
-
+  //TODO: make compatible for parameter
   const source = selectSource(window.location.href);
+  const paramKey = keyStreamer(source.name, source.extractStreamer());
+  const params = await get<IParameterV2>(paramKey);
+  params && (await set<IParameterV2>(paramKey, params));
 
   worker = await createKuromojiWorker();
   api = await createKuromojiWorkerApi(worker, getDicPath());
@@ -56,21 +60,21 @@ window.addEventListener("load", async () => {
       return;
     }
 
-    const params = await getParams().catch((e) => console.error(e));
+    const params = await get<IParameterV2>(paramKey);
     if (!params) {
       timerId = window.setTimeout(modekun, DEFAULT_EXECUTION_INTERVAL_MS);
       return;
     }
 
-    if (!params.is_activate_modekun) {
+    if (!params.isActivateModekun) {
       return;
     }
 
-    lookChats = params.look_chats;
+    lookChats = params.lookChats;
 
     await moderate(api, params, chats);
 
-    timerId = window.setTimeout(modekun, params.execution_interval);
+    timerId = window.setTimeout(modekun, params.executionInterval);
   };
   timerId = window.setTimeout(modekun, DEFAULT_EXECUTION_INTERVAL_MS);
 });
