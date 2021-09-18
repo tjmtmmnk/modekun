@@ -1,4 +1,5 @@
-import { getItems } from "./storage";
+import { get, getItems } from "./storage";
+import { Streamer } from "./streamer";
 
 export const KEY_REPEAT_THROW = "repeat_throw_threshold";
 export const KEY_REPEAT_WORD = "repeat_word_threshold";
@@ -138,4 +139,8 @@ export const getParams = async (): Promise<IParameter> => {
     throw e;
   });
   return { ...defaultParams, ...params };
+};
+
+export const keyStreamer = (sourceName: string, streamer: Streamer): string => {
+  return `modekun-${sourceName}-${streamer.name}`;
 };
