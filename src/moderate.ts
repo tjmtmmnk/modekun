@@ -97,8 +97,7 @@ export const hideByLength = (param: IParameterV2, chats: IChat[]) => {
   for (const chat of chats) {
     const isHideMessage = chat.message.length >= param.lengthThreshold;
     const isHideAuthor =
-      param.considerAuthorLength &&
-      chat.author.length >= param.lengthThreshold;
+      param.considerAuthorLength && chat.author.length >= param.lengthThreshold;
 
     if (isHideMessage || isHideAuthor) {
       hide(param, chrome.i18n.getMessage("maxNumOfCharacters"), chat);
