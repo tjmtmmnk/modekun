@@ -1,6 +1,6 @@
 import { ISource } from "./source";
 import { IChat } from "../chat";
-import {Streamer} from "../streamer";
+import { Streamer } from "../streamer";
 
 export const Mock: ISource = {
   extractChats(lookNum: number): IChat[] {
