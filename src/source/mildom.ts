@@ -1,5 +1,6 @@
 import { ISource } from "./source";
 import { IChat } from "../chat";
+import { Streamer } from "../streamer";
 
 const chatSelector = {
   chatBlock: "#message-list-container .text-message",
@@ -28,6 +29,12 @@ export const Mildom: ISource = {
       });
     }
     return chats;
+  },
+  extractStreamer() {
+    const streamer: Streamer = {
+      name: "hello",
+    };
+    return streamer;
   },
 };
 

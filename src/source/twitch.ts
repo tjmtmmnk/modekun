@@ -1,6 +1,7 @@
 import { ISource } from "./source";
 import { IChat } from "../chat";
 import { kanaToHiragana, removeSymbols } from "../util";
+import {Streamer} from "../streamer";
 
 const chatSelector = {
   chatBlock: ".chat-line__message-container",
@@ -46,5 +47,11 @@ export const Twitch: ISource = {
     });
 
     return chats;
+  },
+  extractStreamer() {
+    const streamer: Streamer = {
+      name: "hello",
+    };
+    return streamer;
   },
 };

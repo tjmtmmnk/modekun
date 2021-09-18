@@ -1,6 +1,7 @@
 import { IChat } from "../chat";
 import { kanaToHiragana, removeSymbols } from "../util";
 import { ISource } from "./source";
+import { Streamer } from "../streamer";
 
 const chatSelector = {
   chatSection: "#chatframe",
@@ -48,5 +49,11 @@ export const Youtube: ISource = {
       });
     });
     return chats;
+  },
+  extractStreamer() {
+    const streamer: Streamer = {
+      name: "hello",
+    };
+    return streamer;
   },
 };
