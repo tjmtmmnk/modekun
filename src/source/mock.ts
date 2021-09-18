@@ -3,6 +3,7 @@ import { IChat } from "../chat";
 import { Streamer } from "../streamer";
 
 export const Mock: ISource = {
+  name: "mock",
   extractChats(lookNum: number): IChat[] {
     return [
       {

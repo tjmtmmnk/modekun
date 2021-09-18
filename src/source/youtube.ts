@@ -11,6 +11,7 @@ const chatSelector = {
 };
 
 export const Youtube: ISource = {
+  name: "youtube",
   extractChats(lookNum: number): IChat[] {
     const chatSection = document.querySelector<HTMLIFrameElement>(
       chatSelector.chatSection

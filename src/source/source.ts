@@ -6,6 +6,7 @@ import { Twitch } from "./twitch";
 import { Streamer } from "../streamer";
 
 export interface ISource {
+  name: string;
   extractChats: (lookNum: number) => IChat[];
   extractStreamer: () => Streamer;
 }

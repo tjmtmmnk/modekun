@@ -10,6 +10,7 @@ const chatSelector = {
 };
 
 export const Twitch: ISource = {
+  name: "twitch",
   extractChats(lookNum: number): IChat[] {
     const chatBlocks = [
       ...document.querySelectorAll<HTMLElement>(chatSelector.chatBlock),

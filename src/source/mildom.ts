@@ -7,6 +7,7 @@ const chatSelector = {
 };
 
 export const Mildom: ISource = {
+  name: "mildom",
   extractChats(lookNum: number): IChat[] {
     const chatBlocks = [
       ...document.querySelectorAll<HTMLElement>(chatSelector.chatBlock),
