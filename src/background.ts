@@ -14,13 +14,3 @@ chrome.runtime.onConnect.addListener((port) => {
     }
   });
 });
-// chrome.runtime.onMessage.addListener(async (req: Message) => {
-//   switch (req.type) {
-//     case "UPDATE_PARAM": {
-//       console.log("update!!!!!");
-//       if (!req?.data?.param) return;
-//       const paramKey = await get<string | undefined>(KEY_MODEKUN_PARAM);
-//       paramKey && (await set(paramKey, req.data.param));
-//     }
-//   }
-// });

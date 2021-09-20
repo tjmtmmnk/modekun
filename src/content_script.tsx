@@ -39,8 +39,6 @@ window.addEventListener("load", async () => {
     // TODO: make compatible for parameter
     const source = selectSource(window.location.href);
     const paramKey = keyStreamer(source.name, source.extractStreamer());
-    // XXX: avoid using background
-    // TODO: use background
     await set<string>(KEY_MODEKUN_PARAM, paramKey);
     const params = (await get<IParameterV2>(paramKey)) ?? defaultParamsV2;
     await set<IParameterV2>(paramKey, params);
