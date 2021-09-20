@@ -10,6 +10,7 @@ import {
   getParams,
   IParameterV2,
   keyStreamer,
+  KEY_MODEKUN_PARAM,
   OBSERVATION_INTERVAL_MS,
 } from "./config";
 import { get, set, setItem } from "./storage";
@@ -34,49 +35,57 @@ const getDicPath = () => {
 };
 
 window.addEventListener("load", async () => {
-  //TODO: make compatible for parameter
-  const source = selectSource(window.location.href);
-  const paramKey = keyStreamer(source.name, source.extractStreamer());
-  const params = await get<IParameterV2>(paramKey);
-  params && (await set<IParameterV2>(paramKey, params));
+  try {
+    // TODO: make compatible for parameter
+    const source = selectSource(window.location.href);
+    const paramKey = keyStreamer(source.name, source.extractStreamer());
+    // XXX: avoid using background
+    // TODO: use background
+    await set<string>(KEY_MODEKUN_PARAM, paramKey);
+    const params = (await get<IParameterV2>(paramKey)) ?? defaultParamsV2;
+    await set<IParameterV2>(paramKey, params);
 
-  worker = await createKuromojiWorker();
-  api = await createKuromojiWorkerApi(worker, getDicPath());
+    worker = await createKuromojiWorker();
+    api = await createKuromojiWorkerApi(worker, getDicPath());
 
-  const modekun = async () => {
-    window.clearTimeout(timerId);
-    if (!source) return;
+    const modekun = async () => {
+      window.clearTimeout(timerId);
+      if (!source) return;
 
-    if (!api) {
-      timerId = window.setTimeout(modekun, DEFAULT_EXECUTION_INTERVAL_MS);
-      return;
-    }
+      if (!api) {
+        timerId = window.setTimeout(modekun, DEFAULT_EXECUTION_INTERVAL_MS);
+        return;
+      }
 
-    const chats = source.extractChats(lookChats);
-    if (chats.length < 1) {
-      // NOTE: Don't terminate worker here.
-      // Because an archive video may be able to open a chat section which was closed at first.
-      timerId = window.setTimeout(modekun, DEFAULT_EXECUTION_INTERVAL_MS);
-      return;
-    }
+      const chats = source.extractChats(lookChats);
+      if (chats.length < 1) {
+        // NOTE: Don't terminate worker here.
+        // Because an archive video may be able to open a chat section which was closed at first.
+        timerId = window.setTimeout(modekun, DEFAULT_EXECUTION_INTERVAL_MS);
+        return;
+      }
 
-    const params = await get<IParameterV2>(paramKey);
-    if (!params) {
-      timerId = window.setTimeout(modekun, DEFAULT_EXECUTION_INTERVAL_MS);
-      return;
-    }
+      const params = await get<IParameterV2>(paramKey);
+      console.log(params);
+      if (!params) {
+        timerId = window.setTimeout(modekun, DEFAULT_EXECUTION_INTERVAL_MS);
+        return;
+      }
 
-    if (!params.isActivateModekun) {
-      return;
-    }
+      if (!params.isActivateModekun) {
+        return;
+      }
 
-    lookChats = params.lookChats;
+      lookChats = params.lookChats;
 
-    await moderate(api, params, chats);
+      await moderate(api, params, chats);
 
-    timerId = window.setTimeout(modekun, params.executionInterval);
-  };
-  timerId = window.setTimeout(modekun, DEFAULT_EXECUTION_INTERVAL_MS);
+      timerId = window.setTimeout(modekun, params.executionInterval);
+    };
+    timerId = window.setTimeout(modekun, DEFAULT_EXECUTION_INTERVAL_MS);
+  } catch (e) {
+    console.error(e);
+  }
 });
 
 let previousLocation = window.location.href;

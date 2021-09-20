@@ -13,6 +13,7 @@ export const KEY_IS_ACTIVATE = "is_activate_modekun";
 export const KEY_CONSIDER_AUTHOR_NGWORD = "consider_author_ngword";
 export const KEY_CONSIDER_AUTHOR_LENGTH = "consider_author_length";
 export const KEY_IS_HIDE_COMPLETELY = "is_hide_completely";
+export const KEY_MODEKUN_PARAM = "modekun_parameter_key";
 
 export const paramKeys = () => {
   return [
