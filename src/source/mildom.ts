@@ -6,6 +6,11 @@ const chatSelector = {
   chatBlock: "#message-list-container .text-message",
 };
 
+const streamerSelector = {
+  block: ".room-anchor-panel__common-info",
+  streamer: ".room-anchor-panel__name",
+};
+
 export const Mildom: ISource = {
   name: "mildom",
   extractChats(lookNum: number): IChat[] {
@@ -32,10 +37,14 @@ export const Mildom: ISource = {
     return chats;
   },
   extractStreamer() {
-    const streamer: Streamer = {
-      name: "hello",
+    const block = document.querySelector<HTMLElement>(streamerSelector.block);
+    const streamer = block?.querySelector<HTMLElement>(
+      streamerSelector.streamer
+    );
+    const streamerName = streamer?.innerText ?? "NONE";
+    return {
+      name: streamerName,
     };
-    return streamer;
   },
 };
 

@@ -9,6 +9,11 @@ const chatSelector = {
   author: ".chat-author__display-name",
 };
 
+const streamerSelector = {
+  block: ".channel-info-content",
+  streamer: ".tw-title",
+};
+
 export const Twitch: ISource = {
   name: "twitch",
   extractChats(lookNum: number): IChat[] {
@@ -50,9 +55,13 @@ export const Twitch: ISource = {
     return chats;
   },
   extractStreamer() {
-    const streamer: Streamer = {
-      name: "hello",
+    const block = document.querySelector<HTMLElement>(streamerSelector.block);
+    const streamer = block?.querySelector<HTMLElement>(
+      streamerSelector.streamer
+    );
+    const streamerName = streamer?.innerText ?? "NONE";
+    return {
+      name: streamerName,
     };
-    return streamer;
   },
 };
