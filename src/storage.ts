@@ -32,7 +32,7 @@ export const set = async <T>(key: string, item: T): Promise<void> => {
       },
       () => {
         if (chrome.runtime.lastError) {
-          reject(chrome.runtime.lastError);
+          reject(chrome.runtime.lastError.message);
         } else {
           resolve();
         }
@@ -41,12 +41,15 @@ export const set = async <T>(key: string, item: T): Promise<void> => {
   });
 };
 
-export const get = async <T>(key: string): Promise<T> => {
+export const get = async <T>(key: string): Promise<T | undefined> => {
   return new Promise((resolve, reject) => {
     chrome.storage.sync.get(key, (item) => {
       if (chrome.runtime.lastError) {
-        reject(chrome.runtime.lastError);
+        reject(chrome.runtime.lastError.message);
       } else {
+        if (!item[key]) {
+          return resolve(undefined);
+        }
         const v = JSON.parse(item[key]);
         resolve(v);
       }
