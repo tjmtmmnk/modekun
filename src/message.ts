@@ -4,8 +4,12 @@ export type MessageType =
   | "GET_PARAM"
   | "RECEIVE_PARAM";
 
+export type NetworkNode = "CONTENT_SCRIPT" | "BACKGROUND" | "POPUP";
+
 export interface Message {
   type: MessageType;
+  from: NetworkNode;
+  to: NetworkNode;
   data?: any;
 }
 
