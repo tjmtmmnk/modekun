@@ -16,12 +16,6 @@ export interface Message {
 }
 
 const port = chrome.runtime.connect({ name: "modekun" });
-let popupPort: chrome.runtime.Port | undefined;
-getCurrentTab().then((tab) => {
-  if (tab.id) {
-    popupPort = chrome.tabs.connect(tab.id);
-  }
-});
 
 export const sendRequest = (req: Message) => {
   port.postMessage(req);
@@ -29,7 +23,9 @@ export const sendRequest = (req: Message) => {
 
 export const sendRequestToContent = (req: Message) => {
   if (req.to !== "CONTENT_SCRIPT") return;
-  popupPort && popupPort.postMessage(req);
+  chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+    tabs[0].id && chrome.tabs.sendMessage(tabs[0].id, req);
+  });
 };
 
 export const receiveRequest = (type: MessageType): Promise<Message> => {
