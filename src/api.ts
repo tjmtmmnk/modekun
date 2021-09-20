@@ -6,6 +6,10 @@ import {
   sendRequestToContent,
 } from "./message";
 
+const sleep = async (ms: number) => {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+};
+
 export const getParam = async (from: NetworkNode): Promise<IParameterV2> => {
   if (from === "POPUP") {
     sendRequestToContent({
@@ -14,6 +18,13 @@ export const getParam = async (from: NetworkNode): Promise<IParameterV2> => {
       to: "CONTENT_SCRIPT",
     });
   }
+
+  /* XXX: assure order
+  1. update param key
+  2. get param by using updated param key
+   */
+  await sleep(500);
+
   sendRequest({
     type: "GET_PARAM",
     from: from,
