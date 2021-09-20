@@ -41,6 +41,8 @@ window.addEventListener("load", async () => {
 
     sendRequest({
       type: "UPDATE_PARAM_KEY",
+      from: "CONTENT_SCRIPT",
+      to: "BACKGROUND",
       data: {
         key: paramKey,
       },
@@ -96,6 +98,8 @@ const observeLocation = async () => {
     const paramKey = keyStreamer(source.name, source.extractStreamer());
     sendRequest({
       type: "UPDATE_PARAM_KEY",
+      from: "CONTENT_SCRIPT",
+      to: "BACKGROUND",
       data: {
         key: paramKey,
       },

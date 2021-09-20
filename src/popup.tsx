@@ -9,7 +9,7 @@ export const useParams = (): IParameterV2 | undefined => {
   const [params, setParams] = React.useState<IParameterV2>();
   let isMounted = true;
   React.useEffect(() => {
-    getParam().then((param) => {
+    getParam("POPUP").then((param) => {
       if (isMounted) {
         setParams(param);
       }

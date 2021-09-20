@@ -7,8 +7,10 @@ const KEY_MODEKUN_PARAM = "modekun_parameter_key";
 chrome.runtime.onConnect.addListener((port) => {
   console.assert(port.name === "modekun");
   port.onMessage.addListener(async (req: Message) => {
+    if (req.from === "BACKGROUND" || req.to !== "BACKGROUND") return;
     switch (req.type) {
       case "UPDATE_PARAM": {
+        if (req.from === "CONTENT_SCRIPT") return;
         console.log("update param!!");
         if (!req?.data?.param) return;
         const paramKey = await get<string | undefined>(KEY_MODEKUN_PARAM);
@@ -16,6 +18,7 @@ chrome.runtime.onConnect.addListener((port) => {
         break;
       }
       case "UPDATE_PARAM_KEY": {
+        if (req.from === "POPUP") return;
         console.log("update param key!");
         if (!req?.data?.key) return;
         await set<string>(KEY_MODEKUN_PARAM, req.data.key);
@@ -31,6 +34,8 @@ chrome.runtime.onConnect.addListener((port) => {
 
         const res: Message = {
           type: "RECEIVE_PARAM",
+          from: "BACKGROUND",
+          to: "POPUP",
           data: {
             param: param,
           },

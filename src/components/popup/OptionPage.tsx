@@ -69,6 +69,8 @@ export const OptionPageChild = (props: { params: IParameterV2 }) => {
               };
               sendRequest({
                 type: "UPDATE_PARAM",
+                from: "POPUP",
+                to: "BACKGROUND",
                 data: {
                   param: newParam,
                 },
@@ -88,6 +90,8 @@ export const OptionPageChild = (props: { params: IParameterV2 }) => {
               };
               sendRequest({
                 type: "UPDATE_PARAM",
+                from: "POPUP",
+                to: "BACKGROUND",
                 data: {
                   param: newParam,
                 },
@@ -107,6 +111,8 @@ export const OptionPageChild = (props: { params: IParameterV2 }) => {
               };
               sendRequest({
                 type: "UPDATE_PARAM",
+                from: "POPUP",
+                to: "BACKGROUND",
                 data: {
                   param: newParam,
                 },
@@ -126,6 +132,8 @@ export const OptionPageChild = (props: { params: IParameterV2 }) => {
               };
               sendRequest({
                 type: "UPDATE_PARAM",
+                from: "POPUP",
+                to: "BACKGROUND",
                 data: {
                   param: newParam,
                 },
@@ -145,6 +153,8 @@ export const OptionPageChild = (props: { params: IParameterV2 }) => {
               };
               sendRequest({
                 type: "UPDATE_PARAM",
+                from: "POPUP",
+                to: "BACKGROUND",
                 data: {
                   param: newParam,
                 },

@@ -37,6 +37,8 @@ export const HomePageChild = (props: { params: IParameterV2 }) => {
           };
           sendRequest({
             type: "UPDATE_PARAM",
+            from: "POPUP",
+            to: "BACKGROUND",
             data: {
               param: newParam,
             },
@@ -57,6 +59,8 @@ export const HomePageChild = (props: { params: IParameterV2 }) => {
           };
           sendRequest({
             type: "UPDATE_PARAM",
+            from: "POPUP",
+            to: "BACKGROUND",
             data: {
               param: newParam,
             },
@@ -77,6 +81,8 @@ export const HomePageChild = (props: { params: IParameterV2 }) => {
           };
           sendRequest({
             type: "UPDATE_PARAM",
+            from: "POPUP",
+            to: "BACKGROUND",
             data: {
               param: newParam,
             },
@@ -97,6 +103,8 @@ export const HomePageChild = (props: { params: IParameterV2 }) => {
           };
           sendRequest({
             type: "UPDATE_PARAM",
+            from: "POPUP",
+            to: "BACKGROUND",
             data: {
               param: newParam,
             },
@@ -117,6 +125,8 @@ export const HomePageChild = (props: { params: IParameterV2 }) => {
           };
           sendRequest({
             type: "UPDATE_PARAM",
+            from: "POPUP",
+            to: "BACKGROUND",
             data: {
               param: newParam,
             },
@@ -137,6 +147,8 @@ export const HomePageChild = (props: { params: IParameterV2 }) => {
           };
           sendRequest({
             type: "UPDATE_PARAM",
+            from: "POPUP",
+            to: "BACKGROUND",
             data: {
               param: newParam,
             },
