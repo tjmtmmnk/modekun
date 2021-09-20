@@ -7,11 +7,12 @@ import {
 import {
   defaultParamsV2,
   DEFAULT_EXECUTION_INTERVAL_MS,
+  getParams,
   IParameterV2,
   keyStreamer,
   OBSERVATION_INTERVAL_MS,
 } from "./config";
-import { get } from "./storage";
+import { get, set } from "./storage";
 import { selectSource } from "./source/source";
 import { IKuromojiWorker } from "./kuromoji";
 import { Message, sendRequest } from "./message";
@@ -53,11 +54,31 @@ const onMessage = (req: Message) => {
 
 chrome.runtime.onMessage.addListener(onMessage);
 
+const setParamWithCompatibility = async (paramKey: string) => {
+  const oldParam = await getParams();
+  const newParam: IParameterV2 = {
+    repeatPostThreshold: oldParam.repeat_throw_threshold,
+    repeatWordThreshold: oldParam.repeat_word_threshold,
+    postFrequencyThreshold: oldParam.post_flood_threshold,
+    lengthThreshold: oldParam.length_threshold,
+    lookChats: oldParam.look_chats,
+    executionInterval: oldParam.execution_interval,
+    ngWords: oldParam.ng_words,
+    isShowReason: oldParam.is_show_reason,
+    isActivateModekun: oldParam.is_activate_modekun,
+    considerAuthorNgWord: oldParam.consider_author_ngword,
+    considerAuthorLength: oldParam.consider_author_length,
+    isHideCompletely: oldParam.is_hide_completely,
+  };
+  await set<IParameterV2>(paramKey, newParam);
+};
+
 window.addEventListener("load", async () => {
   try {
     // TODO: make compatible for parameter
     const source = selectSource(window.location.href);
     const paramKey = keyStreamer(source.name, source.extractStreamer());
+    await setParamWithCompatibility(paramKey);
 
     sendRequest({
       type: "UPDATE_PARAM_KEY",
