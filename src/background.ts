@@ -1,8 +1,8 @@
-import { Message, sendRequest } from "./message";
+import { Message } from "./message";
 import { defaultParamsV2, IParameterV2 } from "./config";
 import { get, set } from "./storage";
 
-const KEY_MODEKUN_PARAM = "modekun_parameter_key";
+let paramKey: string;
 
 chrome.runtime.onConnect.addListener((port) => {
   console.assert(port.name === "modekun");
@@ -13,7 +13,6 @@ chrome.runtime.onConnect.addListener((port) => {
         if (req.from === "CONTENT_SCRIPT") return;
         console.log("update param!!");
         if (!req?.data?.param) return;
-        const paramKey = await get<string | undefined>(KEY_MODEKUN_PARAM);
         paramKey && (await set(paramKey, req.data.param));
         break;
       }
@@ -21,13 +20,12 @@ chrome.runtime.onConnect.addListener((port) => {
         if (req.from === "POPUP") return;
         console.log("update param key!");
         if (!req?.data?.key) return;
-        await set<string>(KEY_MODEKUN_PARAM, req.data.key);
+        paramKey = req.data.key;
+        console.log(`new key: ${paramKey}`);
         break;
       }
       case "GET_PARAM": {
-        const paramKey = await get<string | undefined>(KEY_MODEKUN_PARAM);
         console.log("get param!");
-        console.log(paramKey);
         const param = paramKey
           ? (await get<IParameterV2 | undefined>(paramKey)) ?? defaultParamsV2
           : defaultParamsV2;
