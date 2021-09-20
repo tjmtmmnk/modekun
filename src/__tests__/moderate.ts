@@ -11,7 +11,7 @@ import {
   hideRepeatThrow,
   hideRepeatWords,
 } from "../moderate";
-import { IParameter } from "../config";
+import { IParameterV2 } from "../config";
 import { KuromojiToken } from "kuromojin";
 import { IKuromojiWorker } from "../kuromoji";
 
@@ -25,19 +25,19 @@ describe("moderate", () => {
     },
   };
 
-  const params: IParameter = {
-    repeat_throw_threshold: 2,
-    repeat_word_threshold: 2,
-    post_flood_threshold: 2,
-    length_threshold: 3,
-    look_chats: 10,
-    execution_interval: 1000,
-    ng_words: ["なう"],
-    is_show_reason: false,
-    is_activate_modekun: true,
-    consider_author_length: false,
-    consider_author_ngword: false,
-    is_hide_completely: false,
+  const params: IParameterV2 = {
+    repeatPostThreshold: 2,
+    repeatWordThreshold: 2,
+    postFrequencyThreshold: 2,
+    lengthThreshold: 3,
+    lookChats: 10,
+    executionInterval: 1000,
+    ngWords: ["なう"],
+    isShowReason: false,
+    isActivateModekun: true,
+    considerAuthorLength: false,
+    considerAuthorNgWord: false,
+    isHideCompletely: false,
   };
   describe("hideRepeatWords", () => {
     const chats: IChat[] = [
@@ -156,9 +156,9 @@ describe("moderate", () => {
           element: document.createElement("div"),
         },
       ];
-      const param: IParameter = {
+      const param: IParameterV2 = {
         ...params,
-        consider_author_ngword: true,
+        considerAuthorNgWord: true,
       };
       hideNgWords(param, chats);
       expect(chats[0].element.dataset.isHiddenByModekun).toBeFalsy();
@@ -260,10 +260,10 @@ describe("moderate", () => {
           element: document.createElement("div"),
         },
       ];
-      const param: IParameter = {
+      const param: IParameterV2 = {
         ...params,
-        length_threshold: 5,
-        consider_author_length: true,
+        lengthThreshold: 5,
+        considerAuthorLength: true,
       };
       hideByLength(param, chats);
       expect(chats[0].element.dataset.isHiddenByModekun).toBeTruthy();
@@ -291,10 +291,10 @@ describe("moderate", () => {
         element: document.createElement("div"),
       },
     ];
-    const param: IParameter = {
+    const param: IParameterV2 = {
       ...params,
-      repeat_throw_threshold: 2,
-      post_flood_threshold: 3,
+      repeatPostThreshold: 2,
+      postFrequencyThreshold: 3,
     };
     test("can hide by both filter", () => {
       hideRepeatThrow(param, chats);
@@ -317,9 +317,9 @@ describe("moderate", () => {
       expect(chat.element.style.display).not.toBe("none");
     });
     test("can hide with display none", () => {
-      const param: IParameter = {
+      const param: IParameterV2 = {
         ...params,
-        is_hide_completely: true,
+        isHideCompletely: true,
       };
       const chat: IChat = {
         key: "test1aaa",
@@ -332,9 +332,9 @@ describe("moderate", () => {
       expect(chat.element.style.display).toBe("none");
     });
     test("can hide associated elements with display none", () => {
-      const param: IParameter = {
+      const param: IParameterV2 = {
         ...params,
-        is_hide_completely: true,
+        isHideCompletely: true,
       };
       const chat: IChat = {
         key: "test1aaa",

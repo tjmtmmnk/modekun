@@ -1,7 +1,9 @@
 import { ISource } from "./source";
 import { IChat } from "../chat";
+import { Streamer } from "../streamer";
 
 export const Mock: ISource = {
+  name: "mock",
   extractChats(lookNum: number): IChat[] {
     return [
       {
@@ -29,5 +31,11 @@ export const Mock: ISource = {
         element: document.createElement("div"),
       },
     ];
+  },
+  extractStreamer() {
+    const streamer: Streamer = {
+      name: "hello",
+    };
+    return streamer;
   },
 };

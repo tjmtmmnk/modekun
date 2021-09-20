@@ -1,25 +1,19 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import { getParam } from "./api";
 import PopupPage from "./components/popup";
 
-import { defaultParams, isParameter, IParameter, getParams } from "./config";
+import { IParameterV2 } from "./config";
 
-export const useParams = (): IParameter | undefined => {
-  const [params, setParams] = React.useState<IParameter>();
+export const useParams = (): IParameterV2 | undefined => {
+  const [params, setParams] = React.useState<IParameterV2>();
   let isMounted = true;
   React.useEffect(() => {
-    getParams()
-      .then((p) => {
-        if (isMounted) {
-          if (isParameter(p)) {
-            setParams(p);
-          } else {
-            setParams(defaultParams);
-            chrome.storage.sync.set(defaultParams);
-          }
-        }
-      })
-      .catch((e) => console.log(e));
+    getParam("POPUP").then((param) => {
+      if (isMounted) {
+        setParams(param);
+      }
+    });
     return () => {
       isMounted = false;
     };

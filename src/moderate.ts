@@ -1,6 +1,6 @@
 import { IChat } from "./chat";
 import { wrap } from "comlink";
-import { IParameter } from "./config";
+import { IParameterV2 } from "./config";
 import { IKuromojiWorker } from "./kuromoji";
 
 export const createKuromojiWorker = async (): Promise<Worker> => {
@@ -25,7 +25,7 @@ export const terminateWorker = (worker: Worker | undefined) => {
   worker && worker.terminate();
 };
 
-export const hideRepeatThrow = (param: IParameter, chats: IChat[]) => {
+export const hideRepeatThrow = (param: IParameterV2, chats: IChat[]) => {
   const duplicateCount: { [key: string]: number } = {};
   for (const chat of chats) {
     if (!duplicateCount[chat.key]) {
@@ -34,18 +34,18 @@ export const hideRepeatThrow = (param: IParameter, chats: IChat[]) => {
     duplicateCount[chat.key]++;
   }
   for (const chat of chats) {
-    if (duplicateCount[chat.key] >= param.repeat_throw_threshold) {
+    if (duplicateCount[chat.key] >= param.repeatPostThreshold) {
       hide(param, chrome.i18n.getMessage("repeatPost"), chat);
     }
   }
 };
 
-export const hideNgWords = (param: IParameter, chats: IChat[]) => {
+export const hideNgWords = (param: IParameterV2, chats: IChat[]) => {
   for (const chat of chats) {
-    for (const ngWord of param.ng_words) {
+    for (const ngWord of param.ngWords) {
       const isHideMessage = chat.message.includes(ngWord);
       const isHideAuthor =
-        param.consider_author_ngword && chat.author.includes(ngWord);
+        param.considerAuthorNgWord && chat.author.includes(ngWord);
 
       if (isHideMessage || isHideAuthor) {
         hide(param, chrome.i18n.getMessage("ngWord"), chat);
@@ -55,19 +55,19 @@ export const hideNgWords = (param: IParameter, chats: IChat[]) => {
 };
 
 export const hideRepeatWords = async (
-  param: IParameter,
+  param: IParameterV2,
   api: IKuromojiWorker,
   chats: IChat[]
 ) => {
   const counts = await api.getMaxRepeatWordCounts(chats.map((c) => c.message));
   chats.forEach((chat, i) => {
-    if (counts[i] >= param.repeat_word_threshold) {
+    if (counts[i] >= param.repeatWordThreshold) {
       hide(param, chrome.i18n.getMessage("repeatWords"), chat);
     }
   });
 };
 
-export const hidePostFlood = (param: IParameter, chats: IChat[]) => {
+export const hidePostFlood = (param: IParameterV2, chats: IChat[]) => {
   const authorCount: { [author: string]: number } = {};
   const authorToChats: { [author: string]: IChat[] } = {};
 
@@ -85,7 +85,7 @@ export const hidePostFlood = (param: IParameter, chats: IChat[]) => {
   }
 
   for (const [author, count] of Object.entries(authorCount)) {
-    if (count >= param.post_flood_threshold) {
+    if (count >= param.postFrequencyThreshold) {
       for (const c of authorToChats[author]) {
         hide(param, chrome.i18n.getMessage("repeatFrequency"), c);
       }
@@ -93,12 +93,11 @@ export const hidePostFlood = (param: IParameter, chats: IChat[]) => {
   }
 };
 
-export const hideByLength = (param: IParameter, chats: IChat[]) => {
+export const hideByLength = (param: IParameterV2, chats: IChat[]) => {
   for (const chat of chats) {
-    const isHideMessage = chat.message.length >= param.length_threshold;
+    const isHideMessage = chat.message.length >= param.lengthThreshold;
     const isHideAuthor =
-      param.consider_author_length &&
-      chat.author.length >= param.length_threshold;
+      param.considerAuthorLength && chat.author.length >= param.lengthThreshold;
 
     if (isHideMessage || isHideAuthor) {
       hide(param, chrome.i18n.getMessage("maxNumOfCharacters"), chat);
@@ -108,7 +107,7 @@ export const hideByLength = (param: IParameter, chats: IChat[]) => {
 
 export const moderate = async (
   kuromojiWorkerApi: IKuromojiWorker,
-  param: IParameter,
+  param: IParameterV2,
   chats: IChat[]
 ): Promise<void> => {
   hideByLength(param, chats);
@@ -118,12 +117,12 @@ export const moderate = async (
   hidePostFlood(param, chats);
 };
 
-export const hide = (param: IParameter, reason: string, chat: IChat) => {
+export const hide = (param: IParameterV2, reason: string, chat: IChat) => {
   if (chat.element.dataset.isHiddenByModekun) return;
 
   chat.element.dataset.isHiddenByModekun = "1";
 
-  if (param.is_hide_completely) {
+  if (param.isHideCompletely) {
     chat.element.style.display = "none";
     if (chat.associatedElements) {
       for (const element of chat.associatedElements) {
@@ -133,7 +132,7 @@ export const hide = (param: IParameter, reason: string, chat: IChat) => {
   } else {
     chat.element.style.opacity = "0";
 
-    const reasonLabel = param.is_show_reason
+    const reasonLabel = param.isShowReason
       ? document.createElement("span")
       : null;
     if (reasonLabel) {

@@ -1,4 +1,6 @@
 import { getItems } from "./storage";
+import { Streamer } from "./streamer";
+import md5 from "md5";
 
 export const KEY_REPEAT_THROW = "repeat_throw_threshold";
 export const KEY_REPEAT_WORD = "repeat_word_threshold";
@@ -79,6 +81,36 @@ export interface IParameter {
   is_hide_completely: boolean;
 }
 
+export interface IParameterV2 {
+  repeatPostThreshold: number;
+  repeatWordThreshold: number;
+  postFrequencyThreshold: number;
+  lengthThreshold: number;
+  lookChats: number;
+  executionInterval: number;
+  ngWords: string[];
+  isShowReason: boolean;
+  isActivateModekun: boolean;
+  considerAuthorNgWord: boolean;
+  considerAuthorLength: boolean;
+  isHideCompletely: boolean;
+}
+
+export const defaultParamsV2: IParameterV2 = {
+  repeatPostThreshold: DEFAULT_REPEAT_THROW_THRESHOLD,
+  repeatWordThreshold: DEFAULT_REPEAT_WORD_THRESHOLD,
+  postFrequencyThreshold: DEFAULT_POST_FLOOD_THRESHOLD,
+  lengthThreshold: DEFAULT_LENGTH_THRESHOLD,
+  lookChats: DEFAULT_LOOK_CHATS,
+  executionInterval: DEFAULT_EXECUTION_INTERVAL_MS,
+  ngWords: DEFAULT_NG_WORDS,
+  isShowReason: DEFAULT_IS_SHOW_REASON,
+  isActivateModekun: DEFAULT_IS_ACTIVATE,
+  considerAuthorNgWord: DEFAULT_CONSIDER_AUTHOR_NGWORD,
+  considerAuthorLength: DEFAULT_CONSIDER_AUTHOR_LENGTH,
+  isHideCompletely: DEFAULT_IS_HIDE_COMPLETELY,
+};
+
 export const isParameter = (arg: any): arg is IParameter => {
   return (
     arg.repeat_throw_threshold !== undefined &&
@@ -108,4 +140,9 @@ export const getParams = async (): Promise<IParameter> => {
     throw e;
   });
   return { ...defaultParams, ...params };
+};
+
+export const keyStreamer = (sourceName: string, streamer: Streamer): string => {
+  const hashedName = md5(streamer.name);
+  return `modekun-${sourceName}-${hashedName}`;
 };

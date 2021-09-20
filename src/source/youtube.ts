@@ -1,6 +1,7 @@
 import { IChat } from "../chat";
 import { kanaToHiragana, removeSymbols } from "../util";
 import { ISource } from "./source";
+import { Streamer } from "../streamer";
 
 const chatSelector = {
   chatSection: "#chatframe",
@@ -9,7 +10,14 @@ const chatSelector = {
   author: "#author-name",
 };
 
+const streamerSelector = {
+  section: "#upload-info",
+  block: "#channel-name",
+  streamer: ".yt-simple-endpoint",
+};
+
 export const Youtube: ISource = {
+  name: "youtube",
   extractChats(lookNum: number): IChat[] {
     const chatSection = document.querySelector<HTMLIFrameElement>(
       chatSelector.chatSection
@@ -48,5 +56,19 @@ export const Youtube: ISource = {
       });
     });
     return chats;
+  },
+  extractStreamer() {
+    const section = document.querySelector<HTMLElement>(
+      streamerSelector.section
+    );
+    const block = section?.querySelector<HTMLElement>(streamerSelector.block);
+    const streamer = block?.querySelector<HTMLElement>(
+      streamerSelector.streamer
+    );
+    const streamerName = streamer?.innerText ?? "NONE";
+
+    return {
+      name: streamerName,
+    };
   },
 };

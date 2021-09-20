@@ -28,7 +28,12 @@
     }
   ],
 
-  "permissions": ["activeTab", "storage"],
+  "background": {
+    "scripts": ["js/background.js"],
+    "persistent": false
+  },
+
+  "permissions": ["activeTab", "storage", "tabs"],
 
   "web_accessible_resources": ["kuromoji/dict/*", "js/worker.js"],
 

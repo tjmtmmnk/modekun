@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import { IParameterV2 } from "../../config";
 import { theme } from "../style/theme";
 
 const StyledCheckBoxWrapper = styled.div`
@@ -60,15 +61,15 @@ const StyledContainer = styled.div`
 export const CheckBox = (props: {
   id: string;
   label: string;
-  storageKey: string;
   defaultChecked: boolean;
+  updateParam: (checked: boolean) => void;
 }) => {
-  const { id, label, storageKey, defaultChecked } = props;
+  const { id, label, defaultChecked, updateParam } = props;
 
   const [checked, setChecked] = useState(defaultChecked);
 
   React.useEffect(() => {
-    chrome.storage.sync.set({ [storageKey]: checked });
+    updateParam(checked);
   }, [checked]);
 
   const onChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {

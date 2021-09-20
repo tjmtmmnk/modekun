@@ -1,15 +1,9 @@
 import React from "react";
 import styled from "styled-components";
 import { CheckBox } from "./CheckBox";
-import {
-  IParameter,
-  KEY_CONSIDER_AUTHOR_LENGTH,
-  KEY_CONSIDER_AUTHOR_NGWORD,
-  KEY_IS_ACTIVATE,
-  KEY_IS_HIDE_COMPLETELY,
-  KEY_IS_SHOW_REASON,
-} from "../../config";
+import { IParameterV2 } from "../../config";
 import { useParams } from "../../popup";
+import { sendRequest } from "../../message";
 
 const StyledContainer = styled.div`
   width: 320px;
@@ -58,7 +52,7 @@ export const OptionPage = () => {
   return <>{params && <OptionPageChild params={params} />}</>;
 };
 
-export const OptionPageChild = (props: { params: IParameter }) => {
+export const OptionPageChild = (props: { params: IParameterV2 }) => {
   const { params } = props;
   return (
     <StyledContainer>
@@ -67,40 +61,105 @@ export const OptionPageChild = (props: { params: IParameter }) => {
           <CheckBox
             id={"activate-switch"}
             label={chrome.i18n.getMessage("activateModekun")}
-            storageKey={KEY_IS_ACTIVATE}
-            defaultChecked={params[KEY_IS_ACTIVATE]}
+            defaultChecked={params.isActivateModekun}
+            updateParam={(checked: boolean) => {
+              const newParam: IParameterV2 = {
+                ...params,
+                isActivateModekun: checked,
+              };
+              sendRequest({
+                type: "UPDATE_PARAM",
+                from: "POPUP",
+                to: "BACKGROUND",
+                data: {
+                  param: newParam,
+                },
+              });
+            }}
           />
         </StyledLi>
         <StyledLi>
           <CheckBox
             id={"reason-switch"}
             label={chrome.i18n.getMessage("showHiddenReason")}
-            storageKey={KEY_IS_SHOW_REASON}
-            defaultChecked={params[KEY_IS_SHOW_REASON]}
+            defaultChecked={params.isShowReason}
+            updateParam={(checked: boolean) => {
+              const newParam: IParameterV2 = {
+                ...params,
+                isShowReason: checked,
+              };
+              sendRequest({
+                type: "UPDATE_PARAM",
+                from: "POPUP",
+                to: "BACKGROUND",
+                data: {
+                  param: newParam,
+                },
+              });
+            }}
           />
         </StyledLi>
         <StyledLi>
           <CheckBox
             id={"consider-author-ngword"}
             label={chrome.i18n.getMessage("includePosterInNgWord")}
-            storageKey={KEY_CONSIDER_AUTHOR_NGWORD}
-            defaultChecked={params[KEY_CONSIDER_AUTHOR_NGWORD]}
+            defaultChecked={params.considerAuthorNgWord}
+            updateParam={(checked: boolean) => {
+              const newParam: IParameterV2 = {
+                ...params,
+                considerAuthorNgWord: checked,
+              };
+              sendRequest({
+                type: "UPDATE_PARAM",
+                from: "POPUP",
+                to: "BACKGROUND",
+                data: {
+                  param: newParam,
+                },
+              });
+            }}
           />
         </StyledLi>
         <StyledLi>
           <CheckBox
             id={"consider-author-length"}
             label={chrome.i18n.getMessage("includePosterInLimitChars")}
-            storageKey={KEY_CONSIDER_AUTHOR_LENGTH}
-            defaultChecked={params[KEY_CONSIDER_AUTHOR_LENGTH]}
+            defaultChecked={params.considerAuthorLength}
+            updateParam={(checked: boolean) => {
+              const newParam: IParameterV2 = {
+                ...params,
+                considerAuthorLength: checked,
+              };
+              sendRequest({
+                type: "UPDATE_PARAM",
+                from: "POPUP",
+                to: "BACKGROUND",
+                data: {
+                  param: newParam,
+                },
+              });
+            }}
           />
         </StyledLi>
         <StyledLi>
           <CheckBox
             id={"is-hide-completely"}
             label={chrome.i18n.getMessage("isHideCompletely")}
-            storageKey={KEY_IS_HIDE_COMPLETELY}
-            defaultChecked={params[KEY_IS_HIDE_COMPLETELY]}
+            defaultChecked={params.isHideCompletely}
+            updateParam={(checked: boolean) => {
+              const newParam: IParameterV2 = {
+                ...params,
+                isHideCompletely: checked,
+              };
+              sendRequest({
+                type: "UPDATE_PARAM",
+                from: "POPUP",
+                to: "BACKGROUND",
+                data: {
+                  param: newParam,
+                },
+              });
+            }}
           />
         </StyledLi>
       </StyledUl>

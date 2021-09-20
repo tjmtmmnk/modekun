@@ -1,6 +1,7 @@
 import { ISource } from "./source";
 import { IChat } from "../chat";
 import { kanaToHiragana, removeSymbols } from "../util";
+import { Streamer } from "../streamer";
 
 const chatSelector = {
   chatBlock: ".chat-line__message-container",
@@ -8,7 +9,13 @@ const chatSelector = {
   author: ".chat-author__display-name",
 };
 
+const streamerSelector = {
+  block: ".channel-info-content",
+  streamer: ".tw-title",
+};
+
 export const Twitch: ISource = {
+  name: "twitch",
   extractChats(lookNum: number): IChat[] {
     const chatBlocks = [
       ...document.querySelectorAll<HTMLElement>(chatSelector.chatBlock),
@@ -46,5 +53,15 @@ export const Twitch: ISource = {
     });
 
     return chats;
+  },
+  extractStreamer() {
+    const block = document.querySelector<HTMLElement>(streamerSelector.block);
+    const streamer = block?.querySelector<HTMLElement>(
+      streamerSelector.streamer
+    );
+    const streamerName = streamer?.innerText ?? "NONE";
+    return {
+      name: streamerName,
+    };
   },
 };
