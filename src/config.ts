@@ -1,5 +1,6 @@
-import { get, getItems } from "./storage";
+import { getItems } from "./storage";
 import { Streamer } from "./streamer";
+import md5 from "md5";
 
 export const KEY_REPEAT_THROW = "repeat_throw_threshold";
 export const KEY_REPEAT_WORD = "repeat_word_threshold";
@@ -142,5 +143,6 @@ export const getParams = async (): Promise<IParameter> => {
 };
 
 export const keyStreamer = (sourceName: string, streamer: Streamer): string => {
-  return `modekun-${sourceName}-${streamer.name}`;
+  const hashedName = md5(streamer.name);
+  return `modekun-${sourceName}-${hashedName}`;
 };
