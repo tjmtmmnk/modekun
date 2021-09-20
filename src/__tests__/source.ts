@@ -2,6 +2,7 @@ import { selectSource } from "../source/source";
 import { Youtube } from "../source/youtube";
 import { Mildom } from "../source/mildom";
 import { Twitch } from "../source/twitch";
+import { Mock } from "../source/mock";
 
 describe("selectSource", () => {
   test("youtube", () => {
@@ -21,6 +22,6 @@ describe("selectSource", () => {
 
   test("none", () => {
     const source = selectSource("https://www.none.com");
-    expect(source).toBeNull();
+    expect(source).toEqual(Mock);
   });
 });
