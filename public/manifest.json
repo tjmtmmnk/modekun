@@ -28,6 +28,11 @@
     }
   ],
 
+  "background": {
+    "scripts": ["js/background.js"],
+    "persistent": false
+  },
+
   "permissions": ["activeTab", "storage"],
 
   "web_accessible_resources": ["kuromoji/dict/*", "js/worker.js"],
