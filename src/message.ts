@@ -1,3 +1,5 @@
+import { getCurrentTab } from "./tabs";
+
 export type MessageType =
   | "UPDATE_PARAM"
   | "UPDATE_PARAM_KEY"
@@ -14,9 +16,20 @@ export interface Message {
 }
 
 const port = chrome.runtime.connect({ name: "modekun" });
+let popupPort: chrome.runtime.Port | undefined;
+getCurrentTab().then((tab) => {
+  if (tab.id) {
+    popupPort = chrome.tabs.connect(tab.id);
+  }
+});
 
 export const sendRequest = (req: Message) => {
   port.postMessage(req);
+};
+
+export const sendRequestToContent = (req: Message) => {
+  if (req.to !== "CONTENT_SCRIPT") return;
+  popupPort && popupPort.postMessage(req);
 };
 
 export const receiveRequest = (type: MessageType): Promise<Message> => {

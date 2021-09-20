@@ -12,13 +12,13 @@ import {
   OBSERVATION_INTERVAL_MS,
 } from "./config";
 import { get, set } from "./storage";
-import { selectSource } from "./source/source";
+import { ISource, selectSource } from "./source/source";
 import { IKuromojiWorker } from "./kuromoji";
-import { sendRequest } from "./message";
+import { Message, sendRequest } from "./message";
 
 let worker: Worker | null;
 let api: IKuromojiWorker | null;
-
+let paramKey: string;
 let lookChats = 0;
 
 let timerId: number;
@@ -33,11 +33,32 @@ const getDicPath = () => {
     : chrome.extension.getURL("kuromoji/dict/");
 };
 
+chrome.runtime.onConnect.addListener((port) => {
+  port.onMessage.addListener((req: Message) => {
+    console.log(req);
+    if (req.from === "CONTENT_SCRIPT" || req.to !== "CONTENT_SCRIPT") return;
+    switch (req.type) {
+      case "UPDATE_PARAM_KEY": {
+        console.log("update param key(content script!!!)");
+        sendRequest({
+          type: "UPDATE_PARAM_KEY",
+          from: "CONTENT_SCRIPT",
+          to: "BACKGROUND",
+          data: {
+            key: paramKey,
+          },
+        });
+        break;
+      }
+    }
+  });
+});
+
 window.addEventListener("load", async () => {
   try {
     // TODO: make compatible for parameter
     const source = selectSource(window.location.href);
-    const paramKey = keyStreamer(source.name, source.extractStreamer());
+    paramKey = keyStreamer(source.name, source.extractStreamer());
 
     sendRequest({
       type: "UPDATE_PARAM_KEY",
