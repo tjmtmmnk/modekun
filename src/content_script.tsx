@@ -95,19 +95,19 @@ window.addEventListener("load", async () => {
     const modekun = async () => {
       window.clearTimeout(timerId);
 
+      const chats = source.extractChats(lookChats);
+      if (chats.length < 1) {
+        // NOTE: Don't terminate worker here.
+        // Because an archive video may be able to open a chat section which was closed at first.
+        timerId = window.setTimeout(modekun, DEFAULT_EXECUTION_INTERVAL_MS);
+        return;
+      }
+
       const paramKey = keyStreamer(source.name, source.extractStreamer());
       const params =
         (await get<IParameterV2 | undefined>(paramKey)) ?? defaultParamsV2;
 
       if (!api) {
-        timerId = window.setTimeout(modekun, DEFAULT_EXECUTION_INTERVAL_MS);
-        return;
-      }
-
-      const chats = source.extractChats(lookChats);
-      if (chats.length < 1) {
-        // NOTE: Don't terminate worker here.
-        // Because an archive video may be able to open a chat section which was closed at first.
         timerId = window.setTimeout(modekun, DEFAULT_EXECUTION_INTERVAL_MS);
         return;
       }
