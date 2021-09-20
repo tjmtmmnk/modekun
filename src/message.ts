@@ -1,5 +1,3 @@
-import { getCurrentTab } from "./tabs";
-
 export type MessageType =
   | "UPDATE_PARAM"
   | "UPDATE_PARAM_KEY"

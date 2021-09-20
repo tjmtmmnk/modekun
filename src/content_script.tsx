@@ -33,13 +33,11 @@ const getDicPath = () => {
 };
 
 const onMessage = (req: Message) => {
-  console.log(req);
   if (req.from === "CONTENT_SCRIPT" || req.to !== "CONTENT_SCRIPT") return;
   switch (req.type) {
     case "UPDATE_PARAM_KEY": {
       const source = selectSource(window.location.href);
       const paramKey = keyStreamer(source.name, source.extractStreamer());
-      console.log("update param key(content script!!!)");
       sendRequest({
         type: "UPDATE_PARAM_KEY",
         from: "CONTENT_SCRIPT",
@@ -79,9 +77,6 @@ window.addEventListener("load", async () => {
       const paramKey = keyStreamer(source.name, source.extractStreamer());
       const params =
         (await get<IParameterV2 | undefined>(paramKey)) ?? defaultParamsV2;
-
-      console.log(paramKey);
-      console.log(params);
 
       if (!api) {
         timerId = window.setTimeout(modekun, DEFAULT_EXECUTION_INTERVAL_MS);
