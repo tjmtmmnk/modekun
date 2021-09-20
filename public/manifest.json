@@ -33,7 +33,7 @@
     "persistent": false
   },
 
-  "permissions": ["activeTab", "storage"],
+  "permissions": ["activeTab", "storage", "tabs"],
 
   "web_accessible_resources": ["kuromoji/dict/*", "js/worker.js"],
 
