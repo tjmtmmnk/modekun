@@ -1,23 +1,17 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import { getParam } from "./api";
 import PopupPage from "./components/popup";
 
-import { defaultParamsV2, IParameterV2 } from "./config";
-import { receiveRequest, sendRequest } from "./message";
+import { IParameterV2 } from "./config";
 
 export const useParams = (): IParameterV2 | undefined => {
   const [params, setParams] = React.useState<IParameterV2>();
   let isMounted = true;
   React.useEffect(() => {
-    sendRequest({
-      type: "GET_PARAM",
-    });
-    receiveRequest("RECEIVE_PARAM").then((res) => {
-      const param = res.data?.param as IParameterV2;
-      console.log("receive!!!!!!!");
-      console.log(param);
+    getParam().then((param) => {
       if (isMounted) {
-        setParams(param ?? defaultParamsV2);
+        setParams(param);
       }
     });
     return () => {
