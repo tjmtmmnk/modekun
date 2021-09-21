@@ -19,7 +19,7 @@
   },
   "devDependencies": {
     "@types/chrome": "0.0.154",
-    "@types/jest": "27.0.1",
+    "@types/jest": "27.0.2",
     "@types/kuromoji": "0.1.1",
     "@types/md5": "2.3.1",
     "@types/react": "17.0.19",
