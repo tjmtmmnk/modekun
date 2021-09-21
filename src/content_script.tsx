@@ -75,7 +75,6 @@ const setParamWithCompatibility = async (paramKey: string) => {
 
 window.addEventListener("load", async () => {
   try {
-    // TODO: make compatible for parameter
     const source = selectSource(window.location.href);
     const paramKey = keyStreamer(source.name, source.extractStreamer());
     await setParamWithCompatibility(paramKey);

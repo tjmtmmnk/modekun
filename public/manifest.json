@@ -3,7 +3,7 @@
 
   "name": "modekun",
   "description": "moderate live chat",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "content_security_policy": "script-src 'self'; object-src 'none'",
 
   "browser_action": {
