@@ -137,6 +137,8 @@ const observeLocation = async () => {
   if (currentLocation !== previousLocation) {
     const source = selectSource(currentLocation);
     const paramKey = keyStreamer(source.name, source.extractStreamer());
+    await setParamWithCompatibility(paramKey);
+
     sendRequest({
       type: "UPDATE_PARAM_KEY",
       from: "CONTENT_SCRIPT",
