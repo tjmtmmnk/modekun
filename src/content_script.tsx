@@ -55,6 +55,10 @@ const onMessage = (req: Message) => {
 chrome.runtime.onMessage.addListener(onMessage);
 
 const setParamWithCompatibility = async (paramKey: string) => {
+  const param = await get<IParameterV2 | undefined>(paramKey);
+  const hasSetNewParam = param !== undefined;
+  if (hasSetNewParam) return;
+
   const oldParam = await getParams();
   const newParam: IParameterV2 = {
     repeatPostThreshold: oldParam.repeat_throw_threshold,
