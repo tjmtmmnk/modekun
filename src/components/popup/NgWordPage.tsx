@@ -1,8 +1,9 @@
-import { getNgWords, KEY_NG_WORDS } from "../../config";
+import { IParameterV2 } from "../../config";
 import { NgWordInput, NgWordList } from "./NgWord";
 import React, { useReducer } from "react";
 import styled from "styled-components";
-import { setItem } from "../../storage";
+import { sendRequest } from "../../message";
+import { useParams } from "../../popup";
 
 const StyledContainer = styled.div`
   width: 320px;
@@ -13,28 +14,48 @@ const StyledContainer = styled.div`
 `;
 
 interface State {
-  ngWords: string[];
+  param: IParameterV2;
 }
 
 type Action =
-  | { type: "init"; ngWords: string[] }
   | { type: "save"; ngWord: string }
   | { type: "delete"; ngWord: string };
 
 const reducer = (state: State, action: Action): State => {
   switch (action.type) {
-    case "init": {
-      return { ...state, ngWords: action.ngWords };
-    }
     case "save": {
-      const ngWords = [...state.ngWords, action.ngWord];
-      setItem({ [KEY_NG_WORDS]: ngWords });
-      return { ...state, ngWords };
+      const ngWords = [...state.param.ngWords, action.ngWord];
+      const newParam: IParameterV2 = {
+        ...state.param,
+        ngWords: ngWords,
+      };
+      sendRequest({
+        type: "UPDATE_PARAM",
+        from: "POPUP",
+        to: "BACKGROUND",
+        data: {
+          param: newParam,
+        },
+      });
+      return { param: newParam };
     }
     case "delete": {
-      const ngWords = state.ngWords.filter((word) => word !== action.ngWord);
-      setItem({ [KEY_NG_WORDS]: ngWords });
-      return { ...state, ngWords };
+      const ngWords = state.param.ngWords.filter(
+        (word) => word !== action.ngWord
+      );
+      const newParam: IParameterV2 = {
+        ...state.param,
+        ngWords: ngWords,
+      };
+      sendRequest({
+        type: "UPDATE_PARAM",
+        from: "POPUP",
+        to: "BACKGROUND",
+        data: {
+          param: newParam,
+        },
+      });
+      return { param: newParam };
     }
   }
 };
@@ -42,25 +63,19 @@ const reducer = (state: State, action: Action): State => {
 export type DispatchType = (action: Action) => void;
 
 export const NgWordPage = () => {
-  const [state, dispatch] = useReducer(reducer, {
-    ngWords: [],
-  });
+  const param = useParams();
+  return <>{param && <NgWordPageChild param={param} />}</>;
+};
 
-  React.useEffect(() => {
-    let isMounted = true;
-    getNgWords().then((ngWords) => {
-      if (isMounted) {
-        dispatch({ type: "init", ngWords });
-      }
-    });
-    return () => {
-      isMounted = false;
-    };
-  }, [dispatch]);
+export const NgWordPageChild = (props: { param: IParameterV2 }) => {
+  const { param } = props;
+  const [state, dispatch] = useReducer(reducer, {
+    param: param,
+  });
 
   return (
     <StyledContainer>
-      <NgWordList dispatch={dispatch} ngWords={state.ngWords} />
+      <NgWordList dispatch={dispatch} ngWords={state.param.ngWords} />
       <NgWordInput dispatch={dispatch} />
     </StyledContainer>
   );
