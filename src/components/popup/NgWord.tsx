@@ -220,16 +220,14 @@ export const NgWordBulkInsertInput = (props: {
   };
 
   return (
-    <>
-      <StyledBulkInsertForm onSubmit={handleSubmit}>
-        <StyledBulkInsertTextArea
-          ref={inputRef}
-          placeholder={chrome.i18n.getMessage("bulkInsertMessage")}
-        />
-        <StyledBulkInsertRegisterButton type="submit">
-          {chrome.i18n.getMessage("bulkInsert")}
-        </StyledBulkInsertRegisterButton>
-      </StyledBulkInsertForm>
-    </>
+    <StyledBulkInsertForm onSubmit={handleSubmit}>
+      <StyledBulkInsertTextArea
+        ref={inputRef}
+        placeholder={chrome.i18n.getMessage("bulkInsertMessage")}
+      />
+      <StyledBulkInsertRegisterButton type="submit">
+        {chrome.i18n.getMessage("bulkInsert")}
+      </StyledBulkInsertRegisterButton>
+    </StyledBulkInsertForm>
   );
 };
