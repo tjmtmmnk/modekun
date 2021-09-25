@@ -1,5 +1,10 @@
 import { IParameterV2 } from "../../config";
-import { NgWordInput, NgWordList } from "./NgWord";
+import {
+  NgWordBulkInsertLink,
+  NgWordBulkInsertInput,
+  NgWordInput,
+  NgWordList,
+} from "./NgWord";
 import React, { useReducer } from "react";
 import styled from "styled-components";
 import { sendRequest } from "../../message";
@@ -19,7 +24,8 @@ interface State {
 
 type Action =
   | { type: "save"; ngWord: string }
-  | { type: "delete"; ngWord: string };
+  | { type: "delete"; ngWord: string }
+  | { type: "bulk-save"; ngWords: string[] };
 
 const reducer = (state: State, action: Action): State => {
   switch (action.type) {
@@ -57,6 +63,22 @@ const reducer = (state: State, action: Action): State => {
       });
       return { param: newParam };
     }
+    case "bulk-save": {
+      const ngWords = [...state.param.ngWords, ...action.ngWords];
+      const newParam: IParameterV2 = {
+        ...state.param,
+        ngWords: ngWords,
+      };
+      sendRequest({
+        type: "UPDATE_PARAM",
+        from: "POPUP",
+        to: "BACKGROUND",
+        data: {
+          param: newParam,
+        },
+      });
+      return { param: newParam };
+    }
   }
 };
 
@@ -77,6 +99,27 @@ export const NgWordPageChild = (props: { param: IParameterV2 }) => {
     <StyledContainer>
       <NgWordList dispatch={dispatch} ngWords={state.param.ngWords} />
       <NgWordInput dispatch={dispatch} ngWords={state.param.ngWords} />
+      <NgWordBulkInsertLink />
     </StyledContainer>
+  );
+};
+
+export const NgWordBulkInsertPage = () => {
+  const param = useParams();
+  return <>{param && <NgWordBulkInsertPageChild param={param} />}</>;
+};
+
+const NgWordBulkInsertPageChild = (props: { param: IParameterV2 }) => {
+  const { param } = props;
+  const [state, dispatch] = useReducer(reducer, {
+    param: param,
+  });
+  return (
+    <>
+      <NgWordBulkInsertInput
+        dispatch={dispatch}
+        ngWords={state.param.ngWords}
+      />
+    </>
   );
 };

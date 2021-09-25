@@ -62,5 +62,15 @@
   },
   "repeatFrequency": {
     "message": "repeat frequency"
+  },
+
+  "bulkInsertLink": {
+    "message": "bulk insert page"
+  },
+  "bulkInsert": {
+    "message": "bulk insert"
+  },
+  "bulkInsertMessage": {
+    "message": "Enter NG words one by one with line breaks"
   }
 }
