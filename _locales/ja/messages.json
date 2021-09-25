@@ -62,5 +62,9 @@
   },
   "repeatFrequency": {
     "message": "投稿頻度"
+  },
+
+  "bulkInsert": {
+    "message": "一括登録"
   }
 }
