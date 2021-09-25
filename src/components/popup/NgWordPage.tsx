@@ -1,5 +1,10 @@
 import { IParameterV2 } from "../../config";
-import { NgWordInput, NgWordList } from "./NgWord";
+import {
+  NgWordBulkInsertLink,
+  NgWordBulkInsertInput,
+  NgWordInput,
+  NgWordList,
+} from "./NgWord";
 import React, { useReducer } from "react";
 import styled from "styled-components";
 import { sendRequest } from "../../message";
@@ -94,7 +99,27 @@ export const NgWordPageChild = (props: { param: IParameterV2 }) => {
     <StyledContainer>
       <NgWordList dispatch={dispatch} ngWords={state.param.ngWords} />
       <NgWordInput dispatch={dispatch} ngWords={state.param.ngWords} />
-      <NgWordBulkInsertButton />
+      <NgWordBulkInsertLink />
     </StyledContainer>
+  );
+};
+
+export const NgWordBulkInsertPage = () => {
+  const param = useParams();
+  return <>{param && <NgWordBulkInsertPageChild param={param} />}</>;
+};
+
+const NgWordBulkInsertPageChild = (props: { param: IParameterV2 }) => {
+  const { param } = props;
+  const [state, dispatch] = useReducer(reducer, {
+    param: param,
+  });
+  return (
+    <>
+      <NgWordBulkInsertInput
+        dispatch={dispatch}
+        ngWords={state.param.ngWords}
+      />
+    </>
   );
 };
