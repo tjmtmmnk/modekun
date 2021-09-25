@@ -1,7 +1,7 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { DispatchType } from "./NgWordPage";
-import { getNgWords } from "../../config";
 
 const StyledInput = styled.input`
   margin-top: 0.8em;
@@ -76,6 +76,30 @@ const StyledDeleteButton = styled.button`
   cursor: pointer;
 `;
 
+const StyledBulkInsertLi = styled.li`
+  text-transform: uppercase;
+  text-decoration: none;
+  background: #449e7c;
+  padding: 5px;
+  border: 2px solid #494949 !important;
+  display: inline-block;
+  transition: all 0.4s ease 0s;
+  &:hover {
+    background: #40d49b;
+    transition: all 0.4s ease 0s;
+  }
+`;
+
+const StyledBulkInsertDiv = styled.div`
+  align-content: center;
+  position: relative;
+  left: 8em;
+`;
+
+const StyledBulkInsertSpan = styled.span`
+  color: white;
+`;
+
 export const NgWordList = (props: {
   dispatch: DispatchType;
   ngWords: string[];
@@ -138,5 +162,19 @@ export const NgWordInput = (props: {
       </form>
       <StyledSpan>※{chrome.i18n.getMessage("saveByEnter")}</StyledSpan>
     </>
+  );
+};
+
+export const NgWordBulkInsertButton = () => {
+  return (
+    <StyledBulkInsertDiv>
+      <StyledBulkInsertLi>
+        <Link to={"/ngword/bulk"} style={{ textDecoration: "none" }}>
+          <StyledBulkInsertSpan>
+            {chrome.i18n.getMessage("bulkInsert")}
+          </StyledBulkInsertSpan>
+        </Link>
+      </StyledBulkInsertLi>
+    </StyledBulkInsertDiv>
   );
 };

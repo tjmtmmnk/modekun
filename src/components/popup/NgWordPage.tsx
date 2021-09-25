@@ -77,6 +77,7 @@ export const NgWordPageChild = (props: { param: IParameterV2 }) => {
     <StyledContainer>
       <NgWordList dispatch={dispatch} ngWords={state.param.ngWords} />
       <NgWordInput dispatch={dispatch} ngWords={state.param.ngWords} />
+      <NgWordBulkInsertButton />
     </StyledContainer>
   );
 };
