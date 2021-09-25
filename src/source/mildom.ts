@@ -7,8 +7,7 @@ const chatSelector = {
 };
 
 const streamerSelector = {
-  block: ".room-anchor-panel__common-info",
-  streamer: ".room-anchor-panel__name",
+  streamer: ".content .right .name",
 };
 
 export const Mildom: ISource = {
@@ -36,12 +35,11 @@ export const Mildom: ISource = {
     }
     return chats;
   },
-  extractStreamer() {
-    const block = document.querySelector<HTMLElement>(streamerSelector.block);
-    const streamer = block?.querySelector<HTMLElement>(
+  extractStreamer(): Streamer {
+    const streamer = document.querySelector<HTMLElement>(
       streamerSelector.streamer
     );
-    const streamerName = streamer?.innerText ?? "NONE";
+    const streamerName = streamer?.textContent ?? "NONE";
     return {
       name: streamerName,
     };
