@@ -100,23 +100,27 @@ export const NgWordList = (props: {
   );
 };
 
-const isValidInput = async (text: string): Promise<boolean> => {
+const isValidInput = async (
+  ngWords: string[],
+  text: string
+): Promise<boolean> => {
   if (text === "") return false;
-  const ngWords = await getNgWords().catch((e) => console.error(e));
-  if (!ngWords) return false;
   // don't allow duplicate
   return !ngWords.includes(text);
 };
 
-export const NgWordInput = (props: { dispatch: DispatchType }) => {
-  const { dispatch } = props;
+export const NgWordInput = (props: {
+  dispatch: DispatchType;
+  ngWords: string[];
+}) => {
+  const { dispatch, ngWords } = props;
 
   const inputRef = React.useRef<HTMLInputElement>(null);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (inputRef && inputRef.current) {
-      const isValid = await isValidInput(inputRef.current.value);
+      const isValid = await isValidInput(ngWords, inputRef.current.value);
       if (isValid) {
         dispatch({ type: "save", ngWord: inputRef.current.value });
         inputRef.current.value = "";
