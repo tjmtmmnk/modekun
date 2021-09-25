@@ -64,7 +64,13 @@
     "message": "投稿頻度"
   },
 
+  "bulkInsertLink": {
+    "message": "一括登録ページへ"
+  },
   "bulkInsert": {
     "message": "一括登録"
+  },
+  "bulkInsertMessage": {
+    "message": "NGワードを1ワードずつ改行して入力してください"
   }
 }
