@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { HomePage } from "./HomePage";
-import { NgWordPage } from "./NgWordPage";
+import { NgWordPage, NgWordBulkInsertPage } from "./NgWordPage";
 import { Navigation } from "./Navigation";
 import { OptionPage } from "./OptionPage";
 
@@ -10,6 +10,9 @@ export default function PopupPage() {
     <Router>
       <Navigation />
       <Switch>
+        <Route path="/ngword/bulk">
+          <NgWordBulkInsertPage />
+        </Route>
         <Route path="/ngword">
           <NgWordPage />
         </Route>
