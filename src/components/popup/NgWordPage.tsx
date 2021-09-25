@@ -19,7 +19,8 @@ interface State {
 
 type Action =
   | { type: "save"; ngWord: string }
-  | { type: "delete"; ngWord: string };
+  | { type: "delete"; ngWord: string }
+  | { type: "bulk-save"; ngWords: string[] };
 
 const reducer = (state: State, action: Action): State => {
   switch (action.type) {
@@ -43,6 +44,22 @@ const reducer = (state: State, action: Action): State => {
       const ngWords = state.param.ngWords.filter(
         (word) => word !== action.ngWord
       );
+      const newParam: IParameterV2 = {
+        ...state.param,
+        ngWords: ngWords,
+      };
+      sendRequest({
+        type: "UPDATE_PARAM",
+        from: "POPUP",
+        to: "BACKGROUND",
+        data: {
+          param: newParam,
+        },
+      });
+      return { param: newParam };
+    }
+    case "bulk-save": {
+      const ngWords = [...state.param.ngWords, ...action.ngWords];
       const newParam: IParameterV2 = {
         ...state.param,
         ngWords: ngWords,
