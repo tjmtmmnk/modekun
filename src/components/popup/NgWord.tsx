@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import styled from "styled-components";
 import { DispatchType } from "./NgWordPage";
 
@@ -93,11 +93,31 @@ const StyledBulkInsertLi = styled.li`
 const StyledBulkInsertDiv = styled.div`
   align-content: center;
   position: relative;
-  left: 8em;
+  left: 83px;
 `;
 
 const StyledBulkInsertSpan = styled.span`
   color: white;
+`;
+
+const StyledBulkInsertForm = styled.form`
+  height: 270px;
+`;
+
+const StyledBulkInsertTextArea = styled.textarea`
+  width: 18em;
+  position: relative;
+  left: 2em;
+  margin-top: 1em;
+  height: 15em;
+`;
+
+const StyledBulkInsertRegisterButton = styled.button`
+  display: block;
+  position: relative;
+  top: 8px;
+  left: 110px;
+  padding: 5px;
 `;
 
 export const NgWordList = (props: {
@@ -124,10 +144,7 @@ export const NgWordList = (props: {
   );
 };
 
-const isValidInput = async (
-  ngWords: string[],
-  text: string
-): Promise<boolean> => {
+const isValidInput = (ngWords: string[], text: string): boolean => {
   if (text === "") return false;
   // don't allow duplicate
   return !ngWords.includes(text);
@@ -141,10 +158,10 @@ export const NgWordInput = (props: {
 
   const inputRef = React.useRef<HTMLInputElement>(null);
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (inputRef && inputRef.current) {
-      const isValid = await isValidInput(ngWords, inputRef.current.value);
+      const isValid = isValidInput(ngWords, inputRef.current.value);
       if (isValid) {
         dispatch({ type: "save", ngWord: inputRef.current.value });
         inputRef.current.value = "";
@@ -165,16 +182,54 @@ export const NgWordInput = (props: {
   );
 };
 
-export const NgWordBulkInsertButton = () => {
+export const NgWordBulkInsertLink = () => {
   return (
     <StyledBulkInsertDiv>
       <StyledBulkInsertLi>
         <Link to={"/ngword/bulk"} style={{ textDecoration: "none" }}>
           <StyledBulkInsertSpan>
-            {chrome.i18n.getMessage("bulkInsert")}
+            {chrome.i18n.getMessage("bulkInsertLink")}
           </StyledBulkInsertSpan>
         </Link>
       </StyledBulkInsertLi>
     </StyledBulkInsertDiv>
+  );
+};
+
+export const NgWordBulkInsertInput = (props: {
+  dispatch: DispatchType;
+  ngWords: string[];
+}) => {
+  const { dispatch, ngWords } = props;
+
+  const history = useHistory();
+  const inputRef = React.useRef<HTMLTextAreaElement>(null);
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (inputRef && inputRef.current) {
+      const words = inputRef.current.value.split("\n");
+      const uniqueWords = [...new Set(words)];
+      const validWords = uniqueWords.filter((word) =>
+        isValidInput(ngWords, word)
+      );
+      dispatch({ type: "bulk-save", ngWords: validWords });
+      inputRef.current.value = "";
+    }
+    history.push("/ngword");
+  };
+
+  return (
+    <>
+      <StyledBulkInsertForm onSubmit={handleSubmit}>
+        <StyledBulkInsertTextArea
+          ref={inputRef}
+          placeholder={chrome.i18n.getMessage("bulkInsertMessage")}
+        />
+        <StyledBulkInsertRegisterButton type="submit">
+          {chrome.i18n.getMessage("bulkInsert")}
+        </StyledBulkInsertRegisterButton>
+      </StyledBulkInsertForm>
+    </>
   );
 };
