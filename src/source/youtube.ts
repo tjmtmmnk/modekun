@@ -10,12 +10,6 @@ const chatSelector = {
   author: "#author-name",
 };
 
-const streamerSelector = {
-  section: "#upload-info",
-  block: "#channel-name",
-  streamer: ".yt-simple-endpoint",
-};
-
 export const Youtube: ISource = {
   name: "youtube",
   extractChats(lookNum: number): IChat[] {
@@ -58,14 +52,10 @@ export const Youtube: ISource = {
     return chats;
   },
   extractStreamer() {
-    const section = document.querySelector<HTMLElement>(
-      streamerSelector.section
+    const streamerElement = document.querySelector<HTMLDivElement>(
+      "#upload-info #channel-name #text-container"
     );
-    const block = section?.querySelector<HTMLElement>(streamerSelector.block);
-    const streamer = block?.querySelector<HTMLElement>(
-      streamerSelector.streamer
-    );
-    const streamerName = streamer?.innerText ?? "NONE";
+    const streamerName = streamerElement?.innerText ?? "NONE";
 
     return {
       name: streamerName,
