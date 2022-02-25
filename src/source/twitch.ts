@@ -10,8 +10,7 @@ const chatSelector = {
 };
 
 const streamerSelector = {
-  block: ".channel-info-content",
-  streamer: ".tw-title",
+  streamer: ".channel-info-content .tw-title",
 };
 
 export const Twitch: ISource = {
@@ -54,12 +53,11 @@ export const Twitch: ISource = {
 
     return chats;
   },
-  extractStreamer() {
-    const block = document.querySelector<HTMLElement>(streamerSelector.block);
-    const streamer = block?.querySelector<HTMLElement>(
+  extractStreamer(): Streamer {
+    const streamerElement = document.querySelector<HTMLElement>(
       streamerSelector.streamer
     );
-    const streamerName = streamer?.innerText ?? "NONE";
+    const streamerName = streamerElement?.innerText ?? "NONE";
     return {
       name: streamerName,
     };

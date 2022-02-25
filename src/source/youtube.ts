@@ -10,6 +10,10 @@ const chatSelector = {
   author: "#author-name",
 };
 
+const streamerSelector = {
+  streamer: "#upload-info #channel-name #text-container",
+};
+
 export const Youtube: ISource = {
   name: "youtube",
   extractChats(lookNum: number): IChat[] {
@@ -51,9 +55,9 @@ export const Youtube: ISource = {
     });
     return chats;
   },
-  extractStreamer() {
-    const streamerElement = document.querySelector<HTMLDivElement>(
-      "#upload-info #channel-name #text-container"
+  extractStreamer(): Streamer {
+    const streamerElement = document.querySelector<HTMLElement>(
+      streamerSelector.streamer
     );
     const streamerName = streamerElement?.innerText ?? "NONE";
 
