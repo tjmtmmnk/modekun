@@ -18,6 +18,7 @@ import { Message, sendRequest } from "./message";
 let worker: Worker | null;
 let api: IKuromojiWorker | null;
 let lookChats = 0;
+let paramKey = "";
 let param = defaultParamsV2;
 let timerId: number;
 
@@ -34,13 +35,13 @@ const getDicPath = () => {
 /*
  * set param managed in content_script
  */
-const initParam = (key: string) => {
+const initParam = () => {
   sendRequest({
     type: "GET_PARAM",
     from: "CONTENT_SCRIPT",
     to: "BACKGROUND",
     data: {
-      key,
+      key: paramKey,
     },
   });
 };
@@ -61,29 +62,40 @@ chrome.runtime.onMessage.addListener((req: Message, sender, sendResponse) => {
   } else if (req.type === "UPDATE_PARAM" && req.from === "POPUP") {
     if (!req.data || !req.data.param) throw new Error("no param");
     param = req.data.param;
-    console.log(param);
+    sendRequest({
+      type: "UPDATE_PARAM",
+      from: "CONTENT_SCRIPT",
+      to: "BACKGROUND",
+      data: {
+        key: paramKey,
+        param,
+      },
+    });
+  } else if (req.type === "GET_PARAM" && req.from === "POPUP") {
+    sendRequest({
+      type: "UPDATE_PARAM",
+      from: "CONTENT_SCRIPT",
+      to: "POPUP",
+      data: {
+        param,
+      },
+    });
   }
 });
 
 window.addEventListener("load", async () => {
   try {
     const source = selectSource(window.location.href);
-    const paramKey = keyStreamer(source.name, source.extractStreamer());
-    initParam(paramKey);
+    paramKey = keyStreamer(source.name, source.extractStreamer());
+    initParam();
 
     worker = await createKuromojiWorker();
     api = await createKuromojiWorkerApi(worker, getDicPath());
 
     const modekun = async () => {
-      // sendRequest({
-      //   type: "UPDATE_PARAM",
-      //   from: "CONTENT_SCRIPT",
-      //   to: "POPUP",
-      //   data: {
-      //     param,
-      //   },
-      // });
       window.clearTimeout(timerId);
+
+      console.log(param);
 
       const chats = source.extractChats(lookChats);
       if (chats.length < 1) {
@@ -119,8 +131,8 @@ const observeLocation = async () => {
   const currentLocation = window.location.href;
   if (currentLocation !== previousLocation) {
     const source = selectSource(currentLocation);
-    const paramKey = keyStreamer(source.name, source.extractStreamer());
-    initParam(paramKey);
+    paramKey = keyStreamer(source.name, source.extractStreamer());
+    initParam();
 
     worker && terminateWorker(worker);
     // avoid memory leak, worker allocates a lot of memory
