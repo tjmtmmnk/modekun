@@ -11,9 +11,7 @@ const chatSelector = {
 };
 
 const streamerSelector = {
-  section: "#upload-info",
-  block: "#channel-name",
-  streamer: ".yt-simple-endpoint",
+  streamer: "#upload-info #channel-name #text-container",
 };
 
 export const Youtube: ISource = {
@@ -57,15 +55,11 @@ export const Youtube: ISource = {
     });
     return chats;
   },
-  extractStreamer() {
-    const section = document.querySelector<HTMLElement>(
-      streamerSelector.section
-    );
-    const block = section?.querySelector<HTMLElement>(streamerSelector.block);
-    const streamer = block?.querySelector<HTMLElement>(
+  extractStreamer(): Streamer {
+    const streamerElement = document.querySelector<HTMLElement>(
       streamerSelector.streamer
     );
-    const streamerName = streamer?.innerText ?? "NONE";
+    const streamerName = streamerElement?.innerText ?? "NONE";
 
     return {
       name: streamerName,
