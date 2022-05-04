@@ -4,23 +4,32 @@ import { HomePage } from "./HomePage";
 import { NgWordPage, NgWordBulkInsertPage } from "./NgWordPage";
 import { Navigation } from "./Navigation";
 import { OptionPage } from "./OptionPage";
+import { IParameterV2 } from "../../config";
 
-export default function PopupPage() {
-  return (
+interface PopupPageProps {
+  param: IParameterV2;
+  isLoading: boolean;
+}
+
+export default function PopupPage(props: PopupPageProps) {
+  const { param, isLoading } = props;
+  return isLoading ? (
+    <span>Loading...</span>
+  ) : (
     <Router>
       <Navigation />
       <Switch>
         <Route path="/ngword/bulk">
-          <NgWordBulkInsertPage />
+          <NgWordBulkInsertPage param={param} />
         </Route>
         <Route path="/ngword">
-          <NgWordPage />
+          <NgWordPage param={param} />
         </Route>
         <Route path="/option">
-          <OptionPage />
+          <OptionPage param={param} />
         </Route>
         <Route path="/">
-          <HomePage />
+          <HomePage param={param} />
         </Route>
       </Switch>
     </Router>

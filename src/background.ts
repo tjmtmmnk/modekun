@@ -1,42 +1,33 @@
-import { Message } from "./message";
+import { Message, sendRequestToContent } from "./message";
 import { defaultParamsV2, IParameterV2 } from "./config";
 import { get, set } from "./storage";
 
-let paramKey: string;
-
-chrome.runtime.onConnect.addListener((port) => {
-  console.assert(port.name === "modekun");
-  port.onMessage.addListener(async (req: Message) => {
+chrome.runtime.onMessage.addListener(
+  async (req: Message, sender, sendResponse) => {
     if (req.from === "BACKGROUND" || req.to !== "BACKGROUND") return;
-    switch (req.type) {
-      case "UPDATE_PARAM": {
-        if (req.from === "CONTENT_SCRIPT") return;
-        if (!req?.data?.param) return;
-        paramKey && (await set(paramKey, req.data.param));
-        break;
+    if (req.type === "GET_PARAM") {
+      if (!req.data) return;
+      const key: string = req.data.key;
+      if (!key) throw new Error("no key");
+      let param: IParameterV2;
+      try {
+        const _param = await get<IParameterV2 | undefined>(key);
+        console.log(_param);
+        param = _param ?? defaultParamsV2;
+        if (!_param) {
+          await set<IParameterV2>(key, defaultParamsV2);
+        }
+      } catch (e) {
+        console.error(e);
+        param = defaultParamsV2;
       }
-      case "UPDATE_PARAM_KEY": {
-        if (req.from === "POPUP") return;
-        if (!req?.data?.key) return;
-        paramKey = req.data.key;
-        break;
-      }
-      case "GET_PARAM": {
-        const param = paramKey
-          ? (await get<IParameterV2 | undefined>(paramKey)) ?? defaultParamsV2
-          : defaultParamsV2;
-
-        const res: Message = {
-          type: "RECEIVE_PARAM",
-          from: "BACKGROUND",
-          to: "POPUP",
-          data: {
-            param: param,
-          },
-        };
-        port.postMessage(res);
-        break;
-      }
+      sendRequestToContent({
+        type: "UPDATE_PARAM",
+        from: "BACKGROUND",
+        to: "CONTENT_SCRIPT",
+        data: { param },
+      });
+    } else if (req.type === "UPDATE_PARAM" && req.from === "POPUP") {
     }
-  });
-});
+  }
+);

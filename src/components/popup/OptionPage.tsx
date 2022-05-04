@@ -2,7 +2,6 @@ import React from "react";
 import styled from "styled-components";
 import { CheckBox } from "./CheckBox";
 import { IParameterV2 } from "../../config";
-import { useParams } from "../../popup";
 import { sendRequest } from "../../message";
 
 const StyledContainer = styled.div`
@@ -47,9 +46,12 @@ const StyledLi = styled.li`
   }
 `;
 
-export const OptionPage = () => {
-  const params = useParams();
-  return <>{params && <OptionPageChild params={params} />}</>;
+interface OptionPageProps {
+  param: IParameterV2;
+}
+export const OptionPage = (props: OptionPageProps) => {
+  const { param } = props;
+  return <OptionPageChild params={param} />;
 };
 
 export const OptionPageChild = (props: { params: IParameterV2 }) => {

@@ -13,26 +13,19 @@ export interface Message {
   data?: any;
 }
 
-const port = chrome.runtime.connect({ name: "modekun" });
-
-export const sendRequest = (req: Message) => {
-  port.postMessage(req);
+export const sendRequest = <T = any>(
+  req: Message,
+  resFn?: (res: T) => void
+) => {
+  chrome.runtime.sendMessage(req, resFn);
 };
 
-export const sendRequestToContent = (req: Message) => {
+export const sendRequestToContent = <T = any>(
+  req: Message,
+  resFn?: (res: T) => void
+) => {
   if (req.to !== "CONTENT_SCRIPT") return;
   chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
     tabs[0].id && chrome.tabs.sendMessage(tabs[0].id, req);
-  });
-};
-
-export const receiveRequest = (type: MessageType): Promise<Message> => {
-  return new Promise((resolve) => {
-    port.onMessage.addListener((req: Message, reqPort) => {
-      console.assert(port.name === reqPort.name);
-      if (req.type === type) {
-        resolve(req);
-      }
-    });
   });
 };

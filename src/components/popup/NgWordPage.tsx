@@ -8,7 +8,6 @@ import {
 import React, { useReducer } from "react";
 import styled from "styled-components";
 import { sendRequest } from "../../message";
-import { useParams } from "../../popup";
 
 const StyledContainer = styled.div`
   width: 320px;
@@ -84,9 +83,13 @@ const reducer = (state: State, action: Action): State => {
 
 export type DispatchType = (action: Action) => void;
 
-export const NgWordPage = () => {
-  const param = useParams();
-  return <>{param && <NgWordPageChild param={param} />}</>;
+interface NgWordPageProps {
+  param: IParameterV2;
+}
+
+export const NgWordPage = (props: NgWordPageProps) => {
+  const { param } = props;
+  return <NgWordPageChild param={param} />;
 };
 
 export const NgWordPageChild = (props: { param: IParameterV2 }) => {
@@ -104,9 +107,12 @@ export const NgWordPageChild = (props: { param: IParameterV2 }) => {
   );
 };
 
-export const NgWordBulkInsertPage = () => {
-  const param = useParams();
-  return <>{param && <NgWordBulkInsertPageChild param={param} />}</>;
+interface NgWordBulkInsertPageProps {
+  param: IParameterV2;
+}
+export const NgWordBulkInsertPage = (props: NgWordBulkInsertPageProps) => {
+  const { param } = props;
+  return <NgWordBulkInsertPageChild param={param} />;
 };
 
 const NgWordBulkInsertPageChild = (props: { param: IParameterV2 }) => {
