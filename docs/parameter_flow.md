@@ -16,7 +16,7 @@ sequenceDiagram
 
 ## Begin from Popup
 
-````mermaid
+```mermaid
 sequenceDiagram
     participant ContentScript
     Note right of ContentScript: CS only knows paramKey
@@ -29,7 +29,7 @@ sequenceDiagram
     ContentScript ->> Background: get parameter
     Background ->> Popup: return parameter
     Popup ->> Popup: set parameter
-    ```
+```
 
 ## Change parameter in Popup
 
@@ -44,7 +44,7 @@ sequenceDiagram
     Popup ->> ContentScript: update parameter
     ContentScript ->> ContentScript: set parameter
     ContentScript ->> Background: save parameter
-````
+```
 
 ## Change location in ContentScript
 
