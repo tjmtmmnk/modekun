@@ -56,6 +56,12 @@ const Popup = () => {
   return <PopupPage state={state} dispatch={dispatch} />;
 };
 
+sendRequestToContent({
+  type: "GET_PARAM",
+  from: "POPUP",
+  to: "CONTENT_SCRIPT",
+});
+
 ReactDOM.render(
   <React.StrictMode>
     <Popup />
