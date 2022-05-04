@@ -2,7 +2,7 @@ import { RangeSlider } from "./RangeSlider";
 import { IParameterV2 } from "../../config";
 import React from "react";
 import styled from "styled-components";
-import { sendRequest } from "../../message";
+import { PopupDispatch } from "../../popup";
 
 const StyledContainer = styled.div`
   width: 320px;
@@ -15,10 +15,11 @@ const StyledContainer = styled.div`
 
 interface HomePageProps {
   param: IParameterV2;
+  dispatch: PopupDispatch;
 }
 
 export const HomePage = (props: HomePageProps) => {
-  const { param } = props;
+  const { param, dispatch } = props;
   return (
     <StyledContainer>
       <RangeSlider
@@ -33,14 +34,7 @@ export const HomePage = (props: HomePageProps) => {
             ...param,
             repeatPostThreshold: value,
           };
-          sendRequest({
-            type: "UPDATE_PARAM",
-            from: "POPUP",
-            to: "BACKGROUND",
-            data: {
-              param: newParam,
-            },
-          });
+          dispatch({ t: "update", param: newParam });
         }}
       />
       <RangeSlider
@@ -55,14 +49,7 @@ export const HomePage = (props: HomePageProps) => {
             ...param,
             repeatWordThreshold: value,
           };
-          sendRequest({
-            type: "UPDATE_PARAM",
-            from: "POPUP",
-            to: "BACKGROUND",
-            data: {
-              param: newParam,
-            },
-          });
+          dispatch({ t: "update", param: newParam });
         }}
       />
       <RangeSlider
@@ -77,14 +64,7 @@ export const HomePage = (props: HomePageProps) => {
             ...param,
             postFrequencyThreshold: value,
           };
-          sendRequest({
-            type: "UPDATE_PARAM",
-            from: "POPUP",
-            to: "BACKGROUND",
-            data: {
-              param: newParam,
-            },
-          });
+          dispatch({ t: "update", param: newParam });
         }}
       />
       <RangeSlider
@@ -99,14 +79,7 @@ export const HomePage = (props: HomePageProps) => {
             ...param,
             lengthThreshold: value,
           };
-          sendRequest({
-            type: "UPDATE_PARAM",
-            from: "POPUP",
-            to: "BACKGROUND",
-            data: {
-              param: newParam,
-            },
-          });
+          dispatch({ t: "update", param: newParam });
         }}
       />
       <RangeSlider
@@ -121,14 +94,7 @@ export const HomePage = (props: HomePageProps) => {
             ...param,
             lookChats: value,
           };
-          sendRequest({
-            type: "UPDATE_PARAM",
-            from: "POPUP",
-            to: "BACKGROUND",
-            data: {
-              param: newParam,
-            },
-          });
+          dispatch({ t: "update", param: newParam });
         }}
       />
       <RangeSlider
@@ -143,14 +109,7 @@ export const HomePage = (props: HomePageProps) => {
             ...param,
             executionInterval: value,
           };
-          sendRequest({
-            type: "UPDATE_PARAM",
-            from: "POPUP",
-            to: "BACKGROUND",
-            data: {
-              param: newParam,
-            },
-          });
+          dispatch({ t: "update", param: newParam });
         }}
       />
     </StyledContainer>

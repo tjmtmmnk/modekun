@@ -1,17 +1,19 @@
-import React, { useState, useEffect, useReducer } from "react";
+import React, { useEffect, useReducer } from "react";
 import ReactDOM from "react-dom";
 import PopupPage from "./components/popup";
 
 import { defaultParamsV2, IParameterV2 } from "./config";
-import { Message, sendRequest, sendRequestToContent } from "./message";
+import { Message, sendRequestToContent } from "./message";
 
-interface State {
+export interface IPopupState {
   param: IParameterV2;
   isLoading: boolean;
 }
 type Action = { t: "update"; param: IParameterV2 } | { t: "loaded" };
 
-const reducer = (state: State, action: Action) => {
+export type PopupDispatch = (a: Action) => void;
+
+const reducer = (state: IPopupState, action: Action) => {
   if (action.t === "update") {
     return { ...state, param: action.param };
   } else if (action.t === "loaded") {
@@ -20,7 +22,7 @@ const reducer = (state: State, action: Action) => {
   return state;
 };
 
-const initialState: State = {
+const initialState: IPopupState = {
   param: defaultParamsV2,
   isLoading: true,
 };
@@ -51,7 +53,7 @@ const Popup = () => {
 
   console.log(state);
 
-  return <PopupPage param={state.param} isLoading={state.isLoading} />;
+  return <PopupPage state={state} dispatch={dispatch} />;
 };
 
 ReactDOM.render(

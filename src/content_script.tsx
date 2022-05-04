@@ -61,6 +61,7 @@ chrome.runtime.onMessage.addListener((req: Message, sender, sendResponse) => {
   } else if (req.type === "UPDATE_PARAM" && req.from === "POPUP") {
     if (!req.data || !req.data.param) throw new Error("no param");
     param = req.data.param;
+    console.log(param);
   }
 });
 

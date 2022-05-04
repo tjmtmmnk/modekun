@@ -4,32 +4,32 @@ import { HomePage } from "./HomePage";
 import { NgWordPage, NgWordBulkInsertPage } from "./NgWordPage";
 import { Navigation } from "./Navigation";
 import { OptionPage } from "./OptionPage";
-import { IParameterV2 } from "../../config";
+import { IPopupState, PopupDispatch } from "../../popup";
 
 interface PopupPageProps {
-  param: IParameterV2;
-  isLoading: boolean;
+  state: IPopupState;
+  dispatch: PopupDispatch;
 }
 
 export default function PopupPage(props: PopupPageProps) {
-  const { param, isLoading } = props;
-  return isLoading ? (
+  const { state, dispatch } = props;
+  return state.isLoading ? (
     <span>Loading...</span>
   ) : (
     <Router>
       <Navigation />
       <Switch>
         <Route path="/ngword/bulk">
-          <NgWordBulkInsertPage param={param} />
+          <NgWordBulkInsertPage param={state.param} />
         </Route>
         <Route path="/ngword">
-          <NgWordPage param={param} />
+          <NgWordPage param={state.param} />
         </Route>
         <Route path="/option">
-          <OptionPage param={param} />
+          <OptionPage param={state.param} />
         </Route>
         <Route path="/">
-          <HomePage param={param} />
+          <HomePage param={state.param} dispatch={dispatch} />
         </Route>
       </Switch>
     </Router>
