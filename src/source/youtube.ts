@@ -1,7 +1,7 @@
 import { IChat } from "../chat";
 import { kanaToHiragana, removeSymbols } from "../util";
 import { ISource } from "./source";
-import { Streamer } from "../streamer";
+import { NONE_STREAMER, Streamer } from "../streamer";
 
 const chatSelector = {
   chatSection: "#chatframe",
@@ -56,6 +56,10 @@ export const Youtube: ISource = {
     return chats;
   },
   extractStreamer(): Streamer {
+    // youtube keeps the information you saw last time even if you return to home
+    const isHome = window.location.href === "https://www.youtube.com/";
+    if (isHome) return NONE_STREAMER;
+
     const streamerElement = document.querySelector<HTMLElement>(
       streamerSelector.streamer
     );
