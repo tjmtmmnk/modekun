@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { CheckBox } from "./CheckBox";
 import { IParameterV2 } from "../../config";
-import { sendRequest } from "../../message";
+import { PopupDispatch } from "../../popup";
 
 const StyledContainer = styled.div`
   width: 320px;
@@ -48,14 +48,10 @@ const StyledLi = styled.li`
 
 interface OptionPageProps {
   param: IParameterV2;
+  dispatch: PopupDispatch;
 }
 export const OptionPage = (props: OptionPageProps) => {
-  const { param } = props;
-  return <OptionPageChild params={param} />;
-};
-
-export const OptionPageChild = (props: { params: IParameterV2 }) => {
-  const { params } = props;
+  const { param, dispatch } = props;
   return (
     <StyledContainer>
       <StyledUl>
@@ -63,20 +59,13 @@ export const OptionPageChild = (props: { params: IParameterV2 }) => {
           <CheckBox
             id={"activate-switch"}
             label={chrome.i18n.getMessage("activateModekun")}
-            defaultChecked={params.isActivateModekun}
+            defaultChecked={param.isActivateModekun}
             updateParam={(checked: boolean) => {
               const newParam: IParameterV2 = {
-                ...params,
+                ...param,
                 isActivateModekun: checked,
               };
-              sendRequest({
-                type: "UPDATE_PARAM",
-                from: "POPUP",
-                to: "BACKGROUND",
-                data: {
-                  param: newParam,
-                },
-              });
+              dispatch({ t: "update", param: newParam });
             }}
           />
         </StyledLi>
@@ -84,20 +73,13 @@ export const OptionPageChild = (props: { params: IParameterV2 }) => {
           <CheckBox
             id={"reason-switch"}
             label={chrome.i18n.getMessage("showHiddenReason")}
-            defaultChecked={params.isShowReason}
+            defaultChecked={param.isShowReason}
             updateParam={(checked: boolean) => {
               const newParam: IParameterV2 = {
-                ...params,
+                ...param,
                 isShowReason: checked,
               };
-              sendRequest({
-                type: "UPDATE_PARAM",
-                from: "POPUP",
-                to: "BACKGROUND",
-                data: {
-                  param: newParam,
-                },
-              });
+              dispatch({ t: "update", param: newParam });
             }}
           />
         </StyledLi>
@@ -105,20 +87,13 @@ export const OptionPageChild = (props: { params: IParameterV2 }) => {
           <CheckBox
             id={"consider-author-ngword"}
             label={chrome.i18n.getMessage("includePosterInNgWord")}
-            defaultChecked={params.considerAuthorNgWord}
+            defaultChecked={param.considerAuthorNgWord}
             updateParam={(checked: boolean) => {
               const newParam: IParameterV2 = {
-                ...params,
+                ...param,
                 considerAuthorNgWord: checked,
               };
-              sendRequest({
-                type: "UPDATE_PARAM",
-                from: "POPUP",
-                to: "BACKGROUND",
-                data: {
-                  param: newParam,
-                },
-              });
+              dispatch({ t: "update", param: newParam });
             }}
           />
         </StyledLi>
@@ -126,20 +101,13 @@ export const OptionPageChild = (props: { params: IParameterV2 }) => {
           <CheckBox
             id={"consider-author-length"}
             label={chrome.i18n.getMessage("includePosterInLimitChars")}
-            defaultChecked={params.considerAuthorLength}
+            defaultChecked={param.considerAuthorLength}
             updateParam={(checked: boolean) => {
               const newParam: IParameterV2 = {
-                ...params,
+                ...param,
                 considerAuthorLength: checked,
               };
-              sendRequest({
-                type: "UPDATE_PARAM",
-                from: "POPUP",
-                to: "BACKGROUND",
-                data: {
-                  param: newParam,
-                },
-              });
+              dispatch({ t: "update", param: newParam });
             }}
           />
         </StyledLi>
@@ -147,20 +115,13 @@ export const OptionPageChild = (props: { params: IParameterV2 }) => {
           <CheckBox
             id={"is-hide-completely"}
             label={chrome.i18n.getMessage("isHideCompletely")}
-            defaultChecked={params.isHideCompletely}
+            defaultChecked={param.isHideCompletely}
             updateParam={(checked: boolean) => {
               const newParam: IParameterV2 = {
-                ...params,
+                ...param,
                 isHideCompletely: checked,
               };
-              sendRequest({
-                type: "UPDATE_PARAM",
-                from: "POPUP",
-                to: "BACKGROUND",
-                data: {
-                  param: newParam,
-                },
-              });
+              dispatch({ t: "update", param: newParam });
             }}
           />
         </StyledLi>
