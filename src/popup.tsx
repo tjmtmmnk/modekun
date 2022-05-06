@@ -40,7 +40,13 @@ const Popup = () => {
         }
       }
     );
+    sendRequestToContent({
+      type: "GET_PARAM",
+      from: "POPUP",
+      to: "CONTENT_SCRIPT",
+    });
   }, [dispatch]);
+
   useEffect(() => {
     console.log("send req to content");
     sendRequestToContent({
@@ -51,16 +57,8 @@ const Popup = () => {
     });
   }, [state.param]);
 
-  console.log(state);
-
   return <PopupPage state={state} dispatch={dispatch} />;
 };
-
-sendRequestToContent({
-  type: "GET_PARAM",
-  from: "POPUP",
-  to: "CONTENT_SCRIPT",
-});
 
 ReactDOM.render(
   <React.StrictMode>

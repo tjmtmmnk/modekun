@@ -17,6 +17,7 @@ import { Message, sendRequest } from "./message";
 
 let worker: Worker | null;
 let api: IKuromojiWorker | null;
+let isReady = true;
 let lookChats = 0;
 let paramKey = "";
 let param = defaultParamsV2;
@@ -72,7 +73,7 @@ chrome.runtime.onMessage.addListener((req: Message, sender, sendResponse) => {
       },
     });
   } else if (req.type === "GET_PARAM" && req.from === "POPUP") {
-    initParam();
+    if (isReady) initParam();
   }
 });
 
@@ -87,8 +88,6 @@ window.addEventListener("load", async () => {
 
     const modekun = async () => {
       window.clearTimeout(timerId);
-
-      console.log(param);
 
       const chats = source.extractChats(lookChats);
       if (chats.length < 1) {
@@ -123,6 +122,12 @@ let previousLocation = window.location.href;
 const observeLocation = async () => {
   const currentLocation = window.location.href;
   if (currentLocation !== previousLocation) {
+    isReady = false;
+    // XXX: wait 3s for render complete
+    await new Promise((r) => setTimeout(r, 3000));
+
+    isReady = true;
+
     const source = selectSource(currentLocation);
     paramKey = keyStreamer(source.name, source.extractStreamer());
     initParam();
