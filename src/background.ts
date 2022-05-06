@@ -1,4 +1,4 @@
-import { Message, sendRequestToContent } from "./message";
+import { Message, sendRequest, sendRequestToContent } from "./message";
 import { defaultParamsV2, IParameterV2 } from "./config";
 import { get, set } from "./storage";
 
@@ -21,6 +21,12 @@ chrome.runtime.onMessage.addListener(
         param = defaultParamsV2;
       }
       sendRequestToContent({
+        type: "UPDATE_PARAM",
+        from: "BACKGROUND",
+        to: "CONTENT_SCRIPT",
+        data: { param },
+      });
+      sendRequest({
         type: "UPDATE_PARAM",
         from: "BACKGROUND",
         to: "CONTENT_SCRIPT",

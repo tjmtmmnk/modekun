@@ -72,14 +72,7 @@ chrome.runtime.onMessage.addListener((req: Message, sender, sendResponse) => {
       },
     });
   } else if (req.type === "GET_PARAM" && req.from === "POPUP") {
-    sendRequest({
-      type: "UPDATE_PARAM",
-      from: "CONTENT_SCRIPT",
-      to: "POPUP",
-      data: {
-        param,
-      },
-    });
+    initParam();
   }
 });
 
