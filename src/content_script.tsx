@@ -35,8 +35,8 @@ const getDicPath = () => {
 /*
  * set param managed in content_script
  */
-const initParam = () => {
-  sendRequest({
+const initParam = async () => {
+  await sendRequest({
     type: "GET_PARAM",
     from: "CONTENT_SCRIPT",
     to: "BACKGROUND",
@@ -46,41 +46,47 @@ const initParam = () => {
   });
 };
 
-chrome.runtime.onMessage.addListener((req: Message, sender, sendResponse) => {
-  if (req.from === "CONTENT_SCRIPT" || req.to !== "CONTENT_SCRIPT") return;
-  if (req.type === "UPDATE_PARAM" && req.from === "BACKGROUND") {
-    if (!req.data || !req.data.param) throw new Error("no param");
-    param = req.data.param;
-    sendRequest({
-      type: "UPDATE_PARAM",
-      from: "CONTENT_SCRIPT",
-      to: "POPUP",
-      data: {
-        param,
-      },
-    });
-  } else if (req.type === "UPDATE_PARAM" && req.from === "POPUP") {
-    if (!req.data || !req.data.param) throw new Error("no param");
-    param = req.data.param;
-    sendRequest({
-      type: "UPDATE_PARAM",
-      from: "CONTENT_SCRIPT",
-      to: "BACKGROUND",
-      data: {
-        key: paramKey,
-        param,
-      },
-    });
-  } else if (req.type === "GET_PARAM" && req.from === "POPUP") {
-    if (isReady) initParam();
+chrome.runtime.onMessage.addListener(
+  async (req: Message, sender, sendResponse) => {
+    if (req.from === "CONTENT_SCRIPT" || req.to !== "CONTENT_SCRIPT") {
+      sendResponse();
+      return;
+    }
+    if (req.type === "UPDATE_PARAM" && req.from === "BACKGROUND") {
+      if (!req.data || !req.data.param) throw new Error("no param");
+      param = req.data.param;
+      await sendRequest({
+        type: "UPDATE_PARAM",
+        from: "CONTENT_SCRIPT",
+        to: "POPUP",
+        data: {
+          param,
+        },
+      });
+    } else if (req.type === "UPDATE_PARAM" && req.from === "POPUP") {
+      if (!req.data || !req.data.param) throw new Error("no param");
+      param = req.data.param;
+      await sendRequest({
+        type: "UPDATE_PARAM",
+        from: "CONTENT_SCRIPT",
+        to: "BACKGROUND",
+        data: {
+          key: paramKey,
+          param,
+        },
+      });
+    } else if (req.type === "GET_PARAM" && req.from === "POPUP") {
+      if (isReady) await initParam();
+    }
+    sendResponse();
   }
-});
+);
 
 window.addEventListener("load", async () => {
   try {
     const source = selectSource(window.location.href);
     paramKey = keyStreamer(source.name, source.extractStreamer());
-    initParam();
+    await initParam();
 
     worker = await createKuromojiWorker();
     api = await createKuromojiWorkerApi(worker, getDicPath());
@@ -130,7 +136,7 @@ const observeLocation = async () => {
 
     const source = selectSource(currentLocation);
     paramKey = keyStreamer(source.name, source.extractStreamer());
-    initParam();
+    await initParam();
 
     worker && terminateWorker(worker);
     // avoid memory leak, worker allocates a lot of memory
