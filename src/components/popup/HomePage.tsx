@@ -2,7 +2,7 @@ import { RangeSlider } from "./RangeSlider";
 import { IParameterV2 } from "../../config";
 import React, { useEffect } from "react";
 import styled from "styled-components";
-import { PopupDispatch } from "../../popup";
+import { PopupDispatch, updateParam } from "../../popup";
 import { sendRequestToContent } from "../../message";
 
 const StyledContainer = styled.div`
@@ -22,12 +22,7 @@ interface HomePageProps {
 export const HomePage = (props: HomePageProps) => {
   const { param, dispatch } = props;
   useEffect(() => {
-    sendRequestToContent({
-      type: "UPDATE_PARAM",
-      from: "POPUP",
-      to: "CONTENT_SCRIPT",
-      data: { param },
-    });
+    updateParam(param);
   }, [
     param.repeatPostThreshold,
     param.repeatWordThreshold,

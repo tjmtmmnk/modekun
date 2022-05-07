@@ -8,7 +8,7 @@ import {
 import React, { useEffect, useReducer } from "react";
 import styled from "styled-components";
 import { sendRequestToContent } from "../../message";
-import { PopupDispatch } from "../../popup";
+import { PopupDispatch, updateParam } from "../../popup";
 
 const StyledContainer = styled.div`
   width: 320px;
@@ -78,12 +78,7 @@ export const NgWordPage = (props: NgWordPageProps) => {
   });
 
   useEffect(() => {
-    sendRequestToContent({
-      type: "UPDATE_PARAM",
-      from: "POPUP",
-      to: "CONTENT_SCRIPT",
-      data: { param: state.param },
-    });
+    updateParam(state.param);
   }, [state.param.ngWords]);
 
   return (
@@ -105,6 +100,10 @@ export const NgWordBulkInsertPage = (props: NgWordBulkInsertPageProps) => {
     param,
     dispatch: popupDispatch,
   });
+  useEffect(() => {
+    updateParam(state.param);
+  }, [state.param.ngWords]);
+
   return (
     <NgWordBulkInsertInput dispatch={dispatch} ngWords={state.param.ngWords} />
   );

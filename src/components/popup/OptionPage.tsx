@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import { CheckBox } from "./CheckBox";
 import { IParameterV2 } from "../../config";
-import { PopupDispatch } from "../../popup";
+import { PopupDispatch, updateParam } from "../../popup";
+import { sendRequestToContent } from "../../message";
 
 const StyledContainer = styled.div`
   width: 320px;
@@ -52,6 +53,15 @@ interface OptionPageProps {
 }
 export const OptionPage = (props: OptionPageProps) => {
   const { param, dispatch } = props;
+  useEffect(() => {
+    updateParam(param);
+  }, [
+    param.isActivateModekun,
+    param.isShowReason,
+    param.considerAuthorNgWord,
+    param.considerAuthorLength,
+    param.isHideCompletely,
+  ]);
   return (
     <StyledContainer>
       <StyledUl>

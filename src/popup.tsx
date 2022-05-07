@@ -27,6 +27,15 @@ const initialState: IPopupState = {
   isLoading: true,
 };
 
+export const updateParam = (param: IParameterV2) => {
+  sendRequestToContent({
+    type: "UPDATE_PARAM",
+    from: "POPUP",
+    to: "CONTENT_SCRIPT",
+    data: { param },
+  });
+};
+
 const Popup = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
   useEffect(() => {
