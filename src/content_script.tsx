@@ -29,7 +29,7 @@ const getDicPath = () => {
 
   return isFireFox
     ? "https://cdn.jsdelivr.net/npm/kuromoji@0.1.2/dict"
-    : chrome.extension.getURL("kuromoji/dict/");
+    : chrome.runtime.getURL("kuromoji/dict/");
 };
 
 /*
