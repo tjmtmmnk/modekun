@@ -102,6 +102,7 @@ window.addEventListener("load", async () => {
       }
 
       if (!param.isActivateModekun) {
+        timerId = window.setTimeout(modekun, DEFAULT_EXECUTION_INTERVAL_MS);
         return;
       }
 
