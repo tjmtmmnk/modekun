@@ -45,7 +45,7 @@ const DEFAULT_CONSIDER_AUTHOR_LENGTH = false;
 const DEFAULT_IS_HIDE_COMPLETELY = false;
 
 export const DEFAULT_EXECUTION_INTERVAL_MS = 3000;
-export const OBSERVATION_INTERVAL_MS = 5000;
+export const OBSERVATION_INTERVAL_MS = 50;
 
 export const YOUTUBE_REGEX = /https:\/\/www\.youtube\.com.*/;
 export const MILDOM_REGEX = /https:\/\/www\.mildom\.com.*/;

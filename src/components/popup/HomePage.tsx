@@ -1,9 +1,9 @@
 import { RangeSlider } from "./RangeSlider";
 import { IParameterV2 } from "../../config";
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
-import { useParams } from "../../popup";
-import { sendRequest } from "../../message";
+import { PopupDispatch, updateParam } from "../../popup";
+import { sendRequestToContent } from "../../message";
 
 const StyledContainer = styled.div`
   width: 320px;
@@ -14,13 +14,23 @@ const StyledContainer = styled.div`
   font-size: 12px;
 `;
 
-export const HomePage = () => {
-  const params = useParams();
-  return <>{params && <HomePageChild params={params} />}</>;
-};
+interface HomePageProps {
+  param: IParameterV2;
+  dispatch: PopupDispatch;
+}
 
-export const HomePageChild = (props: { params: IParameterV2 }) => {
-  const { params } = props;
+export const HomePage = (props: HomePageProps) => {
+  const { param, dispatch } = props;
+  useEffect(() => {
+    updateParam(param);
+  }, [
+    param.repeatPostThreshold,
+    param.repeatWordThreshold,
+    param.postFrequencyThreshold,
+    param.lengthThreshold,
+    param.lookChats,
+    param.executionInterval,
+  ]);
   return (
     <StyledContainer>
       <RangeSlider
@@ -29,20 +39,13 @@ export const HomePageChild = (props: { params: IParameterV2 }) => {
         min={1}
         max={10}
         step={1}
-        defaultValue={params.repeatPostThreshold}
+        defaultValue={param.repeatPostThreshold}
         updateParam={(value: number) => {
           const newParam: IParameterV2 = {
-            ...params,
+            ...param,
             repeatPostThreshold: value,
           };
-          sendRequest({
-            type: "UPDATE_PARAM",
-            from: "POPUP",
-            to: "BACKGROUND",
-            data: {
-              param: newParam,
-            },
-          });
+          dispatch({ t: "update", param: newParam });
         }}
       />
       <RangeSlider
@@ -51,20 +54,13 @@ export const HomePageChild = (props: { params: IParameterV2 }) => {
         min={1}
         max={20}
         step={1}
-        defaultValue={params.repeatWordThreshold}
+        defaultValue={param.repeatWordThreshold}
         updateParam={(value: number) => {
           const newParam: IParameterV2 = {
-            ...params,
+            ...param,
             repeatWordThreshold: value,
           };
-          sendRequest({
-            type: "UPDATE_PARAM",
-            from: "POPUP",
-            to: "BACKGROUND",
-            data: {
-              param: newParam,
-            },
-          });
+          dispatch({ t: "update", param: newParam });
         }}
       />
       <RangeSlider
@@ -73,20 +69,13 @@ export const HomePageChild = (props: { params: IParameterV2 }) => {
         min={1}
         max={50}
         step={1}
-        defaultValue={params.postFrequencyThreshold}
+        defaultValue={param.postFrequencyThreshold}
         updateParam={(value: number) => {
           const newParam: IParameterV2 = {
-            ...params,
+            ...param,
             postFrequencyThreshold: value,
           };
-          sendRequest({
-            type: "UPDATE_PARAM",
-            from: "POPUP",
-            to: "BACKGROUND",
-            data: {
-              param: newParam,
-            },
-          });
+          dispatch({ t: "update", param: newParam });
         }}
       />
       <RangeSlider
@@ -95,20 +84,13 @@ export const HomePageChild = (props: { params: IParameterV2 }) => {
         min={1}
         max={200}
         step={1}
-        defaultValue={params.lengthThreshold}
+        defaultValue={param.lengthThreshold}
         updateParam={(value: number) => {
           const newParam: IParameterV2 = {
-            ...params,
+            ...param,
             lengthThreshold: value,
           };
-          sendRequest({
-            type: "UPDATE_PARAM",
-            from: "POPUP",
-            to: "BACKGROUND",
-            data: {
-              param: newParam,
-            },
-          });
+          dispatch({ t: "update", param: newParam });
         }}
       />
       <RangeSlider
@@ -117,20 +99,13 @@ export const HomePageChild = (props: { params: IParameterV2 }) => {
         min={1}
         max={250}
         step={1}
-        defaultValue={params.lookChats}
+        defaultValue={param.lookChats}
         updateParam={(value: number) => {
           const newParam: IParameterV2 = {
-            ...params,
+            ...param,
             lookChats: value,
           };
-          sendRequest({
-            type: "UPDATE_PARAM",
-            from: "POPUP",
-            to: "BACKGROUND",
-            data: {
-              param: newParam,
-            },
-          });
+          dispatch({ t: "update", param: newParam });
         }}
       />
       <RangeSlider
@@ -139,20 +114,13 @@ export const HomePageChild = (props: { params: IParameterV2 }) => {
         min={50}
         max={10000}
         step={100}
-        defaultValue={params.executionInterval}
+        defaultValue={param.executionInterval}
         updateParam={(value: number) => {
           const newParam: IParameterV2 = {
-            ...params,
+            ...param,
             executionInterval: value,
           };
-          sendRequest({
-            type: "UPDATE_PARAM",
-            from: "POPUP",
-            to: "BACKGROUND",
-            data: {
-              param: newParam,
-            },
-          });
+          dispatch({ t: "update", param: newParam });
         }}
       />
     </StyledContainer>
