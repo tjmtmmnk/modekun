@@ -5,9 +5,9 @@ import {
   NgWordInput,
   NgWordList,
 } from "./NgWord";
-import React, { useReducer } from "react";
+import React, { useEffect, useReducer } from "react";
 import styled from "styled-components";
-import { sendRequest } from "../../message";
+import { sendRequestToContent } from "../../message";
 import { PopupDispatch } from "../../popup";
 
 const StyledContainer = styled.div`
@@ -20,6 +20,7 @@ const StyledContainer = styled.div`
 
 interface State {
   param: IParameterV2;
+  dispatch: PopupDispatch;
 }
 
 type Action =
@@ -27,59 +28,68 @@ type Action =
   | { type: "delete"; ngWord: string }
   | { type: "bulk-save"; ngWords: string[] };
 
-const reducer = (popupDispatch: PopupDispatch) => {
-  return (state: State, action: Action): State => {
-    switch (action.type) {
-      case "save": {
-        const ngWords = [...state.param.ngWords, action.ngWord];
-        const newParam: IParameterV2 = {
-          ...state.param,
-          ngWords: ngWords,
-        };
-        popupDispatch({ t: "update", param: newParam });
-        return { param: newParam };
-      }
-      case "delete": {
-        const ngWords = state.param.ngWords.filter(
-          (word) => word !== action.ngWord
-        );
-        const newParam: IParameterV2 = {
-          ...state.param,
-          ngWords: ngWords,
-        };
-        popupDispatch({ t: "update", param: newParam });
-        return { param: newParam };
-      }
-      case "bulk-save": {
-        const ngWords = [...state.param.ngWords, ...action.ngWords];
-        const newParam: IParameterV2 = {
-          ...state.param,
-          ngWords: ngWords,
-        };
-        popupDispatch({ t: "update", param: newParam });
-        return { param: newParam };
-      }
+const reducer = (state: State, action: Action): State => {
+  switch (action.type) {
+    case "save": {
+      const ngWords = [...state.param.ngWords, action.ngWord];
+      const newParam: IParameterV2 = {
+        ...state.param,
+        ngWords: ngWords,
+      };
+      state.dispatch({ t: "update", param: newParam });
+      return { ...state, param: newParam };
     }
-  };
+    case "delete": {
+      const ngWords = state.param.ngWords.filter(
+        (word) => word !== action.ngWord
+      );
+      const newParam: IParameterV2 = {
+        ...state.param,
+        ngWords: ngWords,
+      };
+      state.dispatch({ t: "update", param: newParam });
+      return { ...state, param: newParam };
+    }
+    case "bulk-save": {
+      const ngWords = [...state.param.ngWords, ...action.ngWords];
+      const newParam: IParameterV2 = {
+        ...state.param,
+        ngWords: ngWords,
+      };
+      state.dispatch({ t: "update", param: newParam });
+      return { ...state, param: newParam };
+    }
+  }
 };
 
 export type DispatchType = (action: Action) => void;
 
 interface NgWordPageProps {
   param: IParameterV2;
-  dispatch: PopupDispatch;
+  popupDispatch: PopupDispatch;
 }
 
 export const NgWordPage = (props: NgWordPageProps) => {
-  const { param, dispatch } = props;
-  const [state, ngWordDispatch] = useReducer(reducer(dispatch), {
+  const { param, popupDispatch } = props;
+
+  const [state, dispatch] = useReducer(reducer, {
     param,
+    dispatch: popupDispatch,
   });
+
+  useEffect(() => {
+    sendRequestToContent({
+      type: "UPDATE_PARAM",
+      from: "POPUP",
+      to: "CONTENT_SCRIPT",
+      data: { param: state.param },
+    });
+  }, [state.param.ngWords]);
 
   return (
     <StyledContainer>
-      <NgWordList dispatch={ngWordDispatch} ngWords={state.param.ngWords} />
-      <NgWordInput dispatch={ngWordDispatch} ngWords={state.param.ngWords} />
+      <NgWordList dispatch={dispatch} ngWords={state.param.ngWords} />
+      <NgWordInput dispatch={dispatch} ngWords={state.param.ngWords} />
       <NgWordBulkInsertLink />
     </StyledContainer>
   );
@@ -87,17 +97,15 @@ export const NgWordPage = (props: NgWordPageProps) => {
 
 interface NgWordBulkInsertPageProps {
   param: IParameterV2;
-  dispatch: PopupDispatch;
+  popupDispatch: PopupDispatch;
 }
 export const NgWordBulkInsertPage = (props: NgWordBulkInsertPageProps) => {
-  const { param, dispatch } = props;
-  const [state, ngWordDispatch] = useReducer(reducer(dispatch), {
+  const { param, popupDispatch } = props;
+  const [state, dispatch] = useReducer(reducer, {
     param,
+    dispatch: popupDispatch,
   });
   return (
-    <NgWordBulkInsertInput
-      dispatch={ngWordDispatch}
-      ngWords={state.param.ngWords}
-    />
+    <NgWordBulkInsertInput dispatch={dispatch} ngWords={state.param.ngWords} />
   );
 };

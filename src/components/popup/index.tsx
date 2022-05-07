@@ -20,10 +20,10 @@ export default function PopupPage(props: PopupPageProps) {
       <Navigation />
       <Switch>
         <Route path="/ngword/bulk">
-          <NgWordBulkInsertPage param={state.param} dispatch={dispatch} />
+          <NgWordBulkInsertPage param={state.param} popupDispatch={dispatch} />
         </Route>
         <Route path="/ngword">
-          <NgWordPage param={state.param} dispatch={dispatch} />
+          <NgWordPage param={state.param} popupDispatch={dispatch} />
         </Route>
         <Route path="/option">
           <OptionPage param={state.param} dispatch={dispatch} />

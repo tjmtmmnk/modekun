@@ -47,15 +47,6 @@ const Popup = () => {
     });
   }, [dispatch]);
 
-  useEffect(() => {
-    sendRequestToContent({
-      type: "UPDATE_PARAM",
-      from: "POPUP",
-      to: "CONTENT_SCRIPT",
-      data: { param: state.param },
-    });
-  }, [state.param]);
-
   return <PopupPage state={state} dispatch={dispatch} />;
 };
 

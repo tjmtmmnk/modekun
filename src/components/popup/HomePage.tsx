@@ -1,8 +1,9 @@
 import { RangeSlider } from "./RangeSlider";
 import { IParameterV2 } from "../../config";
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import { PopupDispatch } from "../../popup";
+import { sendRequestToContent } from "../../message";
 
 const StyledContainer = styled.div`
   width: 320px;
@@ -20,6 +21,21 @@ interface HomePageProps {
 
 export const HomePage = (props: HomePageProps) => {
   const { param, dispatch } = props;
+  useEffect(() => {
+    sendRequestToContent({
+      type: "UPDATE_PARAM",
+      from: "POPUP",
+      to: "CONTENT_SCRIPT",
+      data: { param },
+    });
+  }, [
+    param.repeatPostThreshold,
+    param.repeatWordThreshold,
+    param.postFrequencyThreshold,
+    param.lengthThreshold,
+    param.lookChats,
+    param.executionInterval,
+  ]);
   return (
     <StyledContainer>
       <RangeSlider
