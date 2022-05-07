@@ -7,7 +7,6 @@ import {
 import {
   defaultParamsV2,
   DEFAULT_EXECUTION_INTERVAL_MS,
-  IParameterV2,
   keyStreamer,
   OBSERVATION_INTERVAL_MS,
 } from "./config";

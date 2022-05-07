@@ -5,7 +5,7 @@ import { get, set } from "./storage";
 chrome.runtime.onMessage.addListener(
   async (req: Message, sender, sendResponse) => {
     if (req.from === "BACKGROUND" || req.to !== "BACKGROUND") return;
-    if (req.type === "GET_PARAM") {
+    if (req.type === "GET_PARAM" && req.from === "CONTENT_SCRIPT") {
       if (!req.data) throw new Error("no data");
       if (!req.data.key) throw new Error("no key");
       const key: string = req.data.key;
@@ -29,7 +29,7 @@ chrome.runtime.onMessage.addListener(
       sendRequest({
         type: "UPDATE_PARAM",
         from: "BACKGROUND",
-        to: "CONTENT_SCRIPT",
+        to: "POPUP",
         data: { param },
       });
     } else if (req.type === "UPDATE_PARAM" && req.from === "CONTENT_SCRIPT") {

@@ -48,7 +48,6 @@ const Popup = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    console.log("send req to content");
     sendRequestToContent({
       type: "UPDATE_PARAM",
       from: "POPUP",
