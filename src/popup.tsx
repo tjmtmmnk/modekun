@@ -27,8 +27,8 @@ const initialState: IPopupState = {
   isLoading: true,
 };
 
-export const updateParam = (param: IParameterV2) => {
-  sendRequestToContent({
+export const updateParam = async (param: IParameterV2) => {
+  await sendRequestToContent({
     type: "UPDATE_PARAM",
     from: "POPUP",
     to: "CONTENT_SCRIPT",
@@ -41,12 +41,16 @@ const Popup = () => {
   useEffect(() => {
     chrome.runtime.onMessage.addListener(
       (req: Message, sender, sendResponse) => {
-        if (req.from === "POPUP" || req.to !== "POPUP") return;
+        if (req.from === "POPUP" || req.to !== "POPUP") {
+          sendResponse();
+          return;
+        }
         if (req.type === "UPDATE_PARAM") {
           if (!req.data || !req.data.param) throw new Error("no param");
           dispatch({ t: "update", param: req.data.param as IParameterV2 });
           dispatch({ t: "loaded" });
         }
+        sendResponse();
       }
     );
     sendRequestToContent({

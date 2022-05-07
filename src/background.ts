@@ -4,7 +4,10 @@ import { get, set } from "./storage";
 
 chrome.runtime.onMessage.addListener(
   async (req: Message, sender, sendResponse) => {
-    if (req.from === "BACKGROUND" || req.to !== "BACKGROUND") return;
+    if (req.from === "BACKGROUND" || req.to !== "BACKGROUND") {
+      sendResponse();
+      return;
+    }
     if (req.type === "GET_PARAM" && req.from === "CONTENT_SCRIPT") {
       if (!req.data) throw new Error("no data");
       if (!req.data.key) throw new Error("no key");
@@ -20,13 +23,13 @@ chrome.runtime.onMessage.addListener(
         console.error(e);
         param = defaultParamsV2;
       }
-      sendRequestToContent({
+      await sendRequestToContent({
         type: "UPDATE_PARAM",
         from: "BACKGROUND",
         to: "CONTENT_SCRIPT",
         data: { param },
       });
-      sendRequest({
+      await sendRequest({
         type: "UPDATE_PARAM",
         from: "BACKGROUND",
         to: "POPUP",
@@ -44,5 +47,6 @@ chrome.runtime.onMessage.addListener(
         console.error(e);
       }
     }
+    sendResponse();
   }
 );

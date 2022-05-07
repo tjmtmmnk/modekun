@@ -1,13 +1,20 @@
 {
-  "manifest_version": 2,
+  "manifest_version": 3,
 
   "name": "modekun",
   "description": "moderate live chat",
-  "version": "1.1.5",
-  "content_security_policy": "script-src 'self'; object-src 'none'",
+  "version": "2.0.0",
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'none'"
+  },
 
-  "browser_action": {
-    "default_icon": "icon.png",
+  "action": {
+    "default_title": "modekun",
+    "default_icon": {
+      "16": "icon16.png",
+      "48": "icon48.png",
+      "64": "icon64.png"
+    },
     "default_popup": "popup.html"
   },
 
@@ -22,20 +29,34 @@
       "matches": [
         "https://www.youtube.com/*",
         "https://www.mildom.com/*",
-        "https://www.twitch.tv/*"
+        "https://www.twitch.tv/*",
+        "https://www.google.co.jp/*"
       ],
       "js": ["js/content_script.js"]
     }
   ],
 
   "background": {
-    "scripts": ["js/background.js"],
-    "persistent": false
+    "service_worker": "js/background.js"
   },
 
   "permissions": ["activeTab", "storage", "tabs"],
 
-  "web_accessible_resources": ["kuromoji/dict/*", "js/worker.js"],
+  "web_accessible_resources": [
+    {
+      "resources": ["kuromoji/dict/*", "js/worker.js"],
+      "matches": [
+        "https://www.youtube.com/*",
+        "https://www.mildom.com/*",
+        "https://www.twitch.tv/*",
+        "https://www.google.co.jp/*"
+      ],
+      "extension_ids": [
+        "lnlgicokoimnfncigoknlbiicjfbbejp",
+        "gledinelblgphiogdfalpkobganffpem"
+      ]
+    }
+  ],
 
   "default_locale": "ja"
 }

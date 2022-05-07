@@ -4,7 +4,7 @@ import { IParameterV2 } from "./config";
 import { IKuromojiWorker } from "./kuromoji";
 
 export const createKuromojiWorker = async (): Promise<Worker> => {
-  const worker = await fetch(chrome.extension.getURL("js/worker.js"));
+  const worker = await fetch(chrome.runtime.getURL("js/worker.js"));
   const js = await worker.text();
   const blob = new Blob([js], { type: "text/javascript" });
   const url = URL.createObjectURL(blob);

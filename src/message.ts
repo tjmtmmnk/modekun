@@ -9,19 +9,44 @@ export interface Message {
   data?: any;
 }
 
-export const sendRequest = <T = any>(
-  req: Message,
-  resFn?: (res: T) => void
-) => {
-  chrome.runtime.sendMessage(req, resFn);
+export const sendRequest = async <R>(req: Message): Promise<R> => {
+  return new Promise((resolve, reject) => {
+    chrome.runtime.sendMessage(req, (res) => {
+      let err = chrome.runtime.lastError;
+      if (
+        !err ||
+        (err.message && /The message port closed before/.test(err.message))
+      ) {
+        resolve(res);
+      } else {
+        err = new Error(err.message);
+        reject(err);
+      }
+    });
+  });
 };
 
-export const sendRequestToContent = <T = any>(
-  req: Message,
-  resFn?: (res: T) => void
-) => {
-  if (req.to !== "CONTENT_SCRIPT") return;
-  chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-    tabs[0].id && chrome.tabs.sendMessage(tabs[0].id, req);
+export const sendRequestToContent = async (req: Message) => {
+  if (req.to !== "CONTENT_SCRIPT")
+    throw new Error("must send to CONTENT_SCRIPT");
+  const tabs = await chrome.tabs.query({ active: true, currentWindow: true });
+
+  return new Promise((resolve, reject) => {
+    if (tabs.length === 0 || !tabs[0].id) {
+      reject(Error("no tab"));
+      return;
+    }
+    chrome.tabs.sendMessage(tabs[0].id, req, (res) => {
+      let err = chrome.runtime.lastError;
+      if (
+        !err ||
+        (err.message && /The message port closed before/.test(err.message))
+      ) {
+        resolve(res);
+      } else {
+        err = new Error(err.message);
+        reject(err);
+      }
+    });
   });
 };
