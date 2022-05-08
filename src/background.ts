@@ -43,11 +43,7 @@ chrome.runtime.onMessage.addListener(
       const param: IParameterV2 = req.data.param;
       try {
         await set<IParameterV2>(key, param);
-        if (param.isUseSameParam) {
-          await set<boolean>(keyIsUseSameParam, true);
-        } else {
-          await set<boolean>(keyIsUseSameParam, false);
-        }
+        await set<boolean>(keyIsUseSameParam, param.isUseSameParam);
       } catch (e) {
         console.error(e);
       }
