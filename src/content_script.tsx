@@ -13,6 +13,7 @@ import {
 import { selectSource } from "./source/source";
 import { IKuromojiWorker } from "./kuromoji";
 import { Message, sendRequest } from "./message";
+import { SAME_STREAMER } from "./streamer";
 
 let worker: Worker | null;
 let api: IKuromojiWorker | null;
@@ -36,6 +37,11 @@ const getDicPath = () => {
  * set param managed in content_script
  */
 const initParam = async () => {
+  await sendRequest({
+    type: "GET_IS_USE_SAME_PARAM",
+    from: "CONTENT_SCRIPT",
+    to: "BACKGROUND",
+  });
   await sendRequest({
     type: "GET_PARAM",
     from: "CONTENT_SCRIPT",
@@ -77,6 +83,16 @@ chrome.runtime.onMessage.addListener(
       });
     } else if (req.type === "GET_PARAM" && req.from === "POPUP") {
       if (isReady) await initParam();
+    } else if (
+      req.type === "GET_IS_USE_SAME_PARAM" &&
+      req.from === "BACKGROUND"
+    ) {
+      const isUseSameParam = req.data.isUseSameParam;
+      if (isUseSameParam) {
+        console.log("same");
+        const source = selectSource(window.location.href);
+        paramKey = keyStreamer(source.name, SAME_STREAMER);
+      }
     }
     sendResponse();
   }

@@ -1,4 +1,7 @@
-export type MessageType = "UPDATE_PARAM" | "GET_PARAM";
+export type MessageType =
+  | "UPDATE_PARAM"
+  | "GET_PARAM"
+  | "GET_IS_USE_SAME_PARAM";
 
 export type NetworkNode = "CONTENT_SCRIPT" | "BACKGROUND" | "POPUP";
 

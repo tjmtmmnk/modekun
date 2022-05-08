@@ -48,7 +48,10 @@
     "message": "Include poster name in max num of characters"
   },
   "isHideCompletely": {
-    "message": "hide comments completely"
+    "message": "Hide comments completely"
+  },
+  "isUseSameParam": {
+    "message": "Use common parameters"
   },
 
   "repeatPost": {

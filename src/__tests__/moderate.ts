@@ -38,6 +38,7 @@ describe("moderate", () => {
     considerAuthorLength: false,
     considerAuthorNgWord: false,
     isHideCompletely: false,
+    isUseSameParam: false,
   };
   describe("hideRepeatWords", () => {
     const chats: IChat[] = [

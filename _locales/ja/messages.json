@@ -50,6 +50,9 @@
   "isHideCompletely": {
     "message": "完全に非表示にする"
   },
+  "isUseSameParam": {
+    "message": "共通のパラメータを使用する"
+  },
 
   "repeatPost": {
     "message": "連投"
