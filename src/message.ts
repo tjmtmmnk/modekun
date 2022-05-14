@@ -45,7 +45,8 @@ export const sendRequestToContent = async (req: Message) => {
       let err = chrome.runtime.lastError;
       if (
         !err ||
-        (err.message && /The message port closed before/.test(err.message))
+        (err.message && /The message port closed before/.test(err.message)) ||
+        (err.message && /Could not establish connection/.test(err.message))
       ) {
         resolve(res);
       } else {
