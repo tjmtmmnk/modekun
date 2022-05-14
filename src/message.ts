@@ -19,7 +19,8 @@ export const sendRequest = async <R>(req: Message): Promise<R> => {
       let err = chrome.runtime.lastError;
       if (
         !err ||
-        (err.message && /The message port closed before/.test(err.message))
+        (err.message && /The message port closed before/.test(err.message)) ||
+        (err.message && /Could not establish connection/.test(err.message))
       ) {
         resolve(res);
       } else {
