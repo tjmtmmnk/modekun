@@ -1,5 +1,5 @@
 import { Message, sendRequest, sendRequestToContent } from "./message";
-import { defaultParamsV2, IParameterV2 } from "./config";
+import { defaultParamsV2, IParameterV2, keyIsUseSameParam } from "./config";
 import { get, set } from "./storage";
 
 chrome.runtime.onMessage.addListener(
@@ -43,9 +43,21 @@ chrome.runtime.onMessage.addListener(
       const param: IParameterV2 = req.data.param;
       try {
         await set<IParameterV2>(key, param);
+        await set<boolean>(keyIsUseSameParam, param.isUseSameParam);
       } catch (e) {
         console.error(e);
       }
+    } else if (
+      req.type === "GET_IS_USE_SAME_PARAM" &&
+      req.from === "CONTENT_SCRIPT"
+    ) {
+      const isUseSameParam = await get<boolean | undefined>(keyIsUseSameParam);
+      await sendRequestToContent({
+        type: "UPDATE_IS_USE_SAME_PARAM",
+        from: "BACKGROUND",
+        to: "CONTENT_SCRIPT",
+        data: { isUseSameParam: !!isUseSameParam },
+      });
     }
     sendResponse();
   }

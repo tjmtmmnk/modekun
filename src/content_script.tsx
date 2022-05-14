@@ -13,12 +13,12 @@ import {
 import { selectSource } from "./source/source";
 import { IKuromojiWorker } from "./kuromoji";
 import { Message, sendRequest } from "./message";
+import { SAME_STREAMER } from "./streamer";
 
 let worker: Worker | null;
 let api: IKuromojiWorker | null;
 let isReady = true;
 let lookChats = 0;
-let paramKey = "";
 let param = defaultParamsV2;
 let timerId: number;
 
@@ -32,17 +32,22 @@ const getDicPath = () => {
     : chrome.runtime.getURL("kuromoji/dict/");
 };
 
+const getParamKey = (isUseSameParam: boolean) => {
+  const source = selectSource(window.location.href);
+  const paramKey = isUseSameParam
+    ? keyStreamer(source.name, SAME_STREAMER)
+    : keyStreamer(source.name, source.extractStreamer());
+  return paramKey;
+};
+
 /*
  * set param managed in content_script
  */
 const initParam = async () => {
   await sendRequest({
-    type: "GET_PARAM",
+    type: "GET_IS_USE_SAME_PARAM",
     from: "CONTENT_SCRIPT",
     to: "BACKGROUND",
-    data: {
-      key: paramKey,
-    },
   });
 };
 
@@ -71,12 +76,25 @@ chrome.runtime.onMessage.addListener(
         from: "CONTENT_SCRIPT",
         to: "BACKGROUND",
         data: {
-          key: paramKey,
+          key: getParamKey(param.isUseSameParam),
           param,
         },
       });
     } else if (req.type === "GET_PARAM" && req.from === "POPUP") {
       if (isReady) await initParam();
+    } else if (
+      req.type === "UPDATE_IS_USE_SAME_PARAM" &&
+      req.from === "BACKGROUND"
+    ) {
+      const isUseSameParam = !!req.data.isUseSameParam;
+      await sendRequest({
+        type: "GET_PARAM",
+        from: "CONTENT_SCRIPT",
+        to: "BACKGROUND",
+        data: {
+          key: getParamKey(isUseSameParam),
+        },
+      });
     }
     sendResponse();
   }
@@ -85,7 +103,6 @@ chrome.runtime.onMessage.addListener(
 window.addEventListener("load", async () => {
   try {
     const source = selectSource(window.location.href);
-    paramKey = keyStreamer(source.name, source.extractStreamer());
     await initParam();
 
     worker = await createKuromojiWorker();
@@ -134,8 +151,6 @@ const observeLocation = async () => {
 
     isReady = true;
 
-    const source = selectSource(currentLocation);
-    paramKey = keyStreamer(source.name, source.extractStreamer());
     await initParam();
 
     worker && terminateWorker(worker);

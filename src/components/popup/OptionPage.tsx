@@ -61,6 +61,7 @@ export const OptionPage = (props: OptionPageProps) => {
     param.considerAuthorNgWord,
     param.considerAuthorLength,
     param.isHideCompletely,
+    param.isUseSameParam,
   ]);
   return (
     <StyledContainer>
@@ -130,6 +131,20 @@ export const OptionPage = (props: OptionPageProps) => {
               const newParam: IParameterV2 = {
                 ...param,
                 isHideCompletely: checked,
+              };
+              dispatch({ t: "update", param: newParam });
+            }}
+          />
+        </StyledLi>
+        <StyledLi>
+          <CheckBox
+            id={"is-use-same-param"}
+            label={chrome.i18n.getMessage("isUseSameParam")}
+            defaultChecked={param.isUseSameParam}
+            updateParam={(checked: boolean) => {
+              const newParam: IParameterV2 = {
+                ...param,
+                isUseSameParam: checked,
               };
               dispatch({ t: "update", param: newParam });
             }}

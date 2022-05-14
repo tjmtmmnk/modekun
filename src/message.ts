@@ -1,4 +1,8 @@
-export type MessageType = "UPDATE_PARAM" | "GET_PARAM";
+export type MessageType =
+  | "UPDATE_PARAM"
+  | "GET_PARAM"
+  | "GET_IS_USE_SAME_PARAM"
+  | "UPDATE_IS_USE_SAME_PARAM";
 
 export type NetworkNode = "CONTENT_SCRIPT" | "BACKGROUND" | "POPUP";
 
@@ -15,7 +19,8 @@ export const sendRequest = async <R>(req: Message): Promise<R> => {
       let err = chrome.runtime.lastError;
       if (
         !err ||
-        (err.message && /The message port closed before/.test(err.message))
+        (err.message && /The message port closed before/.test(err.message)) ||
+        (err.message && /Could not establish connection/.test(err.message))
       ) {
         resolve(res);
       } else {
@@ -40,7 +45,8 @@ export const sendRequestToContent = async (req: Message) => {
       let err = chrome.runtime.lastError;
       if (
         !err ||
-        (err.message && /The message port closed before/.test(err.message))
+        (err.message && /The message port closed before/.test(err.message)) ||
+        (err.message && /Could not establish connection/.test(err.message))
       ) {
         resolve(res);
       } else {
