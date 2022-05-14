@@ -33,11 +33,8 @@ export const Mock: ISource = {
     ];
   },
   extractStreamer() {
-    const getRandomInt = (max: number) => {
-      return Math.floor(Math.random() * max);
-    };
     const streamer: Streamer = {
-      name: getRandomInt(1000000).toString(),
+      name: document.title,
     };
     return streamer;
   },
