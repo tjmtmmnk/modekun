@@ -68,11 +68,8 @@ export const CheckBox = (props: {
 
   const [checked, setChecked] = useState(defaultChecked);
 
-  React.useEffect(() => {
-    updateParam(checked);
-  }, [checked]);
-
   const onChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
+    updateParam(e.target.checked);
     setChecked(e.target.checked);
   };
 
