@@ -148,7 +148,7 @@ export const OptionPage = (props: OptionPageProps) => {
                 t: "update-is-use-same-param",
                 isUseSameParam: checked,
               });
-              window.alert("reload");
+              window.alert(chrome.i18n.getMessage("reload"));
               window.close();
             }}
           />
