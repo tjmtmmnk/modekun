@@ -7,6 +7,8 @@ import {
 import {
   defaultParamsV2,
   DEFAULT_EXECUTION_INTERVAL_MS,
+  DEFAULT_IS_USE_SAME_PARAM,
+  IParameterV2,
   keyStreamer,
   OBSERVATION_INTERVAL_MS,
 } from "./config";
@@ -18,8 +20,8 @@ import { SAME_STREAMER } from "./streamer";
 let worker: Worker | null;
 let api: IKuromojiWorker | null;
 let isReady = true;
-let lookChats = 0;
 let param = defaultParamsV2;
+let isUseSameParam = DEFAULT_IS_USE_SAME_PARAM;
 let timerId: number;
 
 const getDicPath = () => {
@@ -32,7 +34,7 @@ const getDicPath = () => {
     : chrome.runtime.getURL("kuromoji/dict/");
 };
 
-const getParamKey = (isUseSameParam: boolean) => {
+const getParamKey = () => {
   const source = selectSource(window.location.href);
   const paramKey = isUseSameParam
     ? keyStreamer(source.name, SAME_STREAMER)
@@ -76,7 +78,7 @@ chrome.runtime.onMessage.addListener(
         from: "CONTENT_SCRIPT",
         to: "BACKGROUND",
         data: {
-          key: getParamKey(param.isUseSameParam),
+          key: getParamKey(),
           param,
         },
       });
@@ -86,14 +88,33 @@ chrome.runtime.onMessage.addListener(
       req.type === "UPDATE_IS_USE_SAME_PARAM" &&
       req.from === "BACKGROUND"
     ) {
-      const isUseSameParam = !!req.data.isUseSameParam;
+      console.log(
+        `UPDATE is use same param from background: ${isUseSameParam}`
+      );
+      if (!req.data || req.data.isUseSameParam === undefined)
+        throw new Error("no is use same param");
+      isUseSameParam = !!req.data.isUseSameParam;
       await sendRequest({
         type: "GET_PARAM",
         from: "CONTENT_SCRIPT",
         to: "BACKGROUND",
         data: {
-          key: getParamKey(isUseSameParam),
+          key: getParamKey(),
         },
+      });
+    } else if (
+      req.type === "UPDATE_IS_USE_SAME_PARAM" &&
+      req.from === "POPUP"
+    ) {
+      console.log(`UPDATE is use same param from popup: ${isUseSameParam}`);
+      if (!req.data || req.data.isUseSameParam === undefined)
+        throw new Error("no is use same param");
+      isUseSameParam = !!req.data.isUseSameParam;
+      await sendRequest({
+        type: "UPDATE_IS_USE_SAME_PARAM",
+        from: "CONTENT_SCRIPT",
+        to: "BACKGROUND",
+        data: { isUseSameParam },
       });
     }
     sendResponse();
@@ -111,7 +132,7 @@ window.addEventListener("load", async () => {
     const modekun = async () => {
       window.clearTimeout(timerId);
 
-      const chats = source.extractChats(lookChats);
+      const chats = source.extractChats(param.lookChats);
       if (chats.length < 1) {
         // NOTE: Don't terminate worker here.
         // Because an archive video may be able to open a chat section which was closed at first.
@@ -128,8 +149,6 @@ window.addEventListener("load", async () => {
         timerId = window.setTimeout(modekun, DEFAULT_EXECUTION_INTERVAL_MS);
         return;
       }
-
-      lookChats = param.lookChats;
 
       await moderate(api, param, chats);
 

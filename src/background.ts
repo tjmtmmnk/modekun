@@ -1,5 +1,10 @@
 import { Message, sendRequest, sendRequestToContent } from "./message";
-import { defaultParamsV2, IParameterV2, keyIsUseSameParam } from "./config";
+import {
+  defaultParamsV2,
+  DEFAULT_IS_USE_SAME_PARAM,
+  IParameterV2,
+  keyIsUseSameParam,
+} from "./config";
 import { get, set } from "./storage";
 
 chrome.runtime.onMessage.addListener(
@@ -39,11 +44,11 @@ chrome.runtime.onMessage.addListener(
       if (!req.data) throw new Error("no data");
       if (!req.data.key) throw new Error("no key");
       if (!req.data.param) throw new Error("no param");
+      console.log("update param");
       const key: string = req.data.key;
       const param: IParameterV2 = req.data.param;
       try {
         await set<IParameterV2>(key, param);
-        await set<boolean>(keyIsUseSameParam, param.isUseSameParam);
       } catch (e) {
         console.error(e);
       }
@@ -51,13 +56,39 @@ chrome.runtime.onMessage.addListener(
       req.type === "GET_IS_USE_SAME_PARAM" &&
       req.from === "CONTENT_SCRIPT"
     ) {
-      const isUseSameParam = await get<boolean | undefined>(keyIsUseSameParam);
+      console.log(`GET is use same param from content script`);
+      const isUseSameParam =
+        (await get<boolean | undefined>(keyIsUseSameParam)) ??
+        DEFAULT_IS_USE_SAME_PARAM;
       await sendRequestToContent({
         type: "UPDATE_IS_USE_SAME_PARAM",
         from: "BACKGROUND",
         to: "CONTENT_SCRIPT",
-        data: { isUseSameParam: !!isUseSameParam },
+        data: { isUseSameParam },
       });
+      await sendRequest({
+        type: "UPDATE_IS_USE_SAME_PARAM",
+        from: "BACKGROUND",
+        to: "POPUP",
+        data: { isUseSameParam },
+      });
+    } else if (
+      req.type === "UPDATE_IS_USE_SAME_PARAM" &&
+      req.from === "CONTENT_SCRIPT"
+    ) {
+      if (!req.data) throw new Error("no data");
+      if (req.data.isUseSameParam === undefined)
+        throw new Error("no isUseSameParam");
+
+      const isUseSameParam: boolean = req.data.isUseSameParam;
+      console.log(
+        `UPDATE is use same param from content script: ${isUseSameParam}`
+      );
+      try {
+        await set<boolean>(keyIsUseSameParam, isUseSameParam);
+      } catch (e) {
+        console.error(e);
+      }
     }
     sendResponse();
   }

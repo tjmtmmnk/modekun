@@ -2,8 +2,7 @@ import React, { useEffect } from "react";
 import styled from "styled-components";
 import { CheckBox } from "./CheckBox";
 import { IParameterV2 } from "../../config";
-import { PopupDispatch, updateParam } from "../../popup";
-import { sendRequestToContent } from "../../message";
+import { PopupDispatch, updateIsUseSameParam, updateParam } from "../../popup";
 
 const StyledContainer = styled.div`
   width: 320px;
@@ -49,10 +48,11 @@ const StyledLi = styled.li`
 
 interface OptionPageProps {
   param: IParameterV2;
+  isUseSameParam: boolean;
   dispatch: PopupDispatch;
 }
 export const OptionPage = (props: OptionPageProps) => {
-  const { param, dispatch } = props;
+  const { param, isUseSameParam, dispatch } = props;
   useEffect(() => {
     updateParam(param);
   }, [
@@ -61,8 +61,10 @@ export const OptionPage = (props: OptionPageProps) => {
     param.considerAuthorNgWord,
     param.considerAuthorLength,
     param.isHideCompletely,
-    param.isUseSameParam,
   ]);
+  useEffect(() => {
+    updateIsUseSameParam(isUseSameParam);
+  }, [isUseSameParam]);
   return (
     <StyledContainer>
       <StyledUl>
@@ -140,13 +142,14 @@ export const OptionPage = (props: OptionPageProps) => {
           <CheckBox
             id={"is-use-same-param"}
             label={chrome.i18n.getMessage("isUseSameParam")}
-            defaultChecked={param.isUseSameParam}
+            defaultChecked={isUseSameParam}
             updateParam={(checked: boolean) => {
-              const newParam: IParameterV2 = {
-                ...param,
+              dispatch({
+                t: "update-is-use-same-param",
                 isUseSameParam: checked,
-              };
-              dispatch({ t: "update", param: newParam });
+              });
+              window.alert("reload");
+              window.close();
             }}
           />
         </StyledLi>
