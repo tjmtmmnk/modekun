@@ -61,6 +61,7 @@ export const OptionPage = (props: OptionPageProps) => {
     param.considerAuthorNgWord,
     param.considerAuthorLength,
     param.isHideCompletely,
+    param.isUseSameParam,
   ]);
   return (
     <StyledContainer>
