@@ -84,7 +84,7 @@ chrome.runtime.onMessage.addListener(
     } else if (req.type === "GET_PARAM" && req.from === "POPUP") {
       if (isReady) await initParam();
     } else if (
-      req.type === "GET_IS_USE_SAME_PARAM" &&
+      req.type === "UPDATE_IS_USE_SAME_PARAM" &&
       req.from === "BACKGROUND"
     ) {
       const isUseSameParam = req.data.isUseSameParam;

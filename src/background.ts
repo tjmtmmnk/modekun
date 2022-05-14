@@ -53,7 +53,7 @@ chrome.runtime.onMessage.addListener(
     ) {
       const isUseSameParam = await get<boolean | undefined>(keyIsUseSameParam);
       await sendRequestToContent({
-        type: "GET_IS_USE_SAME_PARAM",
+        type: "UPDATE_IS_USE_SAME_PARAM",
         from: "BACKGROUND",
         to: "CONTENT_SCRIPT",
         data: { isUseSameParam: !!isUseSameParam },
