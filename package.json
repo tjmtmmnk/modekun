@@ -28,7 +28,7 @@
     "@types/styled-components": "5.1.13",
     "clean-webpack-plugin": "4.0.0-alpha.0",
     "comlink": "4.3.1",
-    "copy-webpack-plugin": "6.4.1",
+    "copy-webpack-plugin": "10.2.4",
     "glob": "7.1.7",
     "jest": "27.1.0",
     "kuromojin": "3.0.0",
