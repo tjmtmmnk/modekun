@@ -29,8 +29,7 @@
       "matches": [
         "https://www.youtube.com/*",
         "https://www.mildom.com/*",
-        "https://www.twitch.tv/*",
-        "https://www.google.co.jp/*"
+        "https://www.twitch.tv/*"
       ],
       "js": ["js/content_script.js"]
     }
@@ -48,13 +47,9 @@
       "matches": [
         "https://www.youtube.com/*",
         "https://www.mildom.com/*",
-        "https://www.twitch.tv/*",
-        "https://www.google.co.jp/*"
+        "https://www.twitch.tv/*"
       ],
-      "extension_ids": [
-        "lnlgicokoimnfncigoknlbiicjfbbejp",
-        "gledinelblgphiogdfalpkobganffpem"
-      ]
+      "extension_ids": ["lnlgicokoimnfncigoknlbiicjfbbejp"]
     }
   ],
 
