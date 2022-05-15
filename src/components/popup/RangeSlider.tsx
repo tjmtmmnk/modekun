@@ -149,14 +149,12 @@ export const RangeSlider = (props: {
 }) => {
   const { label, unitLabel, min, max, step, defaultValue, updateParam } = props;
   const [currentValue, setValue] = React.useState(defaultValue);
-  React.useEffect(() => {
-    updateParam(currentValue);
-  }, [currentValue]);
 
   const onChange: React.ChangeEventHandler<HTMLInputElement> = (event) => {
     const value = parseInt(event.target.value, 10);
     if (isNaN(value)) return;
     setValue(value);
+    updateParam(value);
   };
   const onKeyDown: React.KeyboardEventHandler<HTMLInputElement> = (event) => {
     const { which } = event;

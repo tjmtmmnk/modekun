@@ -53,6 +53,9 @@
   "isUseSameParam": {
     "message": "Use common parameters"
   },
+  "reload": {
+    "message": "Reload to apply change"
+  },
 
   "repeatPost": {
     "message": "repeat post"

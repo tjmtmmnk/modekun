@@ -26,7 +26,11 @@ export default function PopupPage(props: PopupPageProps) {
           <NgWordPage param={state.param} popupDispatch={dispatch} />
         </Route>
         <Route path="/option">
-          <OptionPage param={state.param} dispatch={dispatch} />
+          <OptionPage
+            param={state.param}
+            isUseSameParam={state.isUseSameParam}
+            dispatch={dispatch}
+          />
         </Route>
         <Route path="/">
           <HomePage param={state.param} dispatch={dispatch} />
