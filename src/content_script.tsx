@@ -77,6 +77,8 @@ chrome.runtime.onMessage.addListener(
     }
     if (req.type === "UPDATE_PARAM" && req.from === "BACKGROUND") {
       if (!req.data || !req.data.param) throw new Error("no param");
+      console.log(`UPDATE param from background`);
+      console.log(req.data.param);
       state.param = req.data.param;
       await sendRequest({
         type: "UPDATE_PARAM",
@@ -88,6 +90,8 @@ chrome.runtime.onMessage.addListener(
       });
     } else if (req.type === "UPDATE_PARAM" && req.from === "POPUP") {
       if (!req.data || !req.data.param) throw new Error("no param");
+      console.log(`UPDATE param from popup`);
+      console.log(req.data.param);
       state.param = req.data.param;
       await sendRequest({
         type: "UPDATE_PARAM",
@@ -134,6 +138,9 @@ chrome.runtime.onMessage.addListener(
         to: "BACKGROUND",
         data: { isUseSameParam: state.isUseSameParam },
       });
+    } else if (req.type === "RELOAD" && req.from === "POPUP") {
+      console.log("reload");
+      await initParam();
     }
     sendResponse();
   }

@@ -57,6 +57,15 @@ export const updateIsUseSameParam = async (isUseSameParam: boolean) => {
   });
 };
 
+export const reloadNotification = async () => {
+  console.log("RELOAD from popup");
+  await sendRequestToContent({
+    type: "RELOAD",
+    from: "POPUP",
+    to: "CONTENT_SCRIPT",
+  });
+};
+
 const Popup = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
   useEffect(() => {

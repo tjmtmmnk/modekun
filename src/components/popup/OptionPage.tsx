@@ -2,7 +2,12 @@ import React, { useEffect } from "react";
 import styled from "styled-components";
 import { CheckBox } from "./CheckBox";
 import { IParameterV2 } from "../../config";
-import { PopupDispatch, updateIsUseSameParam, updateParam } from "../../popup";
+import {
+  PopupDispatch,
+  reloadNotification,
+  updateIsUseSameParam,
+  updateParam,
+} from "../../popup";
 
 const StyledContainer = styled.div`
   width: 320px;
@@ -62,9 +67,6 @@ export const OptionPage = (props: OptionPageProps) => {
     param.considerAuthorLength,
     param.isHideCompletely,
   ]);
-  useEffect(() => {
-    updateIsUseSameParam(isUseSameParam);
-  }, [isUseSameParam]);
   return (
     <StyledContainer>
       <StyledUl>
@@ -143,11 +145,13 @@ export const OptionPage = (props: OptionPageProps) => {
             id={"is-use-same-param"}
             label={chrome.i18n.getMessage("isUseSameParam")}
             defaultChecked={isUseSameParam}
-            updateParam={(checked: boolean) => {
+            updateParam={async (checked: boolean) => {
               dispatch({
                 t: "update-is-use-same-param",
                 isUseSameParam: checked,
               });
+              await updateIsUseSameParam(checked);
+              await reloadNotification();
               window.alert(chrome.i18n.getMessage("reload"));
               window.close();
             }}
